@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/DECORATION/1.3.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/DECORATION/1.3.0 http://maven.apache.org/xsd/decoration-1.3.0.xsd"
+    name="Motif">
+
+    <skin>
+        <groupId>lt.velykis.maven.skins</groupId>
+        <artifactId>reflow-maven-skin</artifactId>
+        <version>1.0.0</version>
+    </skin>
+
+    <body>
+        <menu ref="reports" />
+    </body>
+
+
+    <custom>
+        <reflowSkin>
+            <theme>bootswatch-slate</theme>
+            <highlightJs>true</highlightJs>
+            <brand>
+                <name>Motif</name>
+                <href>http://github.com/runeflobakk/motif</href>
+            </brand>
+            <toc>top</toc>
+            <topNav>Download|reports</topNav>
+
+            <pages>
+                <index project="motif">
+                    <shortTitle>Welcome</shortTitle>
+                    <breadcrumbs>false</breadcrumbs>
+                    <toc>false</toc>
+                    <sections>
+                        <columns>2</columns>
+                    </sections>
+                </index>
+                <developer-info>
+                    <toc>sidebar</toc>
+                </developer-info>
+            </pages>
+        </reflowSkin>
+    </custom>
+
+</project>
