@@ -8,9 +8,9 @@ package no.motif.f;
  * &fnof;(T) &isin; {true, false}
  * </pre>
  *
- * Formally, it is a specialization
- * of {@link Fn}, with the return type set to primitive {@link Boolean boolean}, but
- * since Java does not allow type parameterization with primitive types, and predicates
+ * Semantically, a predicate is a specialization
+ * of {@link Fn}, with the return type set to primitive {@link Boolean boolean}.
+ * Since Java does not allow type parameterization with primitive types, and predicates
  * play such an important role, it has been modeled as its own separate type.
  *
  * @param <T> The type of objects the predicate can evaluate.
