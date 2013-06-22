@@ -3,11 +3,19 @@ Welcome!
 =============
 
 
-Motif is a Java library that provides constructs to compose simple units of program logic, which together
+__Motif__ is a Java library that helps you to compose simple units of program logic, which together
 forms the actual behavior in your application. Most of the concepts in Motif is inspired from
 functional programming, but what's important is that it is just plain old Java, with no extra
 bells and whistles, though it might look a little unfamiliar if you are mostly accustomed to
 idiomatic Java code.
+
+The motivation for this library is _not_ to transform Java into a functional language - that would
+neither be possible nor practical. The goal is to enable Java programmers to express common, and often
+errorprone, imperative patterns (for, while, if-else, null-checks, etc) in a more safe way, where
+they get help from the compiler to compose the correct logic. If using __Motif__ inspires you
+to learn more about functional programming, that is awesome, but it is not a goal of Motif to simulate
+or replace a real functional programming langugage. Java is an object-oriented imperative language,
+and Motif only seeks to provide programming constructs to aid with the correctness of your objects' behavior.
 
 
 
@@ -17,4 +25,4 @@ Composing motifs
 =================
 
 The name 'Motif' was inspired from music, where a motif is a recognizable and recurring small musical
-fragment to form complete compositions from. Blahity blah blah blah blah. Blah. 
+fragment to form complete compositions from.
