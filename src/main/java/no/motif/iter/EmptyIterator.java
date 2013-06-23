@@ -2,7 +2,13 @@ package no.motif.iter;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-
+/**
+ * An iterator which is empty, i.e.
+ * {@link #hasNext()} always returns false, and {@link #next()}
+ * throws {@link NoSuchElementException}.
+ *
+ * Obtain an instance using {@link #instance() EmptyIterator.instance()}.
+ */
 public final class EmptyIterator<T> extends ReadOnlyIterator<T> {
 
     @SuppressWarnings("unchecked")
