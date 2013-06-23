@@ -1,7 +1,7 @@
 package no.motif.iter;
 
 import static no.motif.Iterate.on;
-import static no.motif.Predicates.equalTo;
+import static no.motif.Base.equalTo;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.emptyIterable;
 import static org.junit.Assert.assertThat;

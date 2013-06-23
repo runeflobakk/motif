@@ -1,6 +1,6 @@
 package no.motif.iter;
 
-import static no.motif.Functions.toString;
+import static no.motif.Base.toString;
 import static no.motif.Iterate.on;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.emptyIterable;

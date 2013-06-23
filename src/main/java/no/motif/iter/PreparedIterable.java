@@ -6,6 +6,12 @@ import no.motif.f.Fn;
 import no.motif.f.Predicate;
 import no.motif.types.Mappable;
 
+/**
+ * This class wraps an arbitrary {@link Iterable} and provides access to
+ * various operations to view and/or transform the wrapped iterable.
+ *
+ * @param <T> The type of the elements in the iterable.
+ */
 public class PreparedIterable<T> implements Iterable<T>, Mappable<T> {
 
     private final Iterable<T> elements;
