@@ -1,10 +1,14 @@
 package no.motif.iter;
 
+import static no.motif.Singular.none;
+import static no.motif.Singular.optional;
+
 import java.util.Iterator;
 
 import no.motif.f.Predicate;
+import no.motif.option.Optional;
 
-class FilteredIterable<T> implements Iterable<T> {
+final class FilteredIterable<T> implements Iterable<T> {
 
     private final Iterable<T> elements;
     private final Predicate<? super T> accepts;
@@ -16,21 +20,16 @@ class FilteredIterable<T> implements Iterable<T> {
 
     @Override
     public Iterator<T> iterator() {
-        return new ReadOnlyIterator<T>() {
+        return new SimpleIterator<T>() {
             final Iterator<T> iterator = elements.iterator();
-            T next;
-            @Override
-            public boolean hasNext() {
-                while (iterator.hasNext()) {
-                    next = iterator.next();
-                    if (accepts.$(next)) return true;
-                }
-                return false;
-            }
 
             @Override
-            public T next() {
-                return next;
+            protected Optional<T> nextIfAvailable() {
+                while (iterator.hasNext()) {
+                    T next = iterator.next();
+                    if (accepts.$(next)) return optional(next);
+                }
+                return none();
             }
         };
     }

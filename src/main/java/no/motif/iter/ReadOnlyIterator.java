@@ -10,13 +10,12 @@ import java.util.Iterator;
  */
 public abstract class ReadOnlyIterator<T> implements Iterator<T> {
 
-
     /**
      * Method is not supported and throws {@link UnsupportedOperationException}
      * if called.
      */
     @Override
-    public void remove() {
+    public final void remove() {
         throw new UnsupportedOperationException();
     }
 

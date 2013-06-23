@@ -12,5 +12,12 @@ package no.motif.f;
  * @param <O> The type of object the function returns.
  */
 public interface Fn<I, O> {
+
+    /**
+     * Applies the function.
+     *
+     * @param value The value to apply the function on.
+     * @return the result from the function application.
+     */
     O $(I value);
 }

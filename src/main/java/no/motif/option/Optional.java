@@ -1,13 +1,14 @@
 package no.motif.option;
 
 import static no.motif.Base.notNull;
-
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import no.motif.Singular;
 import no.motif.f.Fn;
 import no.motif.f.Predicate;
-import no.motif.iter.ReadOnlyIterator;
+import no.motif.iter.EmptyIterator;
+import no.motif.iter.SingularIterator;
 import no.motif.types.Mappable;
 
 /**
@@ -18,57 +19,25 @@ import no.motif.types.Mappable;
  *
  * @param <V> The type of the wrapped object.
  *
- * @see #optional(Object)
- * @see #optional(Predicate, Object)
  */
 public abstract class Optional<V> implements Iterable<V>, Mappable<V> {
 
-    /**
-     * Wrap an object or <code>null</code> in an <code>Optional</code>.
-     *
-     * @param value The object to wrap. May be <code>null</code>.
-     * @param <V>   The type of the wrapped object.
-     *
-     * @return {@link Some} if <code>value</code> is an object,
-     *         {@link None} if <code>value</code> is <code>null</code>
-     *
-     * @see Optional
-     * @see Some
-     * @see None
-     */
-    public static <V> Optional<V> optional(V value) {
-        return optional(notNull, value);
-    }
-
 
     /**
-     * Wrap an object in an <code>Optional</code>, using a predicate to
-     * determine if the value should be treated as defined.
+     * <h1>*** Not part of the public API! ***</h1>
+     * Factory method for resolving a value to {@link Some} or {@link None}.
      *
-     * @param <V>       The type of the wrapped object.
-     * @param isPresent A {@link Predicate} function returning true if
-     *                  the value is considered defined or 'present'. This
-     *                  function must be able to handle <code>null</code>.
-     *
-     * @param value     The object to wrap. May be <code>null</code>.
-     *
-     *
-     * @return          {@link Some} if <code>value</code> is defined,
-     *                  {@link None} otherwise.
-     *
-     * @see Optional
-     * @see Some
-     * @see None
+     * @see Singular#optional(Object)
+     * @see Singular#optional(Predicate, Object)
+     * @see Singular#none()
      */
-    public static <V> Optional<V> optional(Predicate<? super V> isPresent, V value) {
+    public static <V> Optional<V> resolve(Predicate<? super V> isPresent, V value) {
         if (isPresent.$(value)) {
             return new Some<V>(value);
         } else {
             return None.getInstance();
         }
     }
-
-
 
 
     /**
@@ -87,19 +56,7 @@ public abstract class Optional<V> implements Iterable<V>, Mappable<V> {
 
         @Override
         public final Iterator<V> iterator() {
-            return new ReadOnlyIterator<V>() {
-                private boolean returned = false;
-                @Override
-                public boolean hasNext() {
-                    return !returned;
-                }
-
-                @Override
-                public V next() {
-                    returned = true;
-                    return value;
-                }
-            };
+            return new SingularIterator<V>(value);
         }
 
         @Override
@@ -115,13 +72,13 @@ public abstract class Optional<V> implements Iterable<V>, Mappable<V> {
         @Override
         public <O> Optional<O> map(Fn<? super V, O> mapper) {
             O mapped = mapper.$(this.value);
-            return optional(mapped);
+            return resolve(notNull, mapped);
         }
 
         @Override
         public <O> Optional<O> map(Predicate<? super O> isPresent, Fn<? super V, O> mapper) {
             O mapped = mapper.$(this.value);
-            return optional(isPresent, mapped);
+            return resolve(isPresent, mapped);
         }
     }
 
@@ -136,24 +93,15 @@ public abstract class Optional<V> implements Iterable<V>, Mappable<V> {
         private static final None<?> INSTANCE = new None<Object>();
 
         @SuppressWarnings("unchecked")
-        private static <V> None<V> getInstance() {
+        public static <V> None<V> getInstance() {
             return (None<V>) INSTANCE;
         }
 
+        private None() {}
+
         @Override
         public final Iterator<V> iterator() {
-            return new ReadOnlyIterator<V>() {
-
-                @Override
-                public boolean hasNext() {
-                    return false;
-                }
-
-                @Override
-                public V next() {
-                    throw new NoSuchElementException();
-                }
-            };
+            return EmptyIterator.instance();
         }
 
         @Override
@@ -219,7 +167,7 @@ public abstract class Optional<V> implements Iterable<V>, Mappable<V> {
      * Map this <code>Optional</code> to another type of <code>Optional</code>.
      *
      * @see #map(Fn)
-     * @see #optional(Predicate, Object)
+     * @see #resolve(Predicate, Object)
      */
     public abstract <O> Optional<O> map(Predicate<? super O> isPresent, Fn<? super V, O> transformer);
 

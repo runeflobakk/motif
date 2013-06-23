@@ -1,8 +1,13 @@
 package no.motif.iter;
 
+import static no.motif.Iterate.hasNext;
+import static no.motif.Singular.optional;
+
 import java.util.Iterator;
 
+import no.motif.Iterate;
 import no.motif.f.Fn;
+import no.motif.option.Optional;
 
 final class MappingIterable<I, O> implements Iterable<O> {
 
@@ -17,16 +22,12 @@ final class MappingIterable<I, O> implements Iterable<O> {
 
     @Override
     public Iterator<O> iterator() {
-        return new ReadOnlyIterator<O>() {
+        return new SimpleIterator<O>() {
             final Iterator<I> iterator = elements.iterator();
-            @Override
-            public boolean hasNext() {
-                return iterator.hasNext();
-            }
 
             @Override
-            public O next() {
-                return map.$(iterator.next());
+            protected Optional<O> nextIfAvailable() {
+                return optional(hasNext, iterator).map(Iterate.<I>next()).map(map);
             }
         };
     }

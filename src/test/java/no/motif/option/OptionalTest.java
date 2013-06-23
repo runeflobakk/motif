@@ -5,7 +5,7 @@ import static no.motif.Strings.blank;
 import static no.motif.Strings.lowerCased;
 import static no.motif.Strings.upperCased;
 import static no.motif.Strings.trimmed;
-import static no.motif.option.Optional.optional;
+import static no.motif.Singular.optional;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.sameInstance;
 import static org.junit.Assert.assertFalse;
