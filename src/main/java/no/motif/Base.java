@@ -52,11 +52,11 @@ public final class Base {
         return new Predicate<T>() { @Override public boolean $(T input) { return Objects.equals(input, value); }}; }
 
 
-    public static Predicate<Object> isNull = new Predicate<Object>() {
+    public static final Predicate<Object> isNull = new Predicate<Object>() {
         @Override public boolean $(Object value) { return value == null; }};
 
 
-    public static Predicate<Object> notNull = not(isNull);
+    public static final Predicate<Object> notNull = not(isNull);
 
 
     public static final Fn<Object, String> toString = new Fn<Object, String>() {
