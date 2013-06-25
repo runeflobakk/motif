@@ -11,8 +11,8 @@ idiomatic Java code.
 
 The motivation for this library is _not_ to transform Java into a functional language - that would
 neither be possible nor practical. The goal is to enable Java programmers to express common, and often
-errorprone, imperative patterns (for, while, if-else, null-checks, etc) in a more safe way, where
-they get help from the compiler to compose the correct logic. If using __Motif__ inspires you
+errorprone, imperative idioms (for, while, if-else, null-checks, etc) in a more safe way, where
+you will get help from the compiler to compose the correct logic. If using __Motif__ inspires you
 to learn more about functional programming, that is awesome, but it is not a goal of Motif to simulate
 or replace a real functional programming langugage. Java is an object-oriented imperative language,
 and Motif only seeks to provide programming constructs to aid with the correctness of your objects' behavior.
@@ -26,3 +26,22 @@ Composing motifs
 
 The name 'Motif' was inspired from music, where a motif is a recognizable and recurring small musical
 fragment to form complete compositions from.
+
+
+
+Using Motif
+==================
+
+Include the following declaration in your POM to start using motif in your project:
+
+```xml
+<dependency>
+    <groupId>com.github.runeflobakk</groupId>
+    <artifactId>motif</artifactId>
+    <version>1.0-SNAPSHOT</version>
+</dependency>
+```
+
+Descriptions for other build tools can be found on [this page](dependency-info.html)
+
+[Go here](documentation.html) to read the documentation for Motif.

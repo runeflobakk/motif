@@ -9,32 +9,49 @@
         <artifactId>reflow-maven-skin</artifactId>
         <version>1.0.0</version>
     </skin>
+    
+    <publishDate position="bottom" format="yyyy-MM-dd" />
+    <version position="bottom" />
 
     <body>
+        <menu name="Main">
+            <item name="Home" href="index.html" />
+            <item name="View on GitHub" href="http://github.com/runeflobakk/motif" />
+        </menu>
+        <menu name="Documentation">
+        	<item name="The Optional type" href="optional.html" />
+        </menu>
         <menu ref="reports" />
     </body>
 
 
     <custom>
         <reflowSkin>
-            <theme>bootswatch-slate</theme>
+            <smoothScroll>true</smoothScroll>
+<!--             <theme>bootswatch-slate</theme> -->
+            <theme>default</theme>        
             <highlightJs>true</highlightJs>
             <brand>
                 <name>Motif</name>
                 <href>http://github.com/runeflobakk/motif</href>
             </brand>
             <toc>top</toc>
-            <topNav>Download|reports</topNav>
+            <topNav>Documentation|reports</topNav>
 
             <pages>
                 <index project="motif">
                     <shortTitle>Welcome</shortTitle>
                     <breadcrumbs>false</breadcrumbs>
-                    <toc>false</toc>
+                    <toc>true</toc>
                     <sections>
                         <columns>2</columns>
                     </sections>
                 </index>
+                <documentation>
+                	<shortTitle>Documentation</shortTitle>
+                    <breadcrumbs>true</breadcrumbs>
+                    <toc>sidebar</toc>
+                </documentation>
                 <developer-info>
                     <toc>sidebar</toc>
                 </developer-info>
