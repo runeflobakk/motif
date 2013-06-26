@@ -1,5 +1,7 @@
 package no.motif.iter;
 
+import static java.util.Collections.emptyList;
+
 import java.util.Iterator;
 
 import no.motif.f.Fn;
@@ -13,6 +15,13 @@ import no.motif.types.Mappable;
  * @param <T> The type of the elements in the iterable.
  */
 public class PreparedIterable<T> implements Iterable<T>, Mappable<T> {
+
+    private static final PreparedIterable<?> EMPTY = new PreparedIterable<>(emptyList());
+
+    @SuppressWarnings("unchecked")
+    public static <T> PreparedIterable<T> empty() {
+        return (PreparedIterable<T>) EMPTY;
+    }
 
     private final Iterable<T> elements;
 
