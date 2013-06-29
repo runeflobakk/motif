@@ -1,6 +1,7 @@
 package no.motif.iter;
 
 import static java.util.Collections.emptyList;
+import static no.motif.Singular.optional;
 
 import java.util.Iterator;
 
@@ -36,6 +37,14 @@ public class PreparedIterable<T> implements Iterable<T>, Mappable<T> {
     @Override
     public <O> PreparedIterable<O> map(Fn<? super T, O> function) {
         return new PreparedIterable<>(new MappingIterable<T, O>(elements, function));
+    }
+
+    public PreparedIterable<T> append(T value) {
+        return append(optional(value));
+    }
+
+    public PreparedIterable<T> append(Iterable<? extends T> trailingElements) {
+        return new PreparedIterable<T>(new ConcatenatedIterable<T>(elements, trailingElements));
     }
 
 

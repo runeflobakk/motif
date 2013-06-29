@@ -2,6 +2,7 @@ package no.motif;
 
 import java.util.Objects;
 
+import no.motif.f.Conjunction;
 import no.motif.f.Fn;
 import no.motif.f.Predicate;
 
@@ -48,6 +49,30 @@ public final class Base {
         return new Predicate<T>() { @Override public boolean $(T value) { return predicate.$(fn.$(value)); }}; }
 
 
+
+    public static <T> Conjunction<T> both(Predicate<T> predicate) {
+        return new Conjunction<>(predicate);
+    }
+
+    @SafeVarargs
+    @SuppressWarnings("varargs")
+    public static <T> Conjunction<T> allOf(Predicate<? super T> ... predicates) {
+        return new Conjunction<>(predicates);
+    }
+
+
+    /**
+     * A synonym for {@link #equalTo(Object)}.
+     */
+    public static <T> Predicate<T> is(T value) { return equalTo(value); }
+
+
+    /**
+     * Equality predicate, checks if values are equal to the given value.
+     *
+     * @param value the value the predicate should check for equality against.
+     * @return the equality predicate.
+     */
     public static <T> Predicate<T> equalTo(final T value) {
         return new Predicate<T>() { @Override public boolean $(T input) { return Objects.equals(input, value); }}; }
 
@@ -64,5 +89,8 @@ public final class Base {
 
 
     private Base() {} static { new Base(); }
+
+
+
 
 }
