@@ -62,7 +62,7 @@ public final class Base {
      *         chaining the {@link Conjunction#and(Predicate) and(anotherPredicate)} method.
      */
     public static <T> Conjunction<T> both(Predicate<T> predicate) {
-        return new Conjunction<>(predicate);
+        return new Conjunction<T>(predicate);
     }
 
     /**
@@ -90,7 +90,7 @@ public final class Base {
      *         chaining the {@link Disjunction#or(Predicate) or(anotherPredicate)} method.
      */
     public static <T> Disjunction<T> either(Predicate<T> predicate) {
-        return new Disjunction<>(predicate);
+        return new Disjunction<T>(predicate);
     }
 
     /**
