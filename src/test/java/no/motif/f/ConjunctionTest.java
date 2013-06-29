@@ -29,4 +29,9 @@ public class ConjunctionTest {
         assertTrue(allOf(is("abc"), contains("c"), where(length, is(3))).$("abc"));
         assertFalse(allOf(contains("c"), where(length, is(4))).$("abc"));
     }
+
+    @Test
+    public void emptyConjunctionIsTrue() {
+        assertTrue(allOf().$("x"));
+    }
 }

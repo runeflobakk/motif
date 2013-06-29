@@ -4,6 +4,10 @@ import static java.util.Arrays.asList;
 import no.motif.Iterate;
 import no.motif.iter.PreparedIterable;
 
+/**
+ * A conjunction is a composition of several predicates which must all evaluate
+ * to true for the conjunction to be true, otherwise it is false.
+ */
 public class Conjunction<T> implements Predicate<T> {
 
     private final PreparedIterable<Predicate<? super T>> predicates;

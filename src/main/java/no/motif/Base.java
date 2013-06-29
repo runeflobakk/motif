@@ -3,6 +3,7 @@ package no.motif;
 import java.util.Objects;
 
 import no.motif.f.Conjunction;
+import no.motif.f.Disjunction;
 import no.motif.f.Fn;
 import no.motif.f.Predicate;
 
@@ -50,14 +51,59 @@ public final class Base {
 
 
 
+    /**
+     * Create a AND-expression of several predicates, starting with the one
+     * given to this method.
+     *
+     * @see Conjunction
+     * @see #allOf(Predicate...)
+     * @param predicate The first predicate.
+     * @return a new predicate which may be used to build up an AND-expression by
+     *         chaining the {@link Conjunction#and(Predicate) and(anotherPredicate)} method.
+     */
     public static <T> Conjunction<T> both(Predicate<T> predicate) {
         return new Conjunction<>(predicate);
     }
 
+    /**
+     * Compose an AND-expression of several predicates.
+     *
+     * @see Conjunction
+     * @param predicates the predicates.
+     * @return a new predicate which is the conjunction (AND) of the given predicates.
+     */
     @SafeVarargs
     @SuppressWarnings("varargs")
     public static <T> Conjunction<T> allOf(Predicate<? super T> ... predicates) {
         return new Conjunction<>(predicates);
+    }
+
+
+    /**
+     * Create a OR-expression of several predicates, starting with the one
+     * given to this method.
+     *
+     * @see Disjunction
+     * @see #anyOf(Predicate...)
+     * @param predicate The first predicate.
+     * @return a new predicate which may be used to build up an OR-expression by
+     *         chaining the {@link Disjunction#or(Predicate) or(anotherPredicate)} method.
+     */
+    public static <T> Disjunction<T> either(Predicate<T> predicate) {
+        return new Disjunction<>(predicate);
+    }
+
+    /**
+     * Compose an OR-expression of several predicates.
+     *
+     * @see Disjunction
+     * @param predicates the predicates.
+     * @return a new predicate which is the disjunction (OR) of the given predicates.
+     */
+    @SafeVarargs
+    @SuppressWarnings("varargs")
+    public static <T> Disjunction<T> anyOf(Predicate<? super T> ... predicates) {
+        return new Disjunction<>(predicates);
     }
 
 
@@ -89,8 +135,6 @@ public final class Base {
 
 
     private Base() {} static { new Base(); }
-
-
 
 
 }

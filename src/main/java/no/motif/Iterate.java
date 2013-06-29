@@ -54,14 +54,10 @@ public final class Iterate {
     /**
      * @return The {@link Iterator#next()} as a function.
      */
-    public static final <T> Fn<Iterator<T>, T> next() {
-        return new Fn<Iterator<T>, T>() {
-            @Override
-            public T $(Iterator<T> iterator) {
-                return iterator.next();
-            }
-        };
-    };
+    public static final <T> Fn<Iterator<T>, T> next() { return new Fn<Iterator<T>, T>() {
+        @Override public T $(Iterator<T> iterator) { return iterator.next(); }};};
+
+
 
 
     private Iterate() {} static { new Iterate(); }
