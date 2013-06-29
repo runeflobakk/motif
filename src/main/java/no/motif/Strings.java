@@ -5,6 +5,7 @@ import static no.motif.Chars.digit;
 import static no.motif.Iterate.on;
 
 import no.motif.f.Fn;
+import no.motif.f.Fn2;
 import no.motif.f.NopOnNullFn;
 import no.motif.f.Predicate;
 
@@ -54,8 +55,14 @@ public final class Strings {
         @Override public Double $(String decimalValue) { return decimalValue != null ? Double.valueOf(decimalValue) : 0; }};
 
 
+    public static final Fn2<String, Object, String> concat = new Fn2<String, Object, String>() {
+        @Override public String $(String acc, Object c) { return acc + c; }};
+
+
     public static Predicate<String> contains(final CharSequence charSequence) { return new Predicate<String>() {
         @Override public boolean $(String string) { return string != null ? string.contains(charSequence) : false; }}; }
+
+
 
 
     private Strings() {} static { new Strings(); }

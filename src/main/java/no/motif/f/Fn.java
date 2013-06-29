@@ -8,6 +8,12 @@ package no.motif.f;
  * &fnof;(I) &isin; O
  * </pre>
  *
+ * This function type is often referred to as a "mapper"
+ * or "transformer", as it takes one value and based on it,
+ * yields another value. The function defines the mapping
+ * between values.
+ *
+ *
  * @param <I> the type of the function argument
  * @param <O> The type of object the function returns.
  */

@@ -22,7 +22,7 @@ import no.motif.iter.PreparedIterable;
 public final class Iterate {
 
 
-    public static <C extends CharSequence> PreparedIterable<Character> on(C chars) {
+    public static PreparedIterable<Character> on(CharSequence chars) {
         if (chars == null) return PreparedIterable.empty();
         List<Character> charList = new ArrayList<>(chars.length());
         for (char c : chars.toString().toCharArray()) charList.add(c);

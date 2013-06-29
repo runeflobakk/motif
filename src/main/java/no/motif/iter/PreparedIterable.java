@@ -15,7 +15,7 @@ import no.motif.types.Mappable;
  *
  * @param <T> The type of the elements in the iterable.
  */
-public class PreparedIterable<T> implements Iterable<T>, Mappable<T> {
+public class PreparedIterable<T> extends CollectingIterable<T> implements Iterable<T>, Mappable<T> {
 
     private static final PreparedIterable<?> EMPTY = new PreparedIterable<>(emptyList());
 

@@ -8,6 +8,5 @@ public final class Chars {
     public static final Predicate<Character> digit = new Predicate<Character>() {
         @Override public boolean $(Character c) { return c != null && isDigit(c); }};
 
-
     private Chars() {} static { new Chars(); }
 }
