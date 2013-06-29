@@ -1,9 +1,12 @@
 package no.motif;
 
 import static no.motif.Strings.blank;
+import static no.motif.Strings.contains;
 import static no.motif.Strings.length;
 import static no.motif.Strings.lowerCased;
 import static no.motif.Strings.numeric;
+import static no.motif.Strings.toDouble;
+import static no.motif.Strings.toInt;
 import static no.motif.Strings.upperCased;
 import static no.motif.Strings.trimmed;
 import static org.hamcrest.Matchers.is;
@@ -53,5 +56,29 @@ public class StringsTest {
         assertThat(length.$("xyz"), is(3));
         assertThat(length.$(null), is(0));
     }
+
+    @Test
+    public void convertToInt() {
+        assertThat(toInt.$("42"), is(42));
+        assertThat(toInt.$("-42"), is(-42));
+        assertThat(toInt.$(null), is(0));
+    }
+
+    @Test
+    public void convertToDouble() {
+        assertThat(toDouble.$("42"), is(42.0));
+        assertThat(toDouble.$("-3.14"), is(-3.14));
+        assertThat(toDouble.$(null), is(0.0));
+    }
+
+    @Test
+    public void containsSequenceOfChars() {
+        assertThat(contains("").$(null), is(false));
+        assertThat(contains("").$(""), is(true));
+        assertThat(contains("").$("a"), is(true));
+        assertThat(contains("b").$("a"), is(false));
+        assertThat(contains("b").$("abc"), is(true));
+    }
+
 
 }

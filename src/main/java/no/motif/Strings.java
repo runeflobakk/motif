@@ -3,6 +3,7 @@ package no.motif;
 import static no.motif.Base.not;
 import static no.motif.Chars.digit;
 import static no.motif.Iterate.on;
+
 import no.motif.f.Fn;
 import no.motif.f.NopOnNullFn;
 import no.motif.f.Predicate;
@@ -39,6 +40,25 @@ public final class Strings {
         @Override public Integer $(String s) { return s != null ? s.length() : 0; }};
 
 
+    /**
+     * @see Integer#valueOf(String)
+     */
+    public static final Fn<String, Integer> toInt = new Fn<String, Integer>() {
+        @Override public Integer $(String numeric) { return numeric != null ? Integer.valueOf(numeric) : 0; }};
+
+
+    /**
+     * @see Double#valueOf(String)
+     */
+    public static final Fn<String, Double> toDouble = new Fn<String, Double>() {
+        @Override public Double $(String decimalValue) { return decimalValue != null ? Double.valueOf(decimalValue) : 0; }};
+
+
+    public static Predicate<String> contains(final CharSequence charSequence) { return new Predicate<String>() {
+        @Override public boolean $(String string) { return string != null ? string.contains(charSequence) : false; }}; }
+
+
     private Strings() {} static { new Strings(); }
+
 
 }
