@@ -1,6 +1,6 @@
 appender("STDOUT", ConsoleAppender) {
   encoder(PatternLayoutEncoder) {
-    pattern = "%level %logger - %msg%n"
+    pattern = "%-6level %-30logger{10} %msg%n"
   }
 }
 
