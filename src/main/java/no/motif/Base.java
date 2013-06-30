@@ -134,7 +134,7 @@ public final class Base {
         @Override public String $(Object value) { return String.valueOf(value); }};
 
 
-    private Base() {} static { new Base(); }
+    private Base() {}
 
 
 }

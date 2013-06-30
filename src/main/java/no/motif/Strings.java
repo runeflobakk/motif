@@ -65,7 +65,7 @@ public final class Strings {
 
 
 
-    private Strings() {} static { new Strings(); }
+    private Strings() {}
 
 
 }

@@ -12,5 +12,5 @@ public final class Ints {
         @Override public Integer $(Number factor1, Number factor2) { return factor1.intValue() * factor2.intValue(); }};
 
 
-    private Ints() {} static { new Ints(); }
+    private Ints() {}
 }

@@ -58,5 +58,5 @@ public final class Singular {
         return None.getInstance();
     }
 
-    private Singular() {} static { new Singular(); }
+    private Singular() {}
 }

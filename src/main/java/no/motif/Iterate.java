@@ -60,6 +60,6 @@ public final class Iterate {
 
 
 
-    private Iterate() {} static { new Iterate(); }
+    private Iterate() {}
 
 }
