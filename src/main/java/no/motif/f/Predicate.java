@@ -17,4 +17,28 @@ package no.motif.f;
  */
 public interface Predicate<T> {
     boolean $(T value);
+
+    class Always<T> implements Predicate<T> {
+
+        @SuppressWarnings("unchecked")
+        public static <T> Predicate<T> no() { return (Predicate<T>) FALSE; }
+
+        @SuppressWarnings("unchecked")
+        public static <T> Predicate<T> yes() { return (Predicate<T>) TRUE; }
+
+
+        private static Predicate<?> FALSE = new Always<Object>(false);
+        private static Predicate<?> TRUE = new Always<Object>(true);
+
+        private final boolean constant;
+
+        private Always(final boolean constant) {
+            this.constant = constant;
+        }
+
+        @Override
+        public boolean $(T value) {
+            return constant;
+        }
+    }
 }

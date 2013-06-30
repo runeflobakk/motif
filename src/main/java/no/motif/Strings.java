@@ -8,6 +8,7 @@ import no.motif.f.Fn;
 import no.motif.f.Fn2;
 import no.motif.f.NopOnNullFn;
 import no.motif.f.Predicate;
+import no.motif.f.Predicate.Always;
 
 /**
  * Functions operating on {@link String strings}.
@@ -59,10 +60,14 @@ public final class Strings {
         @Override public String $(String acc, Object c) { return acc + c; }};
 
 
-    public static Predicate<String> contains(final CharSequence charSequence) { return new Predicate<String>() {
+    public static Predicate<String> contains(final CharSequence charSequence) {
+        return charSequence == null ? Always.<String>no() : new Predicate<String>() {
         @Override public boolean $(String string) { return string != null ? string.contains(charSequence) : false; }}; }
 
 
+    public static Predicate<String> startsWith(final String prefix) {
+        return prefix == null ? Always.<String>no() : new Predicate<String>() {
+        @Override public boolean $(String string) { return string != null ? string.startsWith(prefix) : false; }}; }
 
 
     private Strings() {}

@@ -5,6 +5,7 @@ import static no.motif.Strings.contains;
 import static no.motif.Strings.length;
 import static no.motif.Strings.lowerCased;
 import static no.motif.Strings.numeric;
+import static no.motif.Strings.startsWith;
 import static no.motif.Strings.toDouble;
 import static no.motif.Strings.toInt;
 import static no.motif.Strings.upperCased;
@@ -73,11 +74,22 @@ public class StringsTest {
 
     @Test
     public void containsSequenceOfChars() {
+        assertThat(contains(null).$(null), is(false));
         assertThat(contains("").$(null), is(false));
         assertThat(contains("").$(""), is(true));
         assertThat(contains("").$("a"), is(true));
         assertThat(contains("b").$("a"), is(false));
         assertThat(contains("b").$("abc"), is(true));
+    }
+
+    @Test
+    public void startsWithPrefix() {
+        assertThat(startsWith(null).$(null), is(false));
+        assertThat(startsWith(null).$("x"), is(false));
+        assertThat(startsWith("").$(null), is(false));
+        assertThat(startsWith("b").$("ab"), is(false));
+        assertThat(startsWith("a").$("a"), is(true));
+        assertThat(startsWith("a").$("ab"), is(true));
     }
 
 
