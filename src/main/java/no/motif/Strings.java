@@ -7,6 +7,7 @@ import static no.motif.Iterate.on;
 import no.motif.f.Fn;
 import no.motif.f.Fn2;
 import no.motif.f.NopOnNullFn;
+import no.motif.f.NullIsFalsePredicate;
 import no.motif.f.Predicate;
 import no.motif.f.Predicate.Always;
 
@@ -18,12 +19,14 @@ import no.motif.f.Predicate.Always;
  */
 public final class Strings {
 
+
     public static final Predicate<String> blank = new Predicate<String>() {
         @Override public boolean $(String s) { return s == null || s.trim().isEmpty(); }};
 
 
-    public static final Predicate<String> numeric = new Predicate<String>() {
-        @Override public boolean $(String s) { return s != null && !s.isEmpty() && !on(s).filter(not(digit)).iterator().hasNext(); }};
+    public static final Predicate<String> numeric = new NullIsFalsePredicate<String>() {
+        @Override public boolean $nullsafe(String s) {
+            return !s.isEmpty() && !on(s).filter(not(digit)).iterator().hasNext(); }};
 
 
     public static final Fn<String, String> trimmed = new NopOnNullFn<String, String>() {
@@ -61,16 +64,21 @@ public final class Strings {
 
 
     public static Predicate<String> contains(final CharSequence charSequence) {
-        return charSequence == null ? Always.<String>no() : new Predicate<String>() {
-        @Override public boolean $(String string) { return string != null ? string.contains(charSequence) : false; }}; }
+        return charSequence == null ? Always.<String>no() : new NullIsFalsePredicate<String>() {
+        @Override public boolean $nullsafe(String string) { return string.contains(charSequence); }}; }
 
 
     public static Predicate<String> startsWith(final String prefix) {
-        return prefix == null ? Always.<String>no() : new Predicate<String>() {
-        @Override public boolean $(String string) { return string != null ? string.startsWith(prefix) : false; }}; }
+        return prefix == null ? Always.<String>no() : new NullIsFalsePredicate<String>() {
+        @Override public boolean $nullsafe(String string) { return string.startsWith(prefix); }}; }
+
+
+    public static Predicate<String> endsWith(final String suffix) {
+        return suffix == null ? Always.<String>no() : new NullIsFalsePredicate<String>() {
+        @Override public boolean $nullsafe(String string) { return string.endsWith(suffix); }}; }
+
 
 
     private Strings() {}
-
 
 }

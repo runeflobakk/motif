@@ -2,6 +2,7 @@ package no.motif;
 
 import static no.motif.Strings.blank;
 import static no.motif.Strings.contains;
+import static no.motif.Strings.endsWith;
 import static no.motif.Strings.length;
 import static no.motif.Strings.lowerCased;
 import static no.motif.Strings.numeric;
@@ -90,6 +91,15 @@ public class StringsTest {
         assertThat(startsWith("b").$("ab"), is(false));
         assertThat(startsWith("a").$("a"), is(true));
         assertThat(startsWith("a").$("ab"), is(true));
+    }
+
+    @Test
+    public void endsWithSuffix() {
+        assertThat(endsWith(null).$(null), is(false));
+        assertThat(endsWith(null).$(""), is(false));
+        assertThat(endsWith("").$(null), is(false));
+        assertThat(endsWith("x").$(null), is(false));
+        assertThat(endsWith("bc").$("abc"), is(true));
     }
 
 
