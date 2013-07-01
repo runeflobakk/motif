@@ -12,7 +12,7 @@ package no.motif.f;
  *
  * @see Fn
  */
-public abstract class NopOnNullFn<I, O> implements Fn<I, O> {
+public abstract class PassThruIfNullOrElse<I, O> implements Fn<I, O> {
 
     @Override
     public O $(I value) { return value != null ? $nullsafe(value) : null; }

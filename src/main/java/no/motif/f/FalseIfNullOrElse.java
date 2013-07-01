@@ -7,7 +7,7 @@ package no.motif.f;
  * the value should evaluate to <code>true</code> or <code>false</code>,
  * but need not to worry about checking if the value is <code>null</code>.
  */
-public abstract class NullIsFalsePredicate<T> implements Predicate<T> {
+public abstract class FalseIfNullOrElse<T> implements Predicate<T> {
 
     /**
      * @param value The value to evaluate, never <code>null</code>.

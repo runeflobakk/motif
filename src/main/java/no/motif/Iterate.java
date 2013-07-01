@@ -26,21 +26,24 @@ public final class Iterate {
         if (chars == null) return PreparedIterable.empty();
         List<Character> charList = new ArrayList<>(chars.length());
         for (char c : chars.toString().toCharArray()) charList.add(c);
-        return on(charList);
+        return newInstance(charList);
     }
 
 
     @SafeVarargs
     @SuppressWarnings("varargs")
-    public static <T> PreparedIterable<T> on(T... elements) {
-        if (elements == null) return PreparedIterable.empty();
-        return on(asList(elements));
+    public static <T> PreparedIterable<T> on(T ... elements) {
+        return newInstance(elements != null ? asList(elements) : null);
     }
 
 
     public static <T> PreparedIterable<T> on(Iterable<T> elements) {
+        return elements instanceof PreparedIterable ? (PreparedIterable<T>) elements : newInstance(elements);
+    }
+
+    private static <T> PreparedIterable<T> newInstance(Iterable<T> elements) {
         if (elements == null) return PreparedIterable.empty();
-        return new PreparedIterable<T>(elements);
+        else return new PreparedIterable<T>(elements);
     }
 
 

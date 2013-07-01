@@ -5,7 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-public class NullIsFalsePredicateTest extends NullIsFalsePredicate<String> {
+public class FalseIfNullOrElseTest extends FalseIfNullOrElse<String> {
 
     @Test
     public void doesNotCallNullsafeMethodIfValueIsNull() {

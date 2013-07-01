@@ -7,11 +7,11 @@ import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
-public class NopOnNullFnTest {
+public class PassThruIfNullOrElseTest {
 
     @Test
     public void doesNotInvokeImplementorOnNull() {
-        Fn<String, String> fn = new NopOnNullFn<String, String>() {
+        Fn<String, String> fn = new PassThruIfNullOrElse<String, String>() {
             @Override
             protected String $nullsafe(String value) {
                 fail("should not invoke this method");
@@ -23,7 +23,7 @@ public class NopOnNullFnTest {
 
     @Test
     public void passesFunctionArgToImplemtor() {
-        Fn<String, Integer> fn = new NopOnNullFn<String, Integer>() {
+        Fn<String, Integer> fn = new PassThruIfNullOrElse<String, Integer>() {
             @Override
             protected Integer $nullsafe(String value) {
                 return value.length();

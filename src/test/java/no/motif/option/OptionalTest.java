@@ -1,11 +1,16 @@
 package no.motif.option;
 
 import static no.motif.Base.not;
+import static no.motif.Iterate.on;
 import static no.motif.Strings.blank;
 import static no.motif.Strings.lowerCased;
+import static no.motif.Strings.toChars;
 import static no.motif.Strings.upperCased;
 import static no.motif.Strings.trimmed;
+import static no.motif.Singular.none;
 import static no.motif.Singular.optional;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.emptyIterable;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.sameInstance;
 import static org.junit.Assert.assertFalse;
@@ -15,6 +20,7 @@ import static org.junit.Assert.fail;
 
 import java.util.NoSuchElementException;
 
+import no.motif.Singular;
 import no.motif.f.Fn;
 import no.motif.f.Predicate;
 import no.motif.option.Optional.None;
@@ -48,14 +54,12 @@ public class OptionalTest {
     @Test
     @SuppressWarnings("unused")
     public void doesNotIterateOverNone() {
-        for (Object value : optional(null)) {
-            fail("should not iterate over None");
-        }
+        for (Object value : none()) fail("should not iterate over None");
     }
 
     @Test(expected = NoSuchElementException.class)
     public void throwsExceptionIfGettingAValueFromNone() {
-        optional(null).get();
+        none().get();
     }
 
     @Test
@@ -144,6 +148,20 @@ public class OptionalTest {
 
         assertThat(none, sameInstance(mappedNone1));
         assertThat(none, sameInstance(mappedNone2));
+    }
+
+    @Test
+    public void splitToIterable() {
+        assertThat(optional("123").split(toChars), contains('1', '2', '3'));
+        assertThat(Singular.<String>none().split(toChars), emptyIterable());
+    }
+
+    @Test
+    public void splittingUsingFunctionYieldingPreparedIterableReturnsThatSameInstance() {
+        final Iterable<Character> chars = on("xyz");
+        Iterable<Character> splittedString = optional("").split(new Fn<Object, Iterable<Character>>() {
+            @Override public Iterable<Character> $(Object o) { return chars; }});
+        assertThat(splittedString, sameInstance(chars));
     }
 
 

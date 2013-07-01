@@ -4,10 +4,13 @@ import static no.motif.Base.notNull;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import no.motif.Base;
+import no.motif.Iterate;
 import no.motif.Singular;
 import no.motif.f.Fn;
 import no.motif.f.Predicate;
 import no.motif.iter.EmptyIterator;
+import no.motif.iter.PreparedIterable;
 import no.motif.iter.SingularIterator;
 import no.motif.types.Mappable;
 
@@ -80,6 +83,11 @@ public abstract class Optional<V> implements Iterable<V>, Mappable<V> {
             O mapped = mapper.$(this.value);
             return resolve(isPresent, mapped);
         }
+
+        @Override
+        public <O> PreparedIterable<O> split(Fn<? super V, ? extends Iterable<O>> splitter) {
+            return Iterate.on(splitter.$(value));
+        }
     }
 
     /**
@@ -122,6 +130,11 @@ public abstract class Optional<V> implements Iterable<V>, Mappable<V> {
         @Override
         public <O> Optional<O> map(Predicate<? super O> isPresent, Fn<? super V, O> mapper) {
             return None.getInstance();
+        }
+
+        @Override
+        public <O> PreparedIterable<O> split(Fn<? super V, ? extends Iterable<O>> splitter) {
+            return PreparedIterable.empty();
         }
 
     }
@@ -186,5 +199,24 @@ public abstract class Optional<V> implements Iterable<V>, Mappable<V> {
      * @return The wrapped value, or the fallback value if it is undefined.
      */
     public abstract V getOrElse(V fallback);
+
+
+    /**
+     * Split an optional value, if defined, into multiple values.
+     * <p>
+     * Due to limitations of the type system in Java, it is not possible to overload this
+     * method to accept both functions yielding an {@link Iterable} (as this method does)
+     * as well as functions yielding an array. It is recommended to prefer implementing
+     * {@link Fn functions} yielding Iterables. If implementing an array-yielding
+     * function is most appropriate for your case, and you wish to use the function to split
+     * an optional value using this method, it is possible to adapt the function using
+     * {@link Base#toIterable(Fn)}
+     * </p>
+     *
+     * @param splitter a function yielding an iterable.
+     * @return the elements, or empty iterable if undefined value.
+     */
+    public abstract <O> PreparedIterable<O> split(Fn<? super V, ? extends Iterable<O>> splitter);
+
 
 }

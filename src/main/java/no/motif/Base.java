@@ -1,5 +1,7 @@
 package no.motif;
 
+import static no.motif.Iterate.on;
+
 import java.util.Objects;
 
 import no.motif.f.Conjunction;
@@ -132,6 +134,16 @@ public final class Base {
 
     public static final Fn<Object, String> toString = new Fn<Object, String>() {
         @Override public String $(Object value) { return String.valueOf(value); }};
+
+
+    /**
+     * A bridge from functions yielding arrays, to functions yielding iterables.
+     *
+     * @param yieldsArray the array-yielding function.
+     * @return an adapted function yielding an iterable of the array yielded from the original function.
+     */
+    public static final <I, O> Fn<I, Iterable<O>> toIterable(final Fn<I, O[]> yieldsArray) {
+        return new Fn<I, Iterable<O>>() { @Override public Iterable<O> $(I value) { return on(yieldsArray.$(value)); }}; }
 
 
     private Base() {}
