@@ -5,6 +5,7 @@ import static no.motif.Strings.contains;
 import static no.motif.Strings.endsWith;
 import static no.motif.Strings.length;
 import static no.motif.Strings.lowerCased;
+import static no.motif.Strings.matches;
 import static no.motif.Strings.numeric;
 import static no.motif.Strings.startsWith;
 import static no.motif.Strings.toDouble;
@@ -100,6 +101,13 @@ public class StringsTest {
         assertThat(endsWith("").$(null), is(false));
         assertThat(endsWith("x").$(null), is(false));
         assertThat(endsWith("bc").$("abc"), is(true));
+    }
+
+    @Test
+    public void regexMatches() {
+        assertThat(matches(null).$(null), is(false));
+        assertThat(matches("x").$("x"), is(true));
+        assertThat(matches(".+x.+").$("asdfxasdf"), is(true));
     }
 
 

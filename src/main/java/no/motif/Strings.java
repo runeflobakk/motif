@@ -25,8 +25,8 @@ public final class Strings {
 
 
     public static final Predicate<String> numeric = new NullIsFalsePredicate<String>() {
-        @Override public boolean $nullsafe(String s) {
-            return !s.isEmpty() && !on(s).filter(not(digit)).iterator().hasNext(); }};
+        @Override protected boolean $nullsafe(String s) {
+        return !s.isEmpty() && !on(s).filter(not(digit)).iterator().hasNext(); }};
 
 
     public static final Fn<String, String> trimmed = new NopOnNullFn<String, String>() {
@@ -63,21 +63,37 @@ public final class Strings {
         @Override public String $(String acc, Object c) { return acc + c; }};
 
 
+    /**
+     * @see String#contentEquals(CharSequence)
+     */
     public static Predicate<String> contains(final CharSequence charSequence) {
         return charSequence == null ? Always.<String>no() : new NullIsFalsePredicate<String>() {
-        @Override public boolean $nullsafe(String string) { return string.contains(charSequence); }}; }
+        @Override protected boolean $nullsafe(String string) { return string.contains(charSequence); }}; }
 
 
+    /**
+     * @see String#startsWith(String)
+     */
     public static Predicate<String> startsWith(final String prefix) {
         return prefix == null ? Always.<String>no() : new NullIsFalsePredicate<String>() {
-        @Override public boolean $nullsafe(String string) { return string.startsWith(prefix); }}; }
+        @Override protected boolean $nullsafe(String string) { return string.startsWith(prefix); }}; }
 
 
+    /**
+     * @see String#endsWith(String)
+     */
     public static Predicate<String> endsWith(final String suffix) {
         return suffix == null ? Always.<String>no() : new NullIsFalsePredicate<String>() {
-        @Override public boolean $nullsafe(String string) { return string.endsWith(suffix); }}; }
+        @Override protected boolean $nullsafe(String string) { return string.endsWith(suffix); }}; }
 
 
+
+    /**
+     * @see String#matches(String)
+     */
+    public static Predicate<String> matches(final String regex) {
+        return regex == null ? Always.<String>no() : new NullIsFalsePredicate<String>() {
+        @Override protected boolean $nullsafe(String string) { return string.matches(regex); }};}
 
     private Strings() {}
 
