@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 import no.motif.f.Fn2;
+import no.motif.f.Predicate;
 
 /**
  * This iterable offers operations which requires collecting (i.e.
@@ -62,6 +63,18 @@ public abstract class CollectingIterable<T> implements Iterable<T> {
             collection.add(t);
         }
         return collection;
+    }
+
+
+    public boolean isEmpty() {
+        return !iterator().hasNext();
+    }
+
+
+    public boolean exists(Predicate<? super T> predicate) {
+        for (T t : this) if (predicate.$(t)) return true;
+        return false;
+
     }
 
 

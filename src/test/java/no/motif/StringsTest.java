@@ -1,5 +1,7 @@
 package no.motif;
 
+import static no.motif.Strings.alphabetic;
+import static no.motif.Strings.alphanumeric;
 import static no.motif.Strings.blank;
 import static no.motif.Strings.contains;
 import static no.motif.Strings.endsWith;
@@ -13,7 +15,9 @@ import static no.motif.Strings.toInt;
 import static no.motif.Strings.upperCased;
 import static no.motif.Strings.trimmed;
 import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
@@ -108,6 +112,27 @@ public class StringsTest {
         assertThat(matches(null).$(null), is(false));
         assertThat(matches("x").$("x"), is(true));
         assertThat(matches(".+x.+").$("asdfxasdf"), is(true));
+    }
+
+
+    @Test
+    public void alphanumeric() {
+        assertTrue(alphanumeric.$("123456789"));
+        assertTrue(alphanumeric.$("abcæøå"));
+        assertTrue(alphanumeric.$("1a"));
+        assertFalse(alphanumeric.$(""));
+        assertFalse(alphanumeric.$("  "));
+        assertFalse(alphanumeric.$("a1 "));
+        assertFalse(alphanumeric.$("#$"));
+    }
+
+    @Test
+    public void alphabetic() {
+        assertTrue(alphabetic.$("abcæøå"));
+        assertFalse(alphabetic.$(""));
+        assertFalse(alphabetic.$("  "));
+        assertFalse(alphabetic.$("  a"));
+        assertFalse(alphabetic.$("#$"));
     }
 
 

@@ -1,7 +1,6 @@
 package no.motif;
 
 import static no.motif.Iterate.on;
-
 import java.util.Objects;
 
 import no.motif.f.Conjunction;
@@ -67,6 +66,8 @@ public final class Base {
         return new Conjunction<T>(predicate);
     }
 
+
+
     /**
      * Compose an AND-expression of several predicates.
      *
@@ -79,6 +80,7 @@ public final class Base {
     public static <T> Conjunction<T> allOf(Predicate<? super T> ... predicates) {
         return new Conjunction<>(predicates);
     }
+
 
 
     /**
@@ -95,6 +97,8 @@ public final class Base {
         return new Disjunction<T>(predicate);
     }
 
+
+
     /**
      * Compose an OR-expression of several predicates.
      *
@@ -107,6 +111,31 @@ public final class Base {
     public static <T> Disjunction<T> anyOf(Predicate<? super T> ... predicates) {
         return new Disjunction<>(predicates);
     }
+
+
+    /**
+     * Evaluate if all elements satisfies a predicate, i.e. the <em>Universal quantifier function</em>.
+     * Note that the predicate
+     *
+     * @param predicate The predicate which will evaluate all elements.
+     * @return a predicate which evaluates to <code>true</code> if all elements evaluates
+     *         to true by the given predicate, false if any evaluates to <code>false</code>.
+     */
+    public static <E, I extends Iterable<E>> Predicate<I> all(final Predicate<? super E> predicate) {
+        return new Predicate<I>() { @Override public boolean $(I iterable) {
+            return on(iterable).filter(not(predicate)).isEmpty(); }};}
+
+
+    /**
+     * Evaluate if an element exists, i.e. the <em>Existential quantifier function</em>.
+     *
+     * @param element The existance-deciding predicate.
+     * @return a predicate which evaluates to <code>true</code> if any element evaluates
+     *         to true by the given predicate, <code>false</code> otherwise.
+     */
+    public static <E, I extends Iterable<E>> Predicate<I> exists(final Predicate<? super E> element) {
+        return new Predicate<I>() { @Override public boolean $(I iterable) {
+            return on(iterable).exists(element); }};}
 
 
     /**
