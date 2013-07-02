@@ -66,15 +66,24 @@ public abstract class CollectingIterable<T> implements Iterable<T> {
     }
 
 
+    /**
+     * @return <code>true</code> if empty, <code>false</code> otherwise.
+     */
     public boolean isEmpty() {
         return !iterator().hasNext();
     }
 
 
+    /**
+     * Decide if an element exist.
+     *
+     * @param predicate evaluates each element.
+     * @return <code>true</code> once the predicate evaluates to true,
+     *         otherwise <code>false</code>.
+     */
     public boolean exists(Predicate<? super T> predicate) {
         for (T t : this) if (predicate.$(t)) return true;
         return false;
-
     }
 
 
