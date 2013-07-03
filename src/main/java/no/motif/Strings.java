@@ -2,13 +2,13 @@ package no.motif;
 
 import static no.motif.Base.all;
 import static no.motif.Base.both;
+import static no.motif.Base.exists;
 import static no.motif.Base.not;
 import static no.motif.Base.where;
 import static no.motif.Chars.digit;
 import static no.motif.Chars.letter;
 import static no.motif.Chars.letterOrDigit;
 import static no.motif.Chars.whitespace;
-import static no.motif.Iterate.empty;
 import no.motif.f.Fn;
 import no.motif.f.Fn2;
 import no.motif.f.PassThruIfNullOrElse;
@@ -18,68 +18,163 @@ import no.motif.f.Predicate.Always;
 
 /**
  * Functions operating on {@link String strings}.
- *
- * @see Predicate
- * @see Fn
  */
 public final class Strings {
 
+    /**
+     * Converts a string to a <code>int</code> value using {@link Integer#valueOf(String)}.
+     * If the string is <code>null</code>, 0 is yielded.
+     */
     public static final Fn<String, Integer> toInt = new Fn<String, Integer>() {
         @Override public Integer $(String numeric) { return numeric != null ? Integer.valueOf(numeric) : 0; }};
 
 
+    /**
+     * Converts a string to a <code>double</code> value using {@link Double#valueOf(String)}.
+     * If the string is <code>null</code>, 0 is yielded.
+     */
     public static final Fn<String, Double> toDouble = new Fn<String, Double>() {
         @Override public Double $(String decimalValue) { return decimalValue != null ? Double.valueOf(decimalValue) : 0; }};
 
 
+    /**
+     * Splits a string into characters.
+     */
     public static final Fn<String, Iterable<Character>> toChars = new Fn<String, Iterable<Character>>() {
         @Override public Iterable<Character> $(String value) { return Iterate.on(value); }};
 
 
+    /**
+     * A blank string is either <code>null</code>, empty, or
+     * all characters {@link Chars#whitespace are whitespace}.
+     */
     public static final Predicate<String> blank = where(toChars, all(whitespace));
 
-    public static final Predicate<String> numeric = where(toChars, both(all(digit)).and(not(empty)));
 
-    public static final Predicate<String> alphanumeric = where(toChars, both(all(letterOrDigit)).and(not(empty)));
+    /**
+     * A nonblank string has at least one character, and must contain at least
+     * one character which is {@link Chars#whitespace not whitespace}.
+     */
+    public static final Predicate<String> nonblank = where(toChars, exists(not(whitespace)));
 
-    public static final Predicate<String> alphabetic = where(toChars, both(all(letter)).and(not(empty)));
+
+    /**
+     * A numeric string must have at least one character, and all of them
+     * must be {@link Chars#digit digits}.
+     */
+    public static final Predicate<String> numeric = nonblankAllChars(digit);
 
 
+    /**
+     * Alphanumeric strings are at least one character, and all
+     * {@link Chars#digit digits} and/or {@link Chars#letter letters}.
+     */
+    public static final Predicate<String> alphanumeric = nonblankAllChars(letterOrDigit);
+
+
+    /**
+     * Alphabetic strings are at least one character, and all {@link Chars#letter letters}.
+     */
+    public static final Predicate<String> alphabetic = nonblankAllChars(letter);
+
+
+    /**
+     * Predicate verifying that all characters in a string satifies a given predicate.
+     *
+     * @param valid The predicate evaluating all characters in a string.
+     * @return The predicate
+     */
+    public static final Predicate<String> allChars(Predicate<Character> valid) {
+        return where(toChars, all(valid)); }
+
+    /**
+     * Predicate verifying that strings are {@link #nonblank not blank} and
+     * each char satisfies a given predicate.
+     *
+     * @param valid
+     * @return
+     */
+    public static final Predicate<String> nonblankAllChars(Predicate<Character> valid) {
+        return both(nonblank).and(allChars(valid)); }
+
+
+    /**
+     * Trims a string, removing all leading and trailing whitespace.
+     */
     public static final Fn<String, String> trimmed = new PassThruIfNullOrElse<String, String>() {
         @Override protected String $nullsafe(String s) { return s.trim(); }};
 
 
+    /**
+     * Convert a string to {@link String#toLowerCase() lower case}.
+     */
     public static final Fn<String, String> lowerCased = new PassThruIfNullOrElse<String, String>() {
         @Override protected String $nullsafe(String s) { return s.toLowerCase(); }};
 
 
+    /**
+     * Convert a string to {@link String#toUpperCase() upper case}
+     */
     public static final Fn<String, String> upperCased = new PassThruIfNullOrElse<String, String>() {
         @Override protected String $nullsafe(String s) { return s.toUpperCase(); }};
 
 
+    /**
+     * Gives the length of a string, i.e. the amount of characters. <code>null</code>
+     * yields length 0.
+     */
     public static final Fn<String, Integer> length  = new Fn<String, Integer>() {
         @Override public Integer $(String s) { return s != null ? s.length() : 0; }};
 
 
+    /**
+     * Concatenate a string with the {@link Object#toString() string representation}
+     * of an arbitrary object, i.e. <em>reduces</em> two strings to one.
+     */
     public static final Fn2<String, Object, String> concat = new Fn2<String, Object, String>() {
         @Override public String $(String acc, Object c) { return acc + c; }};
 
 
+    /**
+     * Determines if a substring is present in a string. A string never contains <code>null</code>,
+     * nor does <code>null</code> contain any substring.
+     *
+     * @param charSequence The substring to find.
+     * @return The predicate.
+     */
     public static Predicate<String> contains(final CharSequence charSequence) {
         return charSequence == null ? Always.<String>no() : new FalseIfNullOrElse<String>() {
         @Override protected boolean $nullsafe(String string) { return string.contains(charSequence); }}; }
 
 
+    /**
+     * Determines if a string starts with a given prefix string.
+     *
+     * @param prefix The prefix.
+     * @return The predicate.
+     */
     public static Predicate<String> startsWith(final String prefix) {
         return prefix == null ? Always.<String>no() : new FalseIfNullOrElse<String>() {
         @Override protected boolean $nullsafe(String string) { return string.startsWith(prefix); }}; }
 
 
+    /**
+     * Determines if a string ends with a given suffix string.
+     *
+     * @param suffix The suffix.
+     * @return The predicate.
+     */
     public static Predicate<String> endsWith(final String suffix) {
         return suffix == null ? Always.<String>no() : new FalseIfNullOrElse<String>() {
         @Override protected boolean $nullsafe(String string) { return string.endsWith(suffix); }}; }
 
 
+    /**
+     * Does a {@link String#matches(String) regular expression match} on strings.
+     *
+     * @param regex The regular expression to use for matching.
+     * @return the predicate.
+     */
     public static Predicate<String> matches(final String regex) {
         return regex == null ? Always.<String>no() : new FalseIfNullOrElse<String>() {
         @Override protected boolean $nullsafe(String string) { return string.matches(regex); }};}

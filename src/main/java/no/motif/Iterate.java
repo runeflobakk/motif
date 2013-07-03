@@ -51,7 +51,7 @@ public final class Iterate {
      * Evaluates if an {@link Iterable} is empty.
      */
     public static final Predicate<Iterable<?>> empty = new Predicate<Iterable<?>>() {
-        @Override public boolean $(Iterable<?> iterable) { return !iterable.iterator().hasNext(); }};
+        @Override public boolean $(Iterable<?> iterable) { return on(iterable).isEmpty(); }};
 
 
     /**
