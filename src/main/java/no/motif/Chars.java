@@ -4,8 +4,8 @@ import static java.lang.Character.isDigit;
 import static java.lang.Character.isLetter;
 import static java.lang.Character.isLetterOrDigit;
 import static java.lang.Character.isWhitespace;
-import no.motif.f.FalseIfNullOrElse;
 import no.motif.f.Predicate;
+import no.motif.f.base.FalseIfNullOrElse;
 
 /**
  * Functions operating on single {@link Character characters}.

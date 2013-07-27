@@ -11,10 +11,10 @@ import static no.motif.Chars.letterOrDigit;
 import static no.motif.Chars.whitespace;
 import no.motif.f.Fn;
 import no.motif.f.Fn2;
-import no.motif.f.PassThruIfNullOrElse;
-import no.motif.f.FalseIfNullOrElse;
 import no.motif.f.Predicate;
 import no.motif.f.Predicate.Always;
+import no.motif.f.base.FalseIfNullOrElse;
+import no.motif.f.base.PassThruIfNullOrElse;
 
 /**
  * Functions operating on {@link String strings}.

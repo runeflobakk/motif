@@ -1,11 +1,12 @@
 package no.motif.iter;
 
+import static no.motif.Iterate.on;
 import static no.motif.Ints.multiply;
 import static no.motif.Ints.sum;
-import static no.motif.Iterate.on;
 import static no.motif.Strings.concat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
+
 import org.junit.Test;
 
 public class ReduceTest {

@@ -1,12 +1,18 @@
 package no.motif;
 
 import static no.motif.Iterate.on;
+
 import java.util.Objects;
 
-import no.motif.f.Conjunction;
-import no.motif.f.Disjunction;
 import no.motif.f.Fn;
+import no.motif.f.Fn0;
+import no.motif.f.Fn2;
 import no.motif.f.Predicate;
+import no.motif.f.combine.Conjunction;
+import no.motif.f.combine.Disjunction;
+import no.motif.f.combine.Fn2Chain;
+import no.motif.f.combine.FnChain;
+import no.motif.f.combine.RunnableChain;
 
 /**
  * Basic functions.
@@ -163,6 +169,53 @@ public final class Base {
 
     public static final Fn<Object, String> toString = new Fn<Object, String>() {
         @Override public String $(Object value) { return String.valueOf(value); }};
+
+
+    public static <V> Fn0<V> constant(final V value) { return new Fn0<V>() {
+        @Override public V $() { return value; }}; }
+
+
+    /**
+     * Compose a chain of several functions into one {@link Fn}, where the result of
+     * each function is passed to its successor, and the last will yield the
+     * actual result of the chain. Use {@link FnChain#then(Fn) .then(Fn)} to append
+     * functions to the chain.
+     *
+     * <p><strong>Note:</strong> The chain does no inspection of the intermediate
+     * results passed to the next function, which means that any function which may
+     * return <code>null</code>, <em>must</em> have a <code>null</code>-safe successor
+     * function.
+     *
+     * @param fn The first function in the chain.
+     * @return
+     */
+    public static final <I, O> FnChain<I, O, O> first(Fn<I, O> fn) {
+        return new FnChain<>(fn, NOP.<O>fn());
+    }
+
+
+    /**
+     * Compose a chain of several functions into one {@link Fn2}, where the result of
+     * each function is passed to its successor, and the last will yield the
+     * actual result of the chain. Use {@link Fn2Chain#then(Fn) .then(Fn)} to append
+     * functions to the chain.
+     *
+     * <p><strong>Note:</strong> The chain does no inspection of the intermediate
+     * results passed to the next function, which means that any function which may
+     * return <code>null</code>, <em>must</em> have a <code>null</code>-safe successor
+     * function.
+     *
+     * @param fn2 The first function in the chain.
+     * @return
+     */
+    public static final <I1, I2, O> Fn2Chain<I1, I2, O, O> first(Fn2<I1, I2, O> fn2) {
+        return new Fn2Chain<>(fn2, NOP.<O>fn());
+    }
+
+
+    public static final RunnableChain first(Runnable runnable) {
+        return new RunnableChain(runnable, NOP.runnable);
+    }
 
 
     /**

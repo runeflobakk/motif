@@ -1,4 +1,6 @@
-package no.motif.f;
+package no.motif.f.base;
+
+import no.motif.f.Predicate;
 
 /**
  * A base implementation for predicates where the case of <code>null</code>

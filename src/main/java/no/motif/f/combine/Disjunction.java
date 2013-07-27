@@ -1,7 +1,8 @@
-package no.motif.f;
+package no.motif.f.combine;
 
 import static java.util.Arrays.asList;
 import no.motif.Iterate;
+import no.motif.f.Predicate;
 import no.motif.iter.PreparedIterable;
 
 /**

@@ -1,6 +1,8 @@
 package no.motif.f;
 
 
+
+
 /**
  * Function taking two values of type <code>I1</code>
  * and <code>I2</code>, and
@@ -17,8 +19,8 @@ package no.motif.f;
  *
  * @param <I1> The first input parameter type.
  * @param <I2> The second input parameter type.
- * @param <O> The type of object the function returns.
+ * @param <O>  The type of object the function returns.
  */
-public interface Fn2<I1, I2, O> {
+public interface Fn2<I1, I2, O> extends PartialApplicableTo<Fn<I2, O>> {
     O $(I1 first, I2 second);
 }

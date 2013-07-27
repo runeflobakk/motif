@@ -1,4 +1,6 @@
-package no.motif.f;
+package no.motif.f.base;
+
+import no.motif.f.Fn;
 
 /**
  * A convenient base implementation of {@link Fn} which implements

@@ -1,5 +1,6 @@
 package no.motif.f;
 
+
 /**
  * Function taking a value of type <code>I</code> and
  * returning a value of type <code>O</code>.
@@ -8,16 +9,22 @@ package no.motif.f;
  * &fnof;(I) &isin; O
  * </pre>
  *
- * This function type is often referred to as a "mapper"
+ * <p>This function type is often referred to as a "mapper"
  * or "transformer", as it takes one value and based on it,
  * yields another value. The function defines the mapping
- * between values.
+ * between values.</p>
+ *
+ * <p>This function type is the most commonly used one, and is
+ * promoted to be named without an index, whereas the other
+ * function types are named as <code>FnX</code>, where
+ * <code>X</code> denotes how many arguments it takes. I.e.
+ * {@link Fn0}, {@link Fn2}, etc.
  *
  *
  * @param <I> the type of the function argument
  * @param <O> The type of object the function returns.
  */
-public interface Fn<I, O> {
+public interface Fn<I, O> extends PartialApplicableTo<Fn0<O>> {
 
     /**
      * Applies the function.
@@ -26,4 +33,5 @@ public interface Fn<I, O> {
      * @return the result from the function application.
      */
     O $(I value);
+
 }
