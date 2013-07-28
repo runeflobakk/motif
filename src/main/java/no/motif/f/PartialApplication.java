@@ -10,7 +10,7 @@ import static no.motif.Base.constant;
  * argument to the more generic function.
  * <p>
  * When doing a partial application of a function with <em>n</em>
- * arguments, a function with <em>n-1</em> is yielded, where <em>n &gt; 0</em>.
+ * arguments, a function taking <em>n-1</em> arguments is yielded, where <em>n &gt; 0</em>.
  * Applying the yielded function will complete the partial application.
  * </p>
  *

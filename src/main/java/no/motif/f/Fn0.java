@@ -9,5 +9,11 @@ package no.motif.f;
  * @param <V> Type of value yielded from the function.
  */
 public interface Fn0<V> {
+
+    /**
+     * Applies the function.
+     *
+     * @return the result from the function application.
+     */
     V $();
 }

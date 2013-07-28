@@ -22,5 +22,13 @@ package no.motif.f;
  * @param <O>  The type of object the function returns.
  */
 public interface Fn2<I1, I2, O> extends PartialApplicableTo<Fn<I2, O>> {
+
+    /**
+     * Applies the function.
+     *
+     * @param first The first argument to the function application.
+     * @param second The second argument to the function application.
+     * @return the result from the function application.
+     */
     O $(I1 first, I2 second);
 }

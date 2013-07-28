@@ -82,7 +82,6 @@ public final class Strings {
      * Predicate verifying that all characters in a string satifies a given predicate.
      *
      * @param valid The predicate evaluating all characters in a string.
-     * @return The predicate
      */
     public static final Predicate<String> allChars(Predicate<Character> valid) {
         return where(toChars, all(valid)); }
@@ -92,7 +91,6 @@ public final class Strings {
      * each char satisfies a given predicate.
      *
      * @param valid
-     * @return
      */
     public static final Predicate<String> nonblankAllChars(Predicate<Character> valid) {
         return both(nonblank).and(allChars(valid)); }

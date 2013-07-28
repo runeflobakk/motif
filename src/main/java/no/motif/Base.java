@@ -13,6 +13,7 @@ import no.motif.f.combine.Disjunction;
 import no.motif.f.combine.Fn2Chain;
 import no.motif.f.combine.FnChain;
 import no.motif.f.combine.RunnableChain;
+import no.motif.f.combine.Where;
 
 /**
  * Basic functions.
@@ -54,7 +55,7 @@ public final class Base {
      * @return          A predicate of <code>T</code>
      */
     public static <T, P> Predicate<T> where(final Fn<T, P> fn, final Predicate<? super P> predicate) {
-        return new Predicate<T>() { @Override public boolean $(T value) { return predicate.$(fn.$(value)); }}; }
+        return new Where<T, P>(fn, predicate); }
 
 
 
@@ -181,13 +182,13 @@ public final class Base {
      * actual result of the chain. Use {@link FnChain#then(Fn) .then(Fn)} to append
      * functions to the chain.
      *
-     * <p><strong>Note:</strong> The chain does no inspection of the intermediate
+     * <p><strong>Note:</strong> The chain does no internal inspection of the intermediate
      * results passed to the next function, which means that any function which may
      * return <code>null</code>, <em>must</em> have a <code>null</code>-safe successor
      * function.
      *
      * @param fn The first function in the chain.
-     * @return
+     * @return the given function as the first function in a chain.
      */
     public static final <I, O> FnChain<I, O, O> first(Fn<I, O> fn) {
         return new FnChain<>(fn, NOP.<O>fn());
@@ -206,13 +207,20 @@ public final class Base {
      * function.
      *
      * @param fn2 The first function in the chain.
-     * @return
+     * @return the given function as the first function in a chain.
      */
     public static final <I1, I2, O> Fn2Chain<I1, I2, O, O> first(Fn2<I1, I2, O> fn2) {
         return new Fn2Chain<>(fn2, NOP.<O>fn());
     }
 
 
+    /**
+     * Compose several {@link Runnable}s as a single Runnable which will
+     * execute the given Runnables in sequence.
+     *
+     * @param runnable The first Runnable.
+     * @return the given Runnable as the first Runnable in a sequence.
+     */
     public static final RunnableChain first(Runnable runnable) {
         return new RunnableChain(runnable, NOP.runnable);
     }
