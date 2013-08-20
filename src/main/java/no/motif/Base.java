@@ -161,6 +161,52 @@ public final class Base {
         return new Predicate<T>() { @Override public boolean $(T input) { return Objects.equals(input, value); }}; }
 
 
+    /**
+     * Predicate evaluating if values are less than a given value.
+     *
+     * @param value the right operand, i.e. the predicate will evaluate
+     *              if values are less than this value.
+     * @return the "<em>&lt; value</em>" predicate
+     */
+    public static <T extends Comparable<? super T>> Predicate<T> lessThan(final T value) {
+        return new Predicate<T>() { @Override public boolean $(T candidate) { return candidate.compareTo(value) < 0; }}; }
+
+
+    /**
+     * Predicate evaluating if values are equal to or less than a given value.
+     *
+     * @param value the right operand, i.e. the predicate will evaluate
+     *              if values are equal to or less than this value.
+     * @return the "<em>=&lt; value</em>" predicate
+     */
+    public static <T extends Comparable<? super T>> Predicate<T> equalOrLessThan(T value) {
+        return either(equalTo(value)).or(lessThan(value)); }
+
+
+
+    /**
+     * Predicate evaluating if values are greater than a given value.
+     *
+     * @param value the right operand, i.e. the predicate will evaluate
+     *              if values are greater than this value.
+     * @return the "<em>&gt; value</em>" predicate
+     */
+    public static <T extends Comparable<? super T>> Predicate<T> greaterThan(final T value) {
+        return new Predicate<T>() { @Override public boolean $(T candidate) { return candidate.compareTo(value) > 0; }}; }
+
+
+    /**
+     * Predicate evaluating if values are equal to or greater than a given value.
+     *
+     * @param value the right operand, i.e. the predicate will evaluate
+     *              if values are equal to or greater than this value.
+     * @return the "<em>&gt;= value</em>" predicate
+     */
+    public static <T extends Comparable<? super T>> Predicate<T> equalOrGreaterThan(T value) {
+        return either(equalTo(value)).or(greaterThan(value)); }
+
+
+
     public static final Predicate<Object> isNull = new Predicate<Object>() {
         @Override public boolean $(Object value) { return value == null; }};
 

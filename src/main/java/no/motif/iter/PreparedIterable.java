@@ -1,6 +1,7 @@
 package no.motif.iter;
 
 import static java.util.Collections.emptyList;
+import static no.motif.Base.not;
 import static no.motif.Singular.optional;
 
 import java.util.Iterator;
@@ -31,12 +32,12 @@ public class PreparedIterable<T> extends CollectingIterable<T> implements Iterab
     }
 
     public PreparedIterable<T> filter(Predicate<? super T> filter) {
-        return new PreparedIterable<>(new FilteredIterable<T>(elements, filter));
+        return new PreparedIterable<>(new FilteredIterable<>(elements, filter));
     }
 
     @Override
     public <O> PreparedIterable<O> map(Fn<? super T, O> function) {
-        return new PreparedIterable<>(new MappingIterable<T, O>(elements, function));
+        return new PreparedIterable<>(new MappingIterable<>(elements, function));
     }
 
     public PreparedIterable<T> append(T value) {
@@ -44,12 +45,24 @@ public class PreparedIterable<T> extends CollectingIterable<T> implements Iterab
     }
 
     public PreparedIterable<T> append(Iterable<? extends T> trailingElements) {
-        return new PreparedIterable<T>(new ConcatenatedIterable<T>(elements, trailingElements));
+        return new PreparedIterable<>(new ConcatenatedIterable<>(elements, trailingElements));
     }
 
+    public PreparedIterable<T> take(int amount) {
+        return new PreparedIterable<>(new BoundedIterable<>(amount, elements));
+    }
+
+    public PreparedIterable<T> takeWhile(Predicate<? super T> predicate) {
+        return new PreparedIterable<>(new TakeWhile<>(predicate, elements));
+    }
+
+    public PreparedIterable<T> takeUntil(Predicate<? super T> predicate) {
+        return new PreparedIterable<>(new TakeWhile<>(not(predicate), elements));
+    }
 
     @Override
     public Iterator<T> iterator() {
         return elements.iterator();
     }
+
 }
