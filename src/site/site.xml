@@ -19,6 +19,7 @@
             <item name="View on GitHub" href="http://github.com/runeflobakk/motif" />
         </menu>
         <menu name="Documentation">
+        	<item name="Getting Started" href="getting-started.html" />
         	<item name="The Optional type" href="optional.html" />
         </menu>
         <menu ref="reports" />
