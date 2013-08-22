@@ -215,7 +215,7 @@ The classes and interfaces already mentioned in this tutorial:
 - [`Iterate`][Iterate]: The entry point for working with collections with Motif. Home of
   several overloaded static `on(..)` methods, which accepts common Java objects, and enables
   manipulating it through Motif's API.
-- [`Strings`][Iterate]: useful implementations of `Predicate`, `Fn`, and other functional
+- [`Strings`][Strings]: useful implementations of `Predicate`, `Fn`, and other functional
   interfaces for working with strings
   
 
