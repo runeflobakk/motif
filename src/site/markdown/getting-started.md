@@ -104,7 +104,7 @@ This looks awfully similar to the previous example picking out strings containin
 Motif which lets us express this on one line of code:
 
 ```Java
-Iterable<Person> result = on(persons).filter([Predicate<Person>]);
+Iterable<Person> result = on(persons).filter(???);
 ```
 
 Hmm, on a `List<Person>`, of course the `filter` method takes a `Predicate<Person>`. It's easy to write your
