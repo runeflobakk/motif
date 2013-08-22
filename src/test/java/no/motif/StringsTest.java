@@ -5,6 +5,7 @@ import static no.motif.Strings.alphanumeric;
 import static no.motif.Strings.blank;
 import static no.motif.Strings.contains;
 import static no.motif.Strings.endsWith;
+import static no.motif.Strings.hasLength;
 import static no.motif.Strings.length;
 import static no.motif.Strings.lowerCased;
 import static no.motif.Strings.matches;
@@ -12,8 +13,8 @@ import static no.motif.Strings.numeric;
 import static no.motif.Strings.startsWith;
 import static no.motif.Strings.toDouble;
 import static no.motif.Strings.toInt;
-import static no.motif.Strings.upperCased;
 import static no.motif.Strings.trimmed;
+import static no.motif.Strings.upperCased;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
@@ -133,6 +134,14 @@ public class StringsTest {
         assertFalse(alphabetic.$("  "));
         assertFalse(alphabetic.$("  a"));
         assertFalse(alphabetic.$("#$"));
+    }
+
+    @Test
+    public void lengthOfString() {
+        assertTrue(hasLength(4).$("abcd"));
+        assertFalse(hasLength(4).$("abc"));
+        assertTrue(hasLength(0).$(null));
+        assertFalse(hasLength(1).$(null));
     }
 
 

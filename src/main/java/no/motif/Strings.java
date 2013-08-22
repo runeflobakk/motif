@@ -2,6 +2,7 @@ package no.motif;
 
 import static no.motif.Base.all;
 import static no.motif.Base.both;
+import static no.motif.Base.equalTo;
 import static no.motif.Base.exists;
 import static no.motif.Base.not;
 import static no.motif.Base.where;
@@ -121,8 +122,25 @@ public final class Strings {
      * Gives the length of a string, i.e. the amount of characters. <code>null</code>
      * yields length 0.
      */
-    public static final Fn<String, Integer> length  = new Fn<String, Integer>() {
+    public static final Fn<String, Integer> length = new Fn<String, Integer>() {
         @Override public Integer $(String s) { return s != null ? s.length() : 0; }};
+
+
+    /**
+     * Evaluate if strings are of a exact length.
+     * <code>null<code>s are considered to have length zero.
+     */
+    public static final Predicate<String> hasLength(int exactLength) { return hasLength(equalTo(exactLength)); }
+
+
+    /**
+     * Evaluate if strings have accepted lengths.
+     * <code>null<code>s are considered to have length zero.
+     *
+     * @param accepted The predicate evaluating accepted length.
+     * @return The predicate evaluating string length.
+     */
+    public static final Predicate<String> hasLength(Predicate<? super Integer> accepted) { return where(length, accepted); }
 
 
     /**
