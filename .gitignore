@@ -2,3 +2,4 @@ target
 .project
 .classpath
 .settings
+src/site/markdown/.*.md.html
