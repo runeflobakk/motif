@@ -8,7 +8,7 @@ import java.util.Iterator;
 
 import no.motif.f.Fn;
 import no.motif.f.Predicate;
-import no.motif.types.Mappable;
+import no.motif.types.Elements;
 
 /**
  * This class wraps an arbitrary {@link Iterable} and provides access to
@@ -16,7 +16,7 @@ import no.motif.types.Mappable;
  *
  * @param <T> The type of the elements in the iterable.
  */
-public class PreparedIterable<T> extends CollectingIterable<T> implements Iterable<T>, Mappable<T> {
+public class PreparedIterable<T> extends CollectingIterable<T> implements Iterable<T>, Elements<T> {
 
     private static final PreparedIterable<?> EMPTY = new PreparedIterable<>(emptyList());
 
@@ -31,34 +31,60 @@ public class PreparedIterable<T> extends CollectingIterable<T> implements Iterab
         this.elements = elements;
     }
 
+
+    @Override
     public PreparedIterable<T> filter(Predicate<? super T> filter) {
         return new PreparedIterable<>(new FilteredIterable<>(elements, filter));
     }
+
 
     @Override
     public <O> PreparedIterable<O> map(Fn<? super T, O> function) {
         return new PreparedIterable<>(new MappingIterable<>(elements, function));
     }
 
+
+    @Override
     public PreparedIterable<T> append(T value) {
         return append(optional(value));
     }
 
+
+    @Override
     public PreparedIterable<T> append(Iterable<? extends T> trailingElements) {
         return new PreparedIterable<>(new ConcatenatedIterable<>(elements, trailingElements));
     }
 
+
+    @Override
+    public PreparedIterable<T> prepend(T value) {
+        return prepend(optional(value));
+    }
+
+
+    @Override
+    public PreparedIterable<T> prepend(Iterable<? extends T> leadingElements) {
+        return new PreparedIterable<>(new ConcatenatedIterable<>(leadingElements, elements));
+    }
+
+
+    @Override
     public PreparedIterable<T> take(int amount) {
         return new PreparedIterable<>(new BoundedIterable<>(amount, elements));
     }
 
+
+    @Override
     public PreparedIterable<T> takeWhile(Predicate<? super T> predicate) {
-        return new PreparedIterable<>(new TakeWhile<>(predicate, elements));
+        return new PreparedIterable<>(new PredicateBoundedIterable<>(predicate, elements));
     }
 
+
+    @Override
     public PreparedIterable<T> takeUntil(Predicate<? super T> predicate) {
-        return new PreparedIterable<>(new TakeWhile<>(not(predicate), elements));
+        return new PreparedIterable<>(new PredicateBoundedIterable<>(not(predicate), elements));
     }
+
 
     @Override
     public Iterator<T> iterator() {

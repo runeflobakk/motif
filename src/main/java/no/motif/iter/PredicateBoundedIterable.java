@@ -9,17 +9,18 @@ import no.motif.Iterate;
 import no.motif.f.Predicate;
 import no.motif.option.Optional;
 
-public class TakeWhile<T> implements Iterable<T> {
+public class PredicateBoundedIterable<T> implements Iterable<T> {
 
     private final Predicate<? super T> predicate;
     private final Iterable<T> elements;
 
-    public TakeWhile(Predicate<? super T> predicate, Iterable<T> elements) {
+    public PredicateBoundedIterable(Predicate<? super T> predicate, Iterable<T> elements) {
         this.predicate = predicate;
         this.elements = elements;
     }
 
-    @Override public Iterator<T> iterator() {
+    @Override
+    public Iterator<T> iterator() {
         return new SimpleIterator<T>() {
             final Iterator<T> iterator = elements.iterator();
             @Override protected Optional<T> nextIfAvailable() {
