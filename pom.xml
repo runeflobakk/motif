@@ -13,6 +13,11 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+    
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/runeflobakk/motif/issues</url>
+    </issueManagement>
 
     <dependencies>
         <dependency>
