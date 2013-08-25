@@ -45,6 +45,7 @@
                     <breadcrumbs>false</breadcrumbs>
                     <toc>true</toc>
                     <sections>
+                        <columns>1</columns>
                         <columns>2</columns>
                     </sections>
                 </index>
