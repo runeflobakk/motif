@@ -46,7 +46,7 @@ interfaces that imitate function types. The two most important ones are:
 
 ### API documentation
 
-- [Javadocs](apidoc/index.html)
+- [Javadocs](apidocs/index.html)
 
 
 
