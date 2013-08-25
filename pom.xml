@@ -8,7 +8,7 @@
 
     <name>Motif</name>
     <description>A library helping you to compose behavior from smaller parts.</description>
-    <url>http://github.com/runeflobakk/motif</url>
+    <url>http://runeflobakk.github.io/motif</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
