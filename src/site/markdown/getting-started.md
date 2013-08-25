@@ -70,7 +70,7 @@ A `Predicate` is the expression of an `if` statement extracted as a composable u
 
 
 
-## Get persons whoose name is longer than 8 characters
+## Get persons whose name is longer than 8 characters
 
 In Java, everything is an object encapsulating other objects. E.g. a very simplified `Person` class
 can be defined like this:
@@ -88,7 +88,7 @@ And a list of persons can be obtained like this:
 List<Person> persons = asList(new Person("Mary Jane"), new Person("Vicky"), new Person("Billy Bob"));
 ```
 
-To get persons whoose name is longer than 8 characters, we must check the length of each person's name.
+To get persons whose name is longer than 8 characters, we must check the length of each person's name.
 Again, with idiomatic Java, this can be achieved with the following code:
 
 ```Java
@@ -115,11 +115,11 @@ public class Person {
     public final String name;
     public Person(String name) { this.name = name; }
 
-	public static Predicate<Person> nameLengthGreaterThan(final int length) {
-	    return new Predicate<Person>() {
-	        @Override public boolean $(Person person) { return person.name.length() > length; }
-	    };
-	}
+    public static Predicate<Person> nameLengthGreaterThan(final int length) {
+        return new Predicate<Person>() {
+            @Override public boolean $(Person person) { return person.name.length() > length; }
+        };
+    }
 }
 ```
 
@@ -188,7 +188,36 @@ for (Person p : persons) {
 }
 ```
 
-TODO
+Using Motif, this can be achieved with the _map_ operation like this:
+
+```Java
+Iterable<String> result = on(persons).map(Person.getName);
+```
+
+Here we see the benefit of the refactoring we did with separating concerns
+between domain-specific `Fn` and generic `Predicate`: The domain-specific `Fn`
+we wrote to get persons' names is not only applicable for use with filtering, but
+for any computation involving Persons and their names.
+
+Note: the _map_ used here has nothing to do with the `Map` data structure of the
+Java Collections Framework, but is used as an operation elements. A _map_ operation
+is a 1:1 transformation, so doing a _map_ on an amount of elements will yield the
+same amount of some other elements. In the case above, the mapping [function][Fn] is
+extracting the name from `Person` objects, resulting in a `Person -> String` mapping,
+and yielding a `Iterable<String>`.
+
+To further filter the mapped list of persons, we can simply call `filter`:
+
+```Java
+Iterable<String> result = on(persons).map(Person.getName).filter(hasLength(greaterThan(8)));
+```
+
+The difference between that last example, and filtering with a `where` "clause" as we did
+earlier, is that the last example yields a list of strings (the names) instead of persons. So
+by providing our own `getName`-function, we can compose this function for various computations to
+yield different results based on what we need.
+
+
 
 
 # Good Practice
@@ -196,40 +225,8 @@ TODO
 > __Write domain-specific `Fns` and reuse generic `Predicates`.__
 
 > Favor writing `Predicates` for the actual type it is evaluating,
-> and supply how to obtain the value to evaluate with a `Fn`.  
-
-
-# Important API classes and interfaces
-
-The classes and interfaces already mentioned in this tutorial:
-
-
-- [`Fn<I, O>`][Fn]: functional (single-method) interface where implementing methods are passed objects
-  of one type (I), and returns objects of the same or another type (O).
-- [`Predicate<T>`][Predicate]: functional interface where implementing methods evaluates
-  objects of type T as either `true` or `false`. A _predicate_ is really
-  a specialization of `Fn<I,O>` where the return type (O) is `boolean`, but since a _predicate_
-  is such a central concept, it has its own interface, and since Java does not allow
-  type parameterization with primitive types, this avoids the possibility of returning `null`
-  from predicates.  
-- [`Iterate`][Iterate]: The entry point for working with collections with Motif. Home of
-  several overloaded static `on(..)` methods, which accepts common Java objects, and enables
-  manipulating it through Motif's API.
-- [`Strings`][Strings]: useful implementations of `Predicate`, `Fn`, and other functional
-  interfaces for working with strings
-  
-
-Other implementations of functional interfaces:
-
-- [`Base`][Base]: generic operations, as well as providing various ways to compose operations
-  to form new operations. 
-- [`Ints`][Ints]: operations for working with `int` values.
-- [`Longs`][Longs]: operations for working with `long` values.
-- [`Chars`][Chars]: operations for working with `char` values.
-
-
-In addition, please read about the [`Optional`](optional.html) type to see how to manipulate
-single values/objects without ever needing to do tedious `null`-checking.
+> and supply how to obtain the value to evaluate with a `Fn`.
+ 
 
 
 
@@ -249,6 +246,7 @@ to enable manipulation of any Java collection through the Motif API, and when an
 call a `collect` method to get the current state of the elements back into a Java collection.
 
 Bridging methods summarized:
+
  - [`on(..)`][Iterate] Java Collection Framework to Motif
  - [`collect()`][CollectingIterable] Motif to Java Collection Framework
 
@@ -291,6 +289,7 @@ to for instance a final `for`-loop, or passed to a 3rd party framework as a Java
 [Strings]: apidocs/no/motif/Strings.html "String functions"
 [Longs]: apidocs/no/motif/Longs.html "Long functions"
 [Ints]: apidocs/no/motif/Ints.html "Integer functions"
+[Decimals]: apidocs/no/motif/Decimals.html "Decimal number functions"
 [Chars]: apidocs/no/motif/Chars.html "Character functions"
 [Base]: apidocs/no/motif/Base.html "Generic base functions"
 [Predicate]: apidocs/no/motif/f/Predicate.html "Predicate functional interface"

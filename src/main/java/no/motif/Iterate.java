@@ -13,23 +13,35 @@ import no.motif.iter.PreparedIterable;
 
 
 /**
- * Operations for iterables, e.g.
+ * Operations for containers, e.g. arrays,
  * {@link List lists}, {@link Set sets}, or any implementation
- * of {@link Iterable}.
- *
- * @see PreparedIterable
+ * of {@link Iterable}. Can also
+ * {@link #on(CharSequence) treat Strings as a container of Characters}.
  */
 public final class Iterate {
 
 
-    public static PreparedIterable<Character> on(CharSequence chars) {
-        if (chars == null) return PreparedIterable.empty();
-        List<Character> charList = new ArrayList<>(chars.length());
-        for (char c : chars.toString().toCharArray()) charList.add(c);
+    /**
+     * Manipulate CharSequences/Strings as if they were iterables of
+     * Characters.
+     *
+     * @param string The string
+     * @return {@link PreparedIterable} characters
+     */
+    public static PreparedIterable<Character> on(CharSequence string) {
+        if (string == null) return PreparedIterable.empty();
+        List<Character> charList = new ArrayList<>(string.length());
+        for (char c : string.toString().toCharArray()) charList.add(c);
         return newInstance(charList);
     }
 
 
+    /**
+     * Work with multiple elements.
+     *
+     * @param elements the elements to manipulate as vararg/array.
+     * @return {@link PreparedIterable}
+     */
     @SafeVarargs
     @SuppressWarnings("varargs")
     public static <T> PreparedIterable<T> on(T ... elements) {
@@ -37,14 +49,22 @@ public final class Iterate {
     }
 
 
+    /**
+     * Work with multiple elements.
+     *
+     * @param elements the elements to manipulate as an {@link Iterable}.
+     * @return {@link PreparedIterable}
+     */
     public static <T> PreparedIterable<T> on(Iterable<T> elements) {
         return elements instanceof PreparedIterable ? (PreparedIterable<T>) elements : newInstance(elements);
     }
+
 
     private static <T> PreparedIterable<T> newInstance(Iterable<T> elements) {
         if (elements == null) return PreparedIterable.empty();
         else return new PreparedIterable<T>(elements);
     }
+
 
 
     /**
