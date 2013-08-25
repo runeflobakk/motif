@@ -271,5 +271,23 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
+    
+    <developers>
+        <developer>
+            <id>runeflobakk</id>
+            <name>Rune Flobakk</name>
+            <email>flobakk@gmail.com</email>
+            <url>http://flobakk.org</url>
+            <timezone>+1</timezone>
+            <roles>
+                <role>developer</role>
+                <role>documentor</role>
+            </roles>
+            <properties>
+                <twitter>http://twitter.com/rflob</twitter>
+                <linkedin>http://no.linkedin.com/in/runeflobakk/</linkedin>
+            </properties>
+        </developer>
+    </developers>
 
 </project>
