@@ -3,12 +3,13 @@ package no.motif.iter;
 import static no.motif.Singular.none;
 import static no.motif.Singular.optional;
 
+import java.io.Serializable;
 import java.util.Iterator;
 
 import no.motif.f.Predicate;
 import no.motif.option.Optional;
 
-final class FilteredIterable<T> implements Iterable<T> {
+final class FilteredIterable<T> implements Iterable<T>, Serializable {
 
     private final Iterable<T> elements;
     private final Predicate<? super T> accepts;

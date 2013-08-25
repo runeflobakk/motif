@@ -3,13 +3,14 @@ package no.motif.iter;
 import static no.motif.Iterate.hasNext;
 import static no.motif.Singular.optional;
 
+import java.io.Serializable;
 import java.util.Iterator;
 
 import no.motif.Iterate;
 import no.motif.f.Predicate;
 import no.motif.option.Optional;
 
-public class PredicateBoundedIterable<T> implements Iterable<T> {
+public class PredicateBoundedIterable<T> implements Iterable<T>, Serializable {
 
     private final Predicate<? super T> predicate;
     private final Iterable<T> elements;

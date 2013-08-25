@@ -1,5 +1,7 @@
 package no.motif.f;
 
+import java.io.Serializable;
+
 /**
  * A predicate is a function taking a value of type <code>T</code>, and evaluates it
  * as either <code>true</code> or <code>false</code>.
@@ -15,10 +17,12 @@ package no.motif.f;
  *
  * @param <T> The type of objects the predicate can evaluate.
  */
-public interface Predicate<T> {
+public interface Predicate<T> extends Serializable {
     boolean $(T value);
 
-    class Always<T> implements Predicate<T> {
+    final class Always<T> implements Predicate<T> {
+
+        private static final long serialVersionUID = 1L;
 
         @SuppressWarnings("unchecked")
         public static <T> Predicate<T> no() { return (Predicate<T>) FALSE; }
@@ -37,7 +41,7 @@ public interface Predicate<T> {
         }
 
         @Override
-        public boolean $(T value) {
+        public final boolean $(T value) {
             return constant;
         }
     }

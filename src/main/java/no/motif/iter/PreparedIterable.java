@@ -4,6 +4,7 @@ import static java.util.Collections.emptyList;
 import static no.motif.Base.not;
 import static no.motif.Singular.optional;
 
+import java.io.Serializable;
 import java.util.Iterator;
 
 import no.motif.f.Fn;
@@ -16,7 +17,7 @@ import no.motif.types.Elements;
  *
  * @param <T> The type of the elements in the iterable.
  */
-public class PreparedIterable<T> extends CollectingIterable<T> implements Iterable<T>, Elements<T> {
+public class PreparedIterable<T> extends CollectingIterable<T> implements Iterable<T>, Elements<T>, Serializable {
 
     private static final PreparedIterable<?> EMPTY = new PreparedIterable<>(emptyList());
 

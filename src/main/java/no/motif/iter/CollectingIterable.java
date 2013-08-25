@@ -2,6 +2,7 @@ package no.motif.iter;
 
 import static java.util.Collections.unmodifiableList;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -20,7 +21,7 @@ import no.motif.types.Reducible;
  *
  * @param <T> The type of elements in this iterable.
  */
-public abstract class CollectingIterable<T> implements Iterable<T>, Reducible<T> {
+public abstract class CollectingIterable<T> implements Iterable<T>, Reducible<T>, Serializable {
 
     @Override
     public final <O> O reduce(O unit, Fn2<? super O, ? super T, ? extends O> reducer) {

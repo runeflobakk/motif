@@ -1,5 +1,7 @@
 package no.motif.f;
 
+import java.io.Serializable;
+
 /**
  * A function which provides a value, without
  * taking any arguments. It can be used to
@@ -8,7 +10,7 @@ package no.motif.f;
  *
  * @param <V> Type of value yielded from the function.
  */
-public interface Fn0<V> {
+public interface Fn0<V> extends Serializable {
 
     /**
      * Applies the function.

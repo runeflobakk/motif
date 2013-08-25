@@ -1,6 +1,8 @@
 package no.motif.option;
 
 import static no.motif.Base.notNull;
+
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -23,7 +25,7 @@ import no.motif.types.Mappable;
  * @param <V> The type of the wrapped object.
  *
  */
-public abstract class Optional<V> implements Iterable<V>, Mappable<V> {
+public abstract class Optional<V> implements Iterable<V>, Mappable<V>, Serializable {
 
 
     /**

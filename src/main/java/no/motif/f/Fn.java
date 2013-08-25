@@ -1,5 +1,7 @@
 package no.motif.f;
 
+import java.io.Serializable;
+
 
 /**
  * Function taking a value of type <code>I</code> and
@@ -24,7 +26,7 @@ package no.motif.f;
  * @param <I> the type of the function argument
  * @param <O> The type of object the function returns.
  */
-public interface Fn<I, O> extends PartialApplicableTo<Fn0<O>> {
+public interface Fn<I, O> extends PartialApplicableTo<Fn0<O>>, Serializable {
 
     /**
      * Applies the function.

@@ -2,12 +2,13 @@ package no.motif.iter;
 
 import static no.motif.Singular.optional;
 
+import java.io.Serializable;
 import java.util.Iterator;
 
 import no.motif.Singular;
 import no.motif.option.Optional;
 
-class BoundedIterable<T> implements Iterable<T> {
+class BoundedIterable<T> implements Iterable<T>, Serializable {
 
     private final Iterable<T> elements;
     private final int maxAmount;

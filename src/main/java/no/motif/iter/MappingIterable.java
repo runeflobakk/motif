@@ -3,13 +3,14 @@ package no.motif.iter;
 import static no.motif.Iterate.hasNext;
 import static no.motif.Singular.optional;
 
+import java.io.Serializable;
 import java.util.Iterator;
 
 import no.motif.Iterate;
 import no.motif.f.Fn;
 import no.motif.option.Optional;
 
-final class MappingIterable<I, O> implements Iterable<O> {
+final class MappingIterable<I, O> implements Iterable<O>, Serializable {
 
     private final Iterable<I> elements;
 

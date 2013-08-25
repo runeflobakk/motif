@@ -1,11 +1,12 @@
 package no.motif.iter;
 
+import java.io.Serializable;
 import java.util.Iterator;
 
 import no.motif.Singular;
 import no.motif.option.Optional;
 
-public class ConcatenatedIterable<T> implements Iterable<T> {
+public class ConcatenatedIterable<T> implements Iterable<T>, Serializable {
 
     private final Iterable<? extends T> leadingElements;
     private final Iterable<? extends T> trailingElements;
