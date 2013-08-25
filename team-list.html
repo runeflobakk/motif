@@ -8,7 +8,7 @@
 
 	<head>
 		<meta charset="UTF-8" />
-		<title>Motif - Welcome</title>
+		<title>Motif - Team list</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<meta name="description" content="" />
 		<meta http-equiv="content-language" content="en" />
@@ -32,7 +32,7 @@
 
 	</head>
 
-	<body class="page-index project-motif" data-spy="scroll" data-offset="60" data-target="#toc-scroll-target">
+	<body class="page-team-list project-motif" data-spy="scroll" data-offset="60" data-target="#toc-scroll-target">
 
 		<div class="navbar navbar-fixed-top">
 			<div class="navbar-inner">
@@ -52,7 +52,7 @@
 									<li><a href="optional.html" title="The Optional type">The Optional type </a></li>
 								</ul>
 							</li>
-							<li class="dropdown">
+							<li class="dropdown active">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Project Documentation <b class="caret"></b></a>
 								<ul class="dropdown-menu">
 									<li class="dropdown-submenu">
@@ -61,7 +61,7 @@
 											<li><a href="dependency-info.html" title="Dependency Information">Dependency Information </a></li>
 											<li><a href="dependencies.html" title="Dependencies">Dependencies </a></li>
 											<li><a href="license.html" title="Project License">Project License </a></li>
-											<li><a href="team-list.html" title="Project Team">Project Team </a></li>
+											<li class="active"><a href="" title="Project Team">Project Team </a></li>
 											<li><a href="project-summary.html" title="Project Summary">Project Summary </a></li>
 										</ul>
 									</li>
@@ -91,34 +91,59 @@
 	
 	<!-- Masthead
 	================================================== -->
+		<hr class="toc-separator" />
+		<div id="toc-bar" class="navbar">
+			<div class="navbar-inner">
+				<div id="toc-scroll-target" class="container">
+					<ul id="toc" class="nav">
+						<li class="toplevel"><a href="#The_Team" title="The Team">The Team</a></li>
+						<li class="toplevel"><a href="#Members" title="Members">Members</a></li>
+						<li class="toplevel"><a href="#Contributors" title="Contributors">Contributors</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
 	</header>
 
 	<div class="main-body">
-	<div class="row columns columns2">
-		<div class="span6">
-			<h1>Welcome!</h1>
-<p><b>Motif</b> is a Java library that helps you to compose simple units of program logic, which together forms the actual behavior in your application. Most of the concepts in Motif is inspired from functional programming, but what’s important is that it is just plain old Java, with no extra bells and whistles, though it might look a little unfamiliar if you are mostly accustomed to idiomatic Java code.</p>
-<p>The motivation for this library is <i>not</i> to transform Java into a functional language - that would neither be possible nor practical. The goal is to enable Java programmers to express common, and often errorprone, imperative idioms (for, while, if-else, null-checks, etc) in a more safe way, where you will get help from the compiler to compose the correct logic. If using <b>Motif</b> inspires you to learn more about functional programming, that is awesome, but it is not a goal of Motif to simulate or replace a real functional programming langugage. Java is an object-oriented imperative language, and Motif only seeks to provide programming constructs to aid with the correctness of your objects’ behavior.</p>
-		</div>
-		<div class="span6">
-			<h1>Composing motifs</h1>
-<p>The name ‘Motif’ was inspired from music, where a motif is a recognizable and recurring small musical fragment to form complete compositions from.</p>
-		</div>
-	</div>
 	<div class="row">
-		<div class="span6">
-			<h1>Using Motif</h1>
-<p>Include the following declaration in your POM to start using motif in your project:</p>
-<div class="source"> 
- <pre>&lt;dependency&gt;
-    &lt;groupId&gt;com.github.runeflobakk&lt;/groupId&gt;
-    &lt;artifactId&gt;motif&lt;/artifactId&gt;
-    &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
-&lt;/dependency&gt;
-</pre>
+		<div class="span12">
+			<div class="body-content">
+<div class="section"> 
+ <div class="page-header">
+  <h2 id="The_Team">The Team</h2>
+ </div> 
+ <a name="The_Team"></a> 
+ <p>A successful project requires many people to play many roles. Some members write code or documentation, while others are valuable as testers, submitting patches and suggestions.</p> 
+ <p>The team is comprised of Members and Contributors. Members have direct access to the source of a project and actively evolve the code-base. Contributors improve the project through submission of patches and suggestions to the Members. The number of Contributors to the project is unbounded. Get involved today. All contributions to the project are greatly appreciated.</p> 
+ <div class="section"> 
+  <h3 id="Members">Members</h3> 
+  <a name="Members"></a> 
+  <p>There are no developers working on this project.</p> 
+ </div> 
+ <div class="section"> 
+  <h3 id="Contributors">Contributors</h3> 
+  <a name="Contributors"></a> 
+  <p>There are no contributors listed for this project. Please check back again later.</p> 
+  <script type="text/javascript">
+function offsetDate(id, offset) {
+    var now = new Date();
+    var nowTime = now.getTime();
+    var localOffset = now.getTimezoneOffset();
+    var developerTime = nowTime + ( offset * 60 * 60 * 1000 )+ ( localOffset * 60 * 1000 );
+    var developerDate = new Date(developerTime);
+
+    document.getElementById(id).innerHTML = developerDate;
+}
+
+function init(){
+}
+
+window.onLoad = init();
+</script> 
+ </div> 
 </div>
-<p>Descriptions for other build tools can be found on <a href="dependency-info.html">this page</a></p>
-<p><a href="documentation.html">Go here</a> to read the documentation for Motif.</p>
+			</div>
 		</div>
 	</div>
 	</div>
@@ -133,8 +158,8 @@
 				<div class="span9 bottom-nav">
 					<ul class="nav nav-list">
 						<li class="nav-header">Main</li>
-						<li class="active">
-							<a href="#" title="Home">Home </a>
+						<li>
+							<a href="index.html" title="Home">Home </a>
 						</li>
 						<li>
 							<a href="http://github.com/runeflobakk/motif" title="View on GitHub" class="externalLink">View on GitHub </a>
@@ -148,7 +173,24 @@
 						</li>
 						<li class="nav-header">Project Documentation</li>
 						<li>
-							<a href="project-info.html" title="Project Information">Project Information <i class="icon-chevron-right"></i></a>
+							<a href="project-info.html" title="Project Information">Project Information <i class="icon-chevron-down"></i></a>
+							<ul class="nav nav-list">
+						<li>
+							<a href="dependency-info.html" title="Dependency Information">Dependency Information </a>
+						</li>
+						<li>
+							<a href="dependencies.html" title="Dependencies">Dependencies </a>
+						</li>
+						<li>
+							<a href="license.html" title="Project License">Project License </a>
+						</li>
+						<li class="active">
+							<a href="#" title="Project Team">Project Team </a>
+						</li>
+						<li>
+							<a href="project-summary.html" title="Project Summary">Project Summary </a>
+						</li>
+							</ul>
 						</li>
 						<li>
 							<a href="project-reports.html" title="Project Reports">Project Reports <i class="icon-chevron-right"></i></a>

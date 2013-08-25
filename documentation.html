@@ -8,7 +8,7 @@
 
 	<head>
 		<meta charset="UTF-8" />
-		<title>Motif - Welcome</title>
+		<title>Motif - Documentation</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<meta name="description" content="" />
 		<meta http-equiv="content-language" content="en" />
@@ -32,7 +32,7 @@
 
 	</head>
 
-	<body class="page-index project-motif" data-spy="scroll" data-offset="60" data-target="#toc-scroll-target">
+	<body class="page-documentation project-motif" data-spy="scroll" data-offset="60" data-target="#toc-scroll-target">
 
 		<div class="navbar navbar-fixed-top">
 			<div class="navbar-inner">
@@ -94,31 +94,74 @@
 	</header>
 
 	<div class="main-body">
-	<div class="row columns columns2">
-		<div class="span6">
-			<h1>Welcome!</h1>
-<p><b>Motif</b> is a Java library that helps you to compose simple units of program logic, which together forms the actual behavior in your application. Most of the concepts in Motif is inspired from functional programming, but what’s important is that it is just plain old Java, with no extra bells and whistles, though it might look a little unfamiliar if you are mostly accustomed to idiomatic Java code.</p>
-<p>The motivation for this library is <i>not</i> to transform Java into a functional language - that would neither be possible nor practical. The goal is to enable Java programmers to express common, and often errorprone, imperative idioms (for, while, if-else, null-checks, etc) in a more safe way, where you will get help from the compiler to compose the correct logic. If using <b>Motif</b> inspires you to learn more about functional programming, that is awesome, but it is not a goal of Motif to simulate or replace a real functional programming langugage. Java is an object-oriented imperative language, and Motif only seeks to provide programming constructs to aid with the correctness of your objects’ behavior.</p>
-		</div>
-		<div class="span6">
-			<h1>Composing motifs</h1>
-<p>The name ‘Motif’ was inspired from music, where a motif is a recognizable and recurring small musical fragment to form complete compositions from.</p>
-		</div>
-	</div>
 	<div class="row">
-		<div class="span6">
-			<h1>Using Motif</h1>
-<p>Include the following declaration in your POM to start using motif in your project:</p>
-<div class="source"> 
- <pre>&lt;dependency&gt;
-    &lt;groupId&gt;com.github.runeflobakk&lt;/groupId&gt;
-    &lt;artifactId&gt;motif&lt;/artifactId&gt;
-    &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
-&lt;/dependency&gt;
-</pre>
+		<div class="span8">
+			<div class="body-content">
+<div class="page-header">
+ <h1 id="documentation">Documentation</h1>
+</div> 
+<div class="section"> 
+ <h2 id="Articles">Articles</h2> 
+ <ul> 
+  <li><a href="getting-started.html">Getting started</a></li> 
+  <li><a href="optional.html">The <tt>Optional</tt> type</a></li> 
+ </ul> 
+</div> 
+<div class="section"> 
+ <h2 id="The_API">The API</h2> 
+ <ul> 
+  <li><a href="apidocs/no/motif/Iterate.html" title="Iterate class"><tt>Iterate</tt></a>: The entry point for working with collections with Motif. Home of several overloaded static <tt>on(..)</tt> methods, which accepts common Java objects, and enables manipulating it through Motif’s API.</li> 
+  <li><a href="optional.html"><tt>Optional</tt></a>: A special construct for dealing with single values/objects without ever needing to do tedious <tt>null</tt>-checking.</li> 
+ </ul> 
+ <div class="section"> 
+  <h3 id="Functional_interfaces">Functional interfaces</h3> 
+  <p>The functional interfaces of the <a href="apidocs/no/motif/f/package-summary.html" title="Functional interfaces package - no.motif.f"><tt>no.motif.f</tt></a> package are single method interfaces that imitate function types. The two most important ones are:</p> 
+  <ul> 
+   <li><a href="apidocs/no/motif/f/Fn.html" title="Fn functional interface"><tt>Fn&lt;I, O&gt;</tt></a>: functional (single-method) interface where implementing methods are passed objects of one type (I), and returns objects of the same or another type (O).</li> 
+   <li><a href="apidocs/no/motif/f/Predicate.html" title="Predicate functional interface"><tt>Predicate&lt;T&gt;</tt></a>: functional interface where implementing methods evaluates objects of type T as either <tt>true</tt> or <tt>false</tt>. A <i>predicate</i> is really a specialization of <tt>Fn&lt;I,O&gt;</tt> where the return type (O) is <tt>boolean</tt>, but since a <i>predicate</i> is such a central concept, it has got its own interface, and since Java does not allow type parameterization with primitive types, this avoids the possibility of returning <tt>null</tt> from predicates.</li> 
+  </ul> 
+ </div> 
+ <div class="section"> 
+  <h3 id="Function_implementations">Function implementations</h3> 
+  <ul> 
+   <li><a href="apidocs/no/motif/Base.html" title="Generic base functions"><tt>Base</tt></a>: generic operations, as well as providing various ways to compose operations to form new operations.</li> 
+   <li><a href="apidocs/no/motif/Strings.html" title="String functions"><tt>Strings</tt></a>: useful implementations of <tt>Predicate</tt>, <tt>Fn</tt>, and other functional interfaces for working with strings</li> 
+   <li><a href="apidocs/no/motif/Ints.html" title="Integer functions"><tt>Ints</tt></a>: operations for working with <tt>int</tt> values.</li> 
+   <li><a href="apidocs/no/motif/Longs.html" title="Long functions"><tt>Longs</tt></a>: operations for working with <tt>long</tt> values.</li> 
+   <li><a href="apidocs/no/motif/Chars.html" title="Character functions"><tt>Chars</tt></a>: operations for working with <tt>char</tt> values.</li> 
+   <li><a href="apidocs/no/motif/Decimals.html" title="Decimal number functions"><tt>Decimals</tt></a>: operations for working with decimal number (<tt>double</tt>) values.</li> 
+  </ul> 
+ </div> 
+ <div class="section"> 
+  <h3 id="API_documentation">API documentation</h3> 
+  <ul> 
+   <li><a href="apidoc/index.html">Javadocs</a></li> 
+  </ul> 
+ </div> 
 </div>
-<p>Descriptions for other build tools can be found on <a href="dependency-info.html">this page</a></p>
-<p><a href="documentation.html">Go here</a> to read the documentation for Motif.</p>
+			</div>
+		</div>
+		<div class="span4">
+			<div id="toc-sidebar">
+				<div class="well">
+					<ul class="nav nav-list">
+						<li class="nav-header">Table of Contents</li>
+		<li class="dropdown"><a href="#documentation" title="Documentation">Documentation <b class="caret"></b></a>
+			<ul class="nav nav-list">
+		<li><a href="#Articles" title="Articles">Articles</a>
+		<li class="dropdown"><a href="#The_API" title="The API">The API <b class="caret"></b></a>
+			<ul class="nav nav-list">
+		<li><a href="#Functional_interfaces" title="Functional interfaces">Functional interfaces</a>
+		<li><a href="#Function_implementations" title="Function implementations">Function implementations</a>
+		<li><a href="#API_documentation" title="API documentation">API documentation</a>
+				<li class="divider"></li>
+			</ul>
+		</li>
+			</ul>
+		</li>
+					</ul>
+				</div>
+			</div>
 		</div>
 	</div>
 	</div>
@@ -133,8 +176,8 @@
 				<div class="span9 bottom-nav">
 					<ul class="nav nav-list">
 						<li class="nav-header">Main</li>
-						<li class="active">
-							<a href="#" title="Home">Home </a>
+						<li>
+							<a href="index.html" title="Home">Home </a>
 						</li>
 						<li>
 							<a href="http://github.com/runeflobakk/motif" title="View on GitHub" class="externalLink">View on GitHub </a>

@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Strings.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Motif</a> &gt; <a href="index.html" class="el_package">no.motif</a> &gt; <span class="el_source">Strings.java</span></div><h1>Strings.java</h1><pre class="source lang-java linenums">package no.motif;
+
+import static no.motif.Base.all;
+import static no.motif.Base.both;
+import static no.motif.Base.equalTo;
+import static no.motif.Base.exists;
+import static no.motif.Base.not;
+import static no.motif.Base.where;
+import static no.motif.Chars.digit;
+import static no.motif.Chars.letter;
+import static no.motif.Chars.letterOrDigit;
+import static no.motif.Chars.whitespace;
+import no.motif.f.Fn;
+import no.motif.f.Fn2;
+import no.motif.f.Predicate;
+import no.motif.f.Predicate.Always;
+import no.motif.f.base.FalseIfNullOrElse;
+import no.motif.f.base.PassThruIfNullOrElse;
+
+/**
+ * Functions operating on {@link String strings}.
+ */
+public final class Strings {
+
+    /**
+     * Converts a string to a &lt;code&gt;int&lt;/code&gt; value using {@link Integer#valueOf(String)}.
+     * If the string is &lt;code&gt;null&lt;/code&gt;, 0 is yielded.
+     */
+<span class="fc" id="L29">    public static final Fn&lt;String, Integer&gt; toInt = new Fn&lt;String, Integer&gt;() {</span>
+<span class="fc bfc" id="L30" title="All 2 branches covered.">        @Override public Integer $(String numeric) { return numeric != null ? Integer.valueOf(numeric) : 0; }};</span>
+
+
+    /**
+     * Converts a string to a &lt;code&gt;double&lt;/code&gt; value using {@link Double#valueOf(String)}.
+     * If the string is &lt;code&gt;null&lt;/code&gt;, 0 is yielded.
+     */
+<span class="fc" id="L37">    public static final Fn&lt;String, Double&gt; toDouble = new Fn&lt;String, Double&gt;() {</span>
+<span class="fc bfc" id="L38" title="All 2 branches covered.">        @Override public Double $(String decimalValue) { return decimalValue != null ? Double.valueOf(decimalValue) : 0; }};</span>
+
+
+    /**
+     * Splits a string into characters.
+     */
+<span class="fc" id="L44">    public static final Fn&lt;String, Iterable&lt;Character&gt;&gt; toChars = new Fn&lt;String, Iterable&lt;Character&gt;&gt;() {</span>
+<span class="fc" id="L45">        @Override public Iterable&lt;Character&gt; $(String value) { return Iterate.on(value); }};</span>
+
+
+    /**
+     * A blank string is either &lt;code&gt;null&lt;/code&gt;, empty, or
+     * all characters {@link Chars#whitespace are whitespace}.
+     */
+<span class="fc" id="L52">    public static final Predicate&lt;String&gt; blank = where(toChars, all(whitespace));</span>
+
+
+    /**
+     * A nonblank string has at least one character, and must contain at least
+     * one character which is {@link Chars#whitespace not whitespace}.
+     */
+<span class="fc" id="L59">    public static final Predicate&lt;String&gt; nonblank = where(toChars, exists(not(whitespace)));</span>
+
+
+    /**
+     * A numeric string must have at least one character, and all of them
+     * must be {@link Chars#digit digits}.
+     */
+<span class="fc" id="L66">    public static final Predicate&lt;String&gt; numeric = nonblankAllChars(digit);</span>
+
+
+    /**
+     * Alphanumeric strings are at least one character, and all
+     * {@link Chars#digit digits} and/or {@link Chars#letter letters}.
+     */
+<span class="fc" id="L73">    public static final Predicate&lt;String&gt; alphanumeric = nonblankAllChars(letterOrDigit);</span>
+
+
+    /**
+     * Alphabetic strings are at least one character, and all {@link Chars#letter letters}.
+     */
+<span class="fc" id="L79">    public static final Predicate&lt;String&gt; alphabetic = nonblankAllChars(letter);</span>
+
+
+    /**
+     * Predicate verifying that all characters in a string satifies a given predicate.
+     *
+     * @param valid The predicate evaluating all characters in a string.
+     */
+    public static final Predicate&lt;String&gt; allChars(Predicate&lt;Character&gt; valid) {
+<span class="fc" id="L88">        return where(toChars, all(valid)); }</span>
+
+    /**
+     * Predicate verifying that strings are {@link #nonblank not blank} and
+     * each char satisfies a given predicate.
+     *
+     * @param valid
+     */
+    public static final Predicate&lt;String&gt; nonblankAllChars(Predicate&lt;Character&gt; valid) {
+<span class="fc" id="L97">        return both(nonblank).and(allChars(valid)); }</span>
+
+
+    /**
+     * Trims a string, removing all leading and trailing whitespace.
+     */
+<span class="fc" id="L103">    public static final Fn&lt;String, String&gt; trimmed = new PassThruIfNullOrElse&lt;String, String&gt;() {</span>
+<span class="fc" id="L104">        @Override protected String $nullsafe(String s) { return s.trim(); }};</span>
+
+
+    /**
+     * Convert a string to {@link String#toLowerCase() lower case}.
+     */
+<span class="fc" id="L110">    public static final Fn&lt;String, String&gt; lowerCased = new PassThruIfNullOrElse&lt;String, String&gt;() {</span>
+<span class="fc" id="L111">        @Override protected String $nullsafe(String s) { return s.toLowerCase(); }};</span>
+
+
+    /**
+     * Convert a string to {@link String#toUpperCase() upper case}
+     */
+<span class="fc" id="L117">    public static final Fn&lt;String, String&gt; upperCased = new PassThruIfNullOrElse&lt;String, String&gt;() {</span>
+<span class="fc" id="L118">        @Override protected String $nullsafe(String s) { return s.toUpperCase(); }};</span>
+
+
+    /**
+     * Gives the length of a string, i.e. the amount of characters. &lt;code&gt;null&lt;/code&gt;
+     * yields length 0.
+     */
+<span class="fc" id="L125">    public static final Fn&lt;String, Integer&gt; length = new Fn&lt;String, Integer&gt;() {</span>
+<span class="fc bfc" id="L126" title="All 2 branches covered.">        @Override public Integer $(String s) { return s != null ? s.length() : 0; }};</span>
+
+
+    /**
+     * Evaluate if strings are of a exact length.
+     * &lt;code&gt;null&lt;code&gt;s are considered to have length zero.
+     */
+<span class="fc" id="L133">    public static final Predicate&lt;String&gt; hasLength(int exactLength) { return hasLength(equalTo(exactLength)); }</span>
+
+
+    /**
+     * Evaluate if strings have accepted lengths.
+     * &lt;code&gt;null&lt;code&gt;s are considered to have length zero.
+     *
+     * @param accepted The predicate evaluating accepted length.
+     * @return The predicate evaluating string length.
+     */
+<span class="fc" id="L143">    public static final Predicate&lt;String&gt; hasLength(Predicate&lt;? super Integer&gt; accepted) { return where(length, accepted); }</span>
+
+
+    /**
+     * Concatenate a string with the {@link Object#toString() string representation}
+     * of an arbitrary object, i.e. &lt;em&gt;reduces&lt;/em&gt; two strings to one.
+     */
+<span class="fc" id="L150">    public static final Fn2&lt;String, Object, String&gt; concat = new Fn2&lt;String, Object, String&gt;() {</span>
+<span class="fc" id="L151">        @Override public String $(String acc, Object c) { return acc + c; }};</span>
+
+
+    /**
+     * Determines if a substring is present in a string. A string never contains &lt;code&gt;null&lt;/code&gt;,
+     * nor does &lt;code&gt;null&lt;/code&gt; contain any substring.
+     *
+     * @param charSequence The substring to find.
+     * @return The predicate.
+     */
+    public static Predicate&lt;String&gt; contains(final CharSequence charSequence) {
+<span class="fc bfc" id="L162" title="All 2 branches covered.">        return charSequence == null ? Always.&lt;String&gt;no() : new FalseIfNullOrElse&lt;String&gt;() {</span>
+<span class="fc" id="L163">        @Override protected boolean $nullsafe(String string) { return string.contains(charSequence); }}; }</span>
+
+
+    /**
+     * Determines if a string starts with a given prefix string.
+     *
+     * @param prefix The prefix.
+     * @return The predicate.
+     */
+    public static Predicate&lt;String&gt; startsWith(final String prefix) {
+<span class="fc bfc" id="L173" title="All 2 branches covered.">        return prefix == null ? Always.&lt;String&gt;no() : new FalseIfNullOrElse&lt;String&gt;() {</span>
+<span class="fc" id="L174">        @Override protected boolean $nullsafe(String string) { return string.startsWith(prefix); }}; }</span>
+
+
+    /**
+     * Determines if a string ends with a given suffix string.
+     *
+     * @param suffix The suffix.
+     * @return The predicate.
+     */
+    public static Predicate&lt;String&gt; endsWith(final String suffix) {
+<span class="fc bfc" id="L184" title="All 2 branches covered.">        return suffix == null ? Always.&lt;String&gt;no() : new FalseIfNullOrElse&lt;String&gt;() {</span>
+<span class="fc" id="L185">        @Override protected boolean $nullsafe(String string) { return string.endsWith(suffix); }}; }</span>
+
+
+    /**
+     * Does a {@link String#matches(String) regular expression match} on strings.
+     *
+     * @param regex The regular expression to use for matching.
+     * @return the predicate.
+     */
+    public static Predicate&lt;String&gt; matches(final String regex) {
+<span class="fc bfc" id="L195" title="All 2 branches covered.">        return regex == null ? Always.&lt;String&gt;no() : new FalseIfNullOrElse&lt;String&gt;() {</span>
+<span class="fc" id="L196">        @Override protected boolean $nullsafe(String string) { return string.matches(regex); }};}</span>
+
+
+<span class="fc" id="L199">    private Strings() {}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.3.201306030806</span></div></body></html>

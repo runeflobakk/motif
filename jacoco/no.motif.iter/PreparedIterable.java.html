@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>PreparedIterable.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Motif</a> &gt; <a href="index.html" class="el_package">no.motif.iter</a> &gt; <span class="el_source">PreparedIterable.java</span></div><h1>PreparedIterable.java</h1><pre class="source lang-java linenums">package no.motif.iter;
+
+import static java.util.Collections.emptyList;
+import static no.motif.Base.not;
+import static no.motif.Singular.optional;
+
+import java.util.Iterator;
+
+import no.motif.f.Fn;
+import no.motif.f.Predicate;
+import no.motif.types.Elements;
+
+/**
+ * This class wraps an arbitrary {@link Iterable} and provides access to
+ * various operations to view and/or transform the wrapped iterable.
+ *
+ * @param &lt;T&gt; The type of the elements in the iterable.
+ */
+public class PreparedIterable&lt;T&gt; extends CollectingIterable&lt;T&gt; implements Iterable&lt;T&gt;, Elements&lt;T&gt; {
+
+<span class="fc" id="L21">    private static final PreparedIterable&lt;?&gt; EMPTY = new PreparedIterable&lt;&gt;(emptyList());</span>
+
+    @SuppressWarnings(&quot;unchecked&quot;)
+    public static &lt;T&gt; PreparedIterable&lt;T&gt; empty() {
+<span class="fc" id="L25">        return (PreparedIterable&lt;T&gt;) EMPTY;</span>
+    }
+
+    private final Iterable&lt;T&gt; elements;
+
+<span class="fc" id="L30">    public PreparedIterable(Iterable&lt;T&gt; elements) {</span>
+<span class="fc" id="L31">        this.elements = elements;</span>
+<span class="fc" id="L32">    }</span>
+
+
+    @Override
+    public PreparedIterable&lt;T&gt; filter(Predicate&lt;? super T&gt; filter) {
+<span class="fc" id="L37">        return new PreparedIterable&lt;&gt;(new FilteredIterable&lt;&gt;(elements, filter));</span>
+    }
+
+
+    @Override
+    public &lt;O&gt; PreparedIterable&lt;O&gt; map(Fn&lt;? super T, O&gt; function) {
+<span class="fc" id="L43">        return new PreparedIterable&lt;&gt;(new MappingIterable&lt;&gt;(elements, function));</span>
+    }
+
+
+    @Override
+    public PreparedIterable&lt;T&gt; append(T value) {
+<span class="fc" id="L49">        return append(optional(value));</span>
+    }
+
+
+    @Override
+    public PreparedIterable&lt;T&gt; append(Iterable&lt;? extends T&gt; trailingElements) {
+<span class="fc" id="L55">        return new PreparedIterable&lt;&gt;(new ConcatenatedIterable&lt;&gt;(elements, trailingElements));</span>
+    }
+
+
+    @Override
+    public PreparedIterable&lt;T&gt; prepend(T value) {
+<span class="fc" id="L61">        return prepend(optional(value));</span>
+    }
+
+
+    @Override
+    public PreparedIterable&lt;T&gt; prepend(Iterable&lt;? extends T&gt; leadingElements) {
+<span class="fc" id="L67">        return new PreparedIterable&lt;&gt;(new ConcatenatedIterable&lt;&gt;(leadingElements, elements));</span>
+    }
+
+
+    @Override
+    public PreparedIterable&lt;T&gt; take(int amount) {
+<span class="fc" id="L73">        return new PreparedIterable&lt;&gt;(new BoundedIterable&lt;&gt;(amount, elements));</span>
+    }
+
+
+    @Override
+    public PreparedIterable&lt;T&gt; takeWhile(Predicate&lt;? super T&gt; predicate) {
+<span class="fc" id="L79">        return new PreparedIterable&lt;&gt;(new PredicateBoundedIterable&lt;&gt;(predicate, elements));</span>
+    }
+
+
+    @Override
+    public PreparedIterable&lt;T&gt; takeUntil(Predicate&lt;? super T&gt; predicate) {
+<span class="fc" id="L85">        return new PreparedIterable&lt;&gt;(new PredicateBoundedIterable&lt;&gt;(not(predicate), elements));</span>
+    }
+
+
+    @Override
+    public Iterator&lt;T&gt; iterator() {
+<span class="fc" id="L91">        return elements.iterator();</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.3.201306030806</span></div></body></html>
