@@ -109,8 +109,10 @@
 						<li class="toplevel"><a href="#Plugin_orgapachemavenpluginsmaven-compiler-plugin" title="Plugin org.apache.maven.plugins:maven-compiler-plugin">Plugin org.apache.maven.plugins:maven-compiler-plugin</a></li>
 						<li class="toplevel"><a href="#Plugin_orgapachemavenpluginsmaven-dependency-plugin" title="Plugin org.apache.maven.plugins:maven-dependency-plugin">Plugin org.apache.maven.plugins:maven-dependency-plugin</a></li>
 						<li class="toplevel"><a href="#Plugin_orgapachemavenpluginsmaven-deploy-plugin" title="Plugin org.apache.maven.plugins:maven-deploy-plugin">Plugin org.apache.maven.plugins:maven-deploy-plugin</a></li>
+						<li class="toplevel"><a href="#Plugin_orgapachemavenpluginsmaven-enforcer-plugin" title="Plugin org.apache.maven.plugins:maven-enforcer-plugin">Plugin org.apache.maven.plugins:maven-enforcer-plugin</a></li>
 						<li class="toplevel"><a href="#Plugin_orgapachemavenpluginsmaven-install-plugin" title="Plugin org.apache.maven.plugins:maven-install-plugin">Plugin org.apache.maven.plugins:maven-install-plugin</a></li>
 						<li class="toplevel"><a href="#Plugin_orgapachemavenpluginsmaven-jar-plugin" title="Plugin org.apache.maven.plugins:maven-jar-plugin">Plugin org.apache.maven.plugins:maven-jar-plugin</a></li>
+						<li class="toplevel"><a href="#Plugin_orgapachemavenpluginsmaven-javadoc-plugin" title="Plugin org.apache.maven.plugins:maven-javadoc-plugin">Plugin org.apache.maven.plugins:maven-javadoc-plugin</a></li>
 						<li class="toplevel"><a href="#Plugin_orgapachemavenpluginsmaven-release-plugin" title="Plugin org.apache.maven.plugins:maven-release-plugin">Plugin org.apache.maven.plugins:maven-release-plugin</a></li>
 						<li class="toplevel"><a href="#Plugin_orgapachemavenpluginsmaven-resources-plugin" title="Plugin org.apache.maven.plugins:maven-resources-plugin">Plugin org.apache.maven.plugins:maven-resources-plugin</a></li>
 						<li class="toplevel"><a href="#Plugin_orgapachemavenpluginsmaven-scm-publish-plugin" title="Plugin org.apache.maven.plugins:maven-scm-publish-plugin">Plugin org.apache.maven.plugins:maven-scm-publish-plugin</a></li>
@@ -127,6 +129,7 @@
 
 							</ul>
 						</li>
+						<li class="toplevel"><a href="#Plugin_orgapachemavenpluginsmaven-source-plugin" title="Plugin org.apache.maven.plugins:maven-source-plugin">Plugin org.apache.maven.plugins:maven-source-plugin</a></li>
 						<li class="toplevel"><a href="#Plugin_orgapachemavenpluginsmaven-surefire-plugin" title="Plugin org.apache.maven.plugins:maven-surefire-plugin">Plugin org.apache.maven.plugins:maven-surefire-plugin</a></li>
 						<li class="toplevel"><a href="#Plugin_orgjacocojacoco-maven-plugin" title="Plugin org.jacoco:jacoco-maven-plugin">Plugin org.jacoco:jacoco-maven-plugin</a></li>
 					</ul>
@@ -149,7 +152,7 @@
    <tr class="a"> 
     <td><i class="icon-ok"></i></td> 
     <td># of plugins using the latest version available</td> 
-    <td>12</td> 
+    <td>14</td> 
    </tr> 
    <tr class="b"> 
     <td><i class="icon-warning-sign"></i></td> 
@@ -159,7 +162,7 @@
    <tr class="a"> 
     <td><i class="icon-warning-sign"></i></td> 
     <td># of plugins where the next version available is an incremental version update</td> 
-    <td>0</td> 
+    <td>1</td> 
    </tr> 
    <tr class="b"> 
     <td><i class="icon-warning-sign"></i></td> 
@@ -288,6 +291,17 @@
     <tr class="a"> 
      <td><i class="icon-ok"></i></td> 
      <td>org.apache.maven.plugins</td> 
+     <td>maven-javadoc-plugin</td> 
+     <td><b>2.9.1</b></td> 
+     <td></td> 
+     <td></td> 
+     <td></td> 
+     <td></td> 
+     <td><i class="icon-ok"></i></td> 
+    </tr> 
+    <tr class="b"> 
+     <td><i class="icon-ok"></i></td> 
+     <td>org.apache.maven.plugins</td> 
      <td>maven-release-plugin</td> 
      <td><b>2.4.1</b></td> 
      <td></td> 
@@ -296,7 +310,7 @@
      <td></td> 
      <td><i class="icon-ok"></i></td> 
     </tr> 
-    <tr class="b"> 
+    <tr class="a"> 
      <td><i class="icon-ok"></i></td> 
      <td>org.apache.maven.plugins</td> 
      <td>maven-resources-plugin</td> 
@@ -307,7 +321,7 @@
      <td></td> 
      <td><i class="icon-ok"></i></td> 
     </tr> 
-    <tr class="a"> 
+    <tr class="b"> 
      <td><i class="icon-ok"></i></td> 
      <td>org.apache.maven.plugins</td> 
      <td>maven-scm-publish-plugin</td> 
@@ -318,11 +332,22 @@
      <td></td> 
      <td><i class="icon-ok"></i></td> 
     </tr> 
-    <tr class="b"> 
+    <tr class="a"> 
      <td><i class="icon-ok"></i></td> 
      <td>org.apache.maven.plugins</td> 
      <td>maven-site-plugin</td> 
      <td><b>3.3</b></td> 
+     <td></td> 
+     <td></td> 
+     <td></td> 
+     <td></td> 
+     <td><i class="icon-ok"></i></td> 
+    </tr> 
+    <tr class="b"> 
+     <td><i class="icon-ok"></i></td> 
+     <td>org.apache.maven.plugins</td> 
+     <td>maven-source-plugin</td> 
+     <td><b>2.2.1</b></td> 
      <td></td> 
      <td></td> 
      <td></td> 
@@ -347,7 +372,7 @@
   <h3 id="Plugins">Plugins</h3> 
   <table border="0" class="bodyTable table table-striped table-hover"> 
    <thead> 
-    <tr class="b"> 
+    <tr class="a"> 
      <th>Status</th> 
      <th>Group Id</th> 
      <th>Artifact Id</th> 
@@ -374,6 +399,17 @@
    </thead> 
    <tbody> 
     <tr class="b"> 
+     <td><i class="icon-warning-sign"></i></td> 
+     <td>org.apache.maven.plugins</td> 
+     <td>maven-enforcer-plugin</td> 
+     <td>1.0</td> 
+     <td></td> 
+     <td><b>1.0.1</b></td> 
+     <td><b>1.1</b></td> 
+     <td></td> 
+     <td><i class="icon-ok"></i></td> 
+    </tr> 
+    <tr class="a"> 
      <td><i class="icon-ok"></i></td> 
      <td>org.apache.maven.plugins</td> 
      <td>maven-jar-plugin</td> 
@@ -384,7 +420,7 @@
      <td></td> 
      <td><i class="icon-ok"></i></td> 
     </tr> 
-    <tr class="a"> 
+    <tr class="b"> 
      <td><i class="icon-ok"></i></td> 
      <td>org.jacoco</td> 
      <td>jacoco-maven-plugin</td> 
@@ -406,31 +442,31 @@
   <h3 id="Plugin_orgapachemavenpluginsmaven-antrun-plugin">Plugin org.apache.maven.plugins:maven-antrun-plugin</h3> 
   <table border="0" class="bodyTable table table-striped table-hover"> 
    <thead> 
-    <tr class="a"> 
+    <tr class="b"> 
      <th width="80%">Newer versions</th> 
      <td><b>1.4</b>&nbsp;<i>Next Minor</i><br />1.5<br />1.6<br /><b>1.7</b>&nbsp;<i>Latest Minor</i></td> 
     </tr> 
    </thead> 
    <thead> 
-    <tr class="b"> 
+    <tr class="a"> 
      <th width="80%">Current Version</th> 
      <td>1.3</td> 
     </tr> 
    </thead> 
    <thead> 
-    <tr class="a"> 
+    <tr class="b"> 
      <th width="80%">Artifact Id</th> 
      <td>maven-antrun-plugin</td> 
     </tr> 
    </thead> 
    <thead> 
-    <tr class="b"> 
+    <tr class="a"> 
      <th width="80%">Group Id</th> 
      <td>org.apache.maven.plugins</td> 
     </tr> 
    </thead> 
    <thead> 
-    <tr class="a"> 
+    <tr class="b"> 
      <th width="80%">Status</th> 
      <td><i class="icon-warning-sign"></i>&nbsp;There is at least one newer minor version available. Minor updates are sometimes passive.</td> 
     </tr> 
@@ -601,6 +637,43 @@
   </table> 
  </div> 
  <div class="section"> 
+  <h3 id="Plugin_orgapachemavenpluginsmaven-enforcer-plugin">Plugin org.apache.maven.plugins:maven-enforcer-plugin</h3> 
+  <table border="0" class="bodyTable table table-striped table-hover"> 
+   <thead> 
+    <tr class="a"> 
+     <th width="80%">Newer versions</th> 
+     <td><b>1.0.1</b>&nbsp;<i>Next Incremental</i><br /><b>1.1</b>&nbsp;<i>Next Minor</i><br />1.1.1<br />1.2<br />1.3<br /><b>1.3.1</b>&nbsp;<i>Latest Minor</i></td> 
+    </tr> 
+   </thead> 
+   <thead> 
+    <tr class="b"> 
+     <th width="80%">Current Version</th> 
+     <td>1.0</td> 
+    </tr> 
+   </thead> 
+   <thead> 
+    <tr class="a"> 
+     <th width="80%">Artifact Id</th> 
+     <td>maven-enforcer-plugin</td> 
+    </tr> 
+   </thead> 
+   <thead> 
+    <tr class="b"> 
+     <th width="80%">Group Id</th> 
+     <td>org.apache.maven.plugins</td> 
+    </tr> 
+   </thead> 
+   <thead> 
+    <tr class="a"> 
+     <th width="80%">Status</th> 
+     <td><i class="icon-warning-sign"></i>&nbsp;There is at least one newer incremental version available. Incremental updates are typically passive.</td> 
+    </tr> 
+   </thead> 
+   <tbody> 
+   </tbody> 
+  </table> 
+ </div> 
+ <div class="section"> 
   <h3 id="Plugin_orgapachemavenpluginsmaven-install-plugin">Plugin org.apache.maven.plugins:maven-install-plugin</h3> 
   <table border="0" class="bodyTable table table-striped table-hover"> 
    <thead> 
@@ -644,6 +717,37 @@
     <tr class="a"> 
      <th width="80%">Artifact Id</th> 
      <td>maven-jar-plugin</td> 
+    </tr> 
+   </thead> 
+   <thead> 
+    <tr class="b"> 
+     <th width="80%">Group Id</th> 
+     <td>org.apache.maven.plugins</td> 
+    </tr> 
+   </thead> 
+   <thead> 
+    <tr class="a"> 
+     <th width="80%">Status</th> 
+     <td><i class="icon-ok"></i>&nbsp;No newer versions available.</td> 
+    </tr> 
+   </thead> 
+   <tbody> 
+   </tbody> 
+  </table> 
+ </div> 
+ <div class="section"> 
+  <h3 id="Plugin_orgapachemavenpluginsmaven-javadoc-plugin">Plugin org.apache.maven.plugins:maven-javadoc-plugin</h3> 
+  <table border="0" class="bodyTable table table-striped table-hover"> 
+   <thead> 
+    <tr class="b"> 
+     <th width="80%">Current Version</th> 
+     <td>2.9.1</td> 
+    </tr> 
+   </thead> 
+   <thead> 
+    <tr class="a"> 
+     <th width="80%">Artifact Id</th> 
+     <td>maven-javadoc-plugin</td> 
     </tr> 
    </thead> 
    <thead> 
@@ -985,6 +1089,37 @@
     </tbody> 
    </table> 
   </div> 
+ </div> 
+ <div class="section"> 
+  <h3 id="Plugin_orgapachemavenpluginsmaven-source-plugin">Plugin org.apache.maven.plugins:maven-source-plugin</h3> 
+  <table border="0" class="bodyTable table table-striped table-hover"> 
+   <thead> 
+    <tr class="b"> 
+     <th width="80%">Current Version</th> 
+     <td>2.2.1</td> 
+    </tr> 
+   </thead> 
+   <thead> 
+    <tr class="a"> 
+     <th width="80%">Artifact Id</th> 
+     <td>maven-source-plugin</td> 
+    </tr> 
+   </thead> 
+   <thead> 
+    <tr class="b"> 
+     <th width="80%">Group Id</th> 
+     <td>org.apache.maven.plugins</td> 
+    </tr> 
+   </thead> 
+   <thead> 
+    <tr class="a"> 
+     <th width="80%">Status</th> 
+     <td><i class="icon-ok"></i>&nbsp;No newer versions available.</td> 
+    </tr> 
+   </thead> 
+   <tbody> 
+   </tbody> 
+  </table> 
  </div> 
  <div class="section"> 
   <h3 id="Plugin_orgapachemavenpluginsmaven-surefire-plugin">Plugin org.apache.maven.plugins:maven-surefire-plugin</h3> 
