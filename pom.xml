@@ -173,6 +173,7 @@
                     <artifactId>maven-scm-publish-plugin</artifactId>
                     <version>1.0-beta-2</version>
                     <configuration>
+                        <content>${project.build.directory}/site</content>
                         <scmBranch>gh-pages</scmBranch>
                         <pubScmUrl>${project.scm.developerConnection}</pubScmUrl>
                     </configuration>
