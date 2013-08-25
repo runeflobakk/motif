@@ -10,11 +10,12 @@ Documentation
 
 ## The API
 
-- [`Iterate`][Iterate]: The entry point for working with collections with Motif. Home of
+- [`Iterate`][Iterate]: The entry point for working with _collections_ with Motif. Home of
   several overloaded static `on(..)` methods, which accepts common Java objects, and enables
   manipulating it through Motif's API.
-- [`Optional`](optional.html): A special construct for dealing with single values/objects
-  without ever needing to do tedious `null`-checking.
+- [`Singular`][Singular]: The entry point for working with _single values_ with Motif. Here you
+  create instances of [`Optional`](optional.html), which is a special construct for dealing with
+  single values/objects without ever needing to do tedious `null`-checking.
   
 
 ### Functional interfaces
@@ -60,6 +61,7 @@ interfaces that imitate function types. The two most important ones are:
 [PreparedIterable]: apidocs/no/motif/iter/PreparedIterable.html "PreparedIterable class"
 [CollectingIterable]: apidocs/no/motif/iter/CollectingIterable.html "CollectingIterable class"
 [Iterate]: apidocs/no/motif/Iterate.html "Iterate class"
+[Singular]: apidocs/no/motif/Singular.html "Singular class"
 [Strings]: apidocs/no/motif/Strings.html "String functions"
 [Longs]: apidocs/no/motif/Longs.html "Long functions"
 [Ints]: apidocs/no/motif/Ints.html "Integer functions"
