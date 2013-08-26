@@ -10,48 +10,52 @@
 
 <a class="jxr_linenumber" name="1" href="#1">1</a>   <strong class="jxr_keyword">package</strong> no.motif.f;
 <a class="jxr_linenumber" name="2" href="#2">2</a>   
-<a class="jxr_linenumber" name="3" href="#3">3</a>   <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="4" href="#4">4</a>   <em class="jxr_javadoccomment"> * A predicate is a function taking a value of type &lt;code&gt;T&lt;/code&gt;, and evaluates it</em>
-<a class="jxr_linenumber" name="5" href="#5">5</a>   <em class="jxr_javadoccomment"> * as either &lt;code&gt;true&lt;/code&gt; or &lt;code&gt;false&lt;/code&gt;.</em>
-<a class="jxr_linenumber" name="6" href="#6">6</a>   <em class="jxr_javadoccomment"> *</em>
-<a class="jxr_linenumber" name="7" href="#7">7</a>   <em class="jxr_javadoccomment"> * &lt;pre&gt;</em>
-<a class="jxr_linenumber" name="8" href="#8">8</a>   <em class="jxr_javadoccomment"> * &amp;fnof;(T) &amp;isin; {true, false}</em>
-<a class="jxr_linenumber" name="9" href="#9">9</a>   <em class="jxr_javadoccomment"> * &lt;/pre&gt;</em>
-<a class="jxr_linenumber" name="10" href="#10">10</a>  <em class="jxr_javadoccomment"> *</em>
-<a class="jxr_linenumber" name="11" href="#11">11</a>  <em class="jxr_javadoccomment"> * Semantically, a predicate is a specialization</em>
-<a class="jxr_linenumber" name="12" href="#12">12</a>  <em class="jxr_javadoccomment"> * of {@link Fn}, with the return type set to primitive {@link Boolean boolean}.</em>
-<a class="jxr_linenumber" name="13" href="#13">13</a>  <em class="jxr_javadoccomment"> * Since Java does not allow type parameterization with primitive types, and predicates</em>
-<a class="jxr_linenumber" name="14" href="#14">14</a>  <em class="jxr_javadoccomment"> * play such an important role, it has been modeled as its own separate type.</em>
-<a class="jxr_linenumber" name="15" href="#15">15</a>  <em class="jxr_javadoccomment"> *</em>
-<a class="jxr_linenumber" name="16" href="#16">16</a>  <em class="jxr_javadoccomment"> * @param &lt;T&gt; The type of objects the predicate can evaluate.</em>
-<a class="jxr_linenumber" name="17" href="#17">17</a>  <em class="jxr_javadoccomment"> */</em>
-<a class="jxr_linenumber" name="18" href="#18">18</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">interface</strong> Predicate&lt;T&gt; {
-<a class="jxr_linenumber" name="19" href="#19">19</a>      <strong class="jxr_keyword">boolean</strong> $(T value);
-<a class="jxr_linenumber" name="20" href="#20">20</a>  
-<a class="jxr_linenumber" name="21" href="#21">21</a>      <strong class="jxr_keyword">class</strong> Always&lt;T&gt; <strong class="jxr_keyword">implements</strong> Predicate&lt;T&gt; {
+<a class="jxr_linenumber" name="3" href="#3">3</a>   <strong class="jxr_keyword">import</strong> java.io.Serializable;
+<a class="jxr_linenumber" name="4" href="#4">4</a>   
+<a class="jxr_linenumber" name="5" href="#5">5</a>   <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="6" href="#6">6</a>   <em class="jxr_javadoccomment"> * A predicate is a function taking a value of type &lt;code&gt;T&lt;/code&gt;, and evaluates it</em>
+<a class="jxr_linenumber" name="7" href="#7">7</a>   <em class="jxr_javadoccomment"> * as either &lt;code&gt;true&lt;/code&gt; or &lt;code&gt;false&lt;/code&gt;.</em>
+<a class="jxr_linenumber" name="8" href="#8">8</a>   <em class="jxr_javadoccomment"> *</em>
+<a class="jxr_linenumber" name="9" href="#9">9</a>   <em class="jxr_javadoccomment"> * &lt;pre&gt;</em>
+<a class="jxr_linenumber" name="10" href="#10">10</a>  <em class="jxr_javadoccomment"> * &amp;fnof;(T) &amp;isin; {true, false}</em>
+<a class="jxr_linenumber" name="11" href="#11">11</a>  <em class="jxr_javadoccomment"> * &lt;/pre&gt;</em>
+<a class="jxr_linenumber" name="12" href="#12">12</a>  <em class="jxr_javadoccomment"> *</em>
+<a class="jxr_linenumber" name="13" href="#13">13</a>  <em class="jxr_javadoccomment"> * Semantically, a predicate is a specialization</em>
+<a class="jxr_linenumber" name="14" href="#14">14</a>  <em class="jxr_javadoccomment"> * of {@link Fn}, with the return type set to primitive {@link Boolean boolean}.</em>
+<a class="jxr_linenumber" name="15" href="#15">15</a>  <em class="jxr_javadoccomment"> * Since Java does not allow type parameterization with primitive types, and predicates</em>
+<a class="jxr_linenumber" name="16" href="#16">16</a>  <em class="jxr_javadoccomment"> * play such an important role, it has been modeled as its own separate type.</em>
+<a class="jxr_linenumber" name="17" href="#17">17</a>  <em class="jxr_javadoccomment"> *</em>
+<a class="jxr_linenumber" name="18" href="#18">18</a>  <em class="jxr_javadoccomment"> * @param &lt;T&gt; The type of objects the predicate can evaluate.</em>
+<a class="jxr_linenumber" name="19" href="#19">19</a>  <em class="jxr_javadoccomment"> */</em>
+<a class="jxr_linenumber" name="20" href="#20">20</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">interface</strong> Predicate&lt;T&gt; <strong class="jxr_keyword">extends</strong> Serializable {
+<a class="jxr_linenumber" name="21" href="#21">21</a>      <strong class="jxr_keyword">boolean</strong> $(T value);
 <a class="jxr_linenumber" name="22" href="#22">22</a>  
-<a class="jxr_linenumber" name="23" href="#23">23</a>          @SuppressWarnings(<span class="jxr_string">"unchecked"</span>)
-<a class="jxr_linenumber" name="24" href="#24">24</a>          <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> &lt;T&gt; Predicate&lt;T&gt; no() { <strong class="jxr_keyword">return</strong> (Predicate&lt;T&gt;) FALSE; }
-<a class="jxr_linenumber" name="25" href="#25">25</a>  
-<a class="jxr_linenumber" name="26" href="#26">26</a>          @SuppressWarnings(<span class="jxr_string">"unchecked"</span>)
-<a class="jxr_linenumber" name="27" href="#27">27</a>          <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> &lt;T&gt; Predicate&lt;T&gt; yes() { <strong class="jxr_keyword">return</strong> (Predicate&lt;T&gt;) TRUE; }
-<a class="jxr_linenumber" name="28" href="#28">28</a>  
+<a class="jxr_linenumber" name="23" href="#23">23</a>      <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">class</strong> Always&lt;T&gt; <strong class="jxr_keyword">implements</strong> Predicate&lt;T&gt; {
+<a class="jxr_linenumber" name="24" href="#24">24</a>  
+<a class="jxr_linenumber" name="25" href="#25">25</a>          <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">long</strong> serialVersionUID = 1L;
+<a class="jxr_linenumber" name="26" href="#26">26</a>  
+<a class="jxr_linenumber" name="27" href="#27">27</a>          @SuppressWarnings(<span class="jxr_string">"unchecked"</span>)
+<a class="jxr_linenumber" name="28" href="#28">28</a>          <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> &lt;T&gt; Predicate&lt;T&gt; no() { <strong class="jxr_keyword">return</strong> (Predicate&lt;T&gt;) FALSE; }
 <a class="jxr_linenumber" name="29" href="#29">29</a>  
-<a class="jxr_linenumber" name="30" href="#30">30</a>          <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> Predicate&lt;?&gt; FALSE = <strong class="jxr_keyword">new</strong> Always&lt;Object&gt;(false);
-<a class="jxr_linenumber" name="31" href="#31">31</a>          <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> Predicate&lt;?&gt; TRUE = <strong class="jxr_keyword">new</strong> Always&lt;Object&gt;(<strong class="jxr_keyword">true</strong>);
+<a class="jxr_linenumber" name="30" href="#30">30</a>          @SuppressWarnings(<span class="jxr_string">"unchecked"</span>)
+<a class="jxr_linenumber" name="31" href="#31">31</a>          <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> &lt;T&gt; Predicate&lt;T&gt; yes() { <strong class="jxr_keyword">return</strong> (Predicate&lt;T&gt;) TRUE; }
 <a class="jxr_linenumber" name="32" href="#32">32</a>  
-<a class="jxr_linenumber" name="33" href="#33">33</a>          <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">boolean</strong> constant;
-<a class="jxr_linenumber" name="34" href="#34">34</a>  
-<a class="jxr_linenumber" name="35" href="#35">35</a>          <strong class="jxr_keyword">private</strong> <a href="../../../no/motif/f/Predicate.html">Always</a>(<strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">boolean</strong> constant) {
-<a class="jxr_linenumber" name="36" href="#36">36</a>              <strong class="jxr_keyword">this</strong>.constant = constant;
-<a class="jxr_linenumber" name="37" href="#37">37</a>          }
+<a class="jxr_linenumber" name="33" href="#33">33</a>  
+<a class="jxr_linenumber" name="34" href="#34">34</a>          <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> Predicate&lt;?&gt; FALSE = <strong class="jxr_keyword">new</strong> Always&lt;Object&gt;(false);
+<a class="jxr_linenumber" name="35" href="#35">35</a>          <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> Predicate&lt;?&gt; TRUE = <strong class="jxr_keyword">new</strong> Always&lt;Object&gt;(<strong class="jxr_keyword">true</strong>);
+<a class="jxr_linenumber" name="36" href="#36">36</a>  
+<a class="jxr_linenumber" name="37" href="#37">37</a>          <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">boolean</strong> constant;
 <a class="jxr_linenumber" name="38" href="#38">38</a>  
-<a class="jxr_linenumber" name="39" href="#39">39</a>          @Override
-<a class="jxr_linenumber" name="40" href="#40">40</a>          <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">boolean</strong> $(T value) {
-<a class="jxr_linenumber" name="41" href="#41">41</a>              <strong class="jxr_keyword">return</strong> constant;
-<a class="jxr_linenumber" name="42" href="#42">42</a>          }
-<a class="jxr_linenumber" name="43" href="#43">43</a>      }
-<a class="jxr_linenumber" name="44" href="#44">44</a>  }
+<a class="jxr_linenumber" name="39" href="#39">39</a>          <strong class="jxr_keyword">private</strong> <a href="../../../no/motif/f/Predicate.html">Always</a>(<strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">boolean</strong> constant) {
+<a class="jxr_linenumber" name="40" href="#40">40</a>              <strong class="jxr_keyword">this</strong>.constant = constant;
+<a class="jxr_linenumber" name="41" href="#41">41</a>          }
+<a class="jxr_linenumber" name="42" href="#42">42</a>  
+<a class="jxr_linenumber" name="43" href="#43">43</a>          @Override
+<a class="jxr_linenumber" name="44" href="#44">44</a>          <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">boolean</strong> $(T value) {
+<a class="jxr_linenumber" name="45" href="#45">45</a>              <strong class="jxr_keyword">return</strong> constant;
+<a class="jxr_linenumber" name="46" href="#46">46</a>          }
+<a class="jxr_linenumber" name="47" href="#47">47</a>      }
+<a class="jxr_linenumber" name="48" href="#48">48</a>  }
 </pre>
 <hr/><div id="footer">This page was automatically generated by <a href="http://maven.apache.org/">Maven</a></div></body>
 </html>

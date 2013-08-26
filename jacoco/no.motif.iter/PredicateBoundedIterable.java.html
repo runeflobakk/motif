@@ -3,28 +3,29 @@
 import static no.motif.Iterate.hasNext;
 import static no.motif.Singular.optional;
 
+import java.io.Serializable;
 import java.util.Iterator;
 
 import no.motif.Iterate;
 import no.motif.f.Predicate;
 import no.motif.option.Optional;
 
-public class PredicateBoundedIterable&lt;T&gt; implements Iterable&lt;T&gt; {
+public class PredicateBoundedIterable&lt;T&gt; implements Iterable&lt;T&gt;, Serializable {
 
     private final Predicate&lt;? super T&gt; predicate;
     private final Iterable&lt;T&gt; elements;
 
-<span class="fc" id="L17">    public PredicateBoundedIterable(Predicate&lt;? super T&gt; predicate, Iterable&lt;T&gt; elements) {</span>
-<span class="fc" id="L18">        this.predicate = predicate;</span>
-<span class="fc" id="L19">        this.elements = elements;</span>
-<span class="fc" id="L20">    }</span>
+<span class="fc" id="L18">    public PredicateBoundedIterable(Predicate&lt;? super T&gt; predicate, Iterable&lt;T&gt; elements) {</span>
+<span class="fc" id="L19">        this.predicate = predicate;</span>
+<span class="fc" id="L20">        this.elements = elements;</span>
+<span class="fc" id="L21">    }</span>
 
     @Override
     public Iterator&lt;T&gt; iterator() {
-<span class="fc" id="L24">        return new SimpleIterator&lt;T&gt;() {</span>
-<span class="fc" id="L25">            final Iterator&lt;T&gt; iterator = elements.iterator();</span>
+<span class="fc" id="L25">        return new SimpleIterator&lt;T&gt;() {</span>
+<span class="fc" id="L26">            final Iterator&lt;T&gt; iterator = elements.iterator();</span>
             @Override protected Optional&lt;T&gt; nextIfAvailable() {
-<span class="fc" id="L27">                return optional(hasNext, iterator).map(predicate, Iterate.&lt;T&gt;next());</span>
+<span class="fc" id="L28">                return optional(hasNext, iterator).map(predicate, Iterate.&lt;T&gt;next());</span>
             }};
     }
 

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Predicate.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Motif</a> &gt; <a href="index.html" class="el_package">no.motif.f</a> &gt; <span class="el_source">Predicate.java</span></div><h1>Predicate.java</h1><pre class="source lang-java linenums">package no.motif.f;
 
+import java.io.Serializable;
+
 /**
  * A predicate is a function taking a value of type &lt;code&gt;T&lt;/code&gt;, and evaluates it
  * as either &lt;code&gt;true&lt;/code&gt; or &lt;code&gt;false&lt;/code&gt;.
@@ -15,30 +17,32 @@
  *
  * @param &lt;T&gt; The type of objects the predicate can evaluate.
  */
-public interface Predicate&lt;T&gt; {
+public interface Predicate&lt;T&gt; extends Serializable {
     boolean $(T value);
 
-    class Always&lt;T&gt; implements Predicate&lt;T&gt; {
+    final class Always&lt;T&gt; implements Predicate&lt;T&gt; {
+
+        private static final long serialVersionUID = 1L;
 
         @SuppressWarnings(&quot;unchecked&quot;)
-<span class="fc" id="L24">        public static &lt;T&gt; Predicate&lt;T&gt; no() { return (Predicate&lt;T&gt;) FALSE; }</span>
+<span class="fc" id="L28">        public static &lt;T&gt; Predicate&lt;T&gt; no() { return (Predicate&lt;T&gt;) FALSE; }</span>
 
         @SuppressWarnings(&quot;unchecked&quot;)
-<span class="fc" id="L27">        public static &lt;T&gt; Predicate&lt;T&gt; yes() { return (Predicate&lt;T&gt;) TRUE; }</span>
+<span class="fc" id="L31">        public static &lt;T&gt; Predicate&lt;T&gt; yes() { return (Predicate&lt;T&gt;) TRUE; }</span>
 
 
-<span class="fc" id="L30">        private static Predicate&lt;?&gt; FALSE = new Always&lt;Object&gt;(false);</span>
-<span class="fc" id="L31">        private static Predicate&lt;?&gt; TRUE = new Always&lt;Object&gt;(true);</span>
+<span class="fc" id="L34">        private static Predicate&lt;?&gt; FALSE = new Always&lt;Object&gt;(false);</span>
+<span class="fc" id="L35">        private static Predicate&lt;?&gt; TRUE = new Always&lt;Object&gt;(true);</span>
 
         private final boolean constant;
 
-<span class="fc" id="L35">        private Always(final boolean constant) {</span>
-<span class="fc" id="L36">            this.constant = constant;</span>
-<span class="fc" id="L37">        }</span>
+<span class="fc" id="L39">        private Always(final boolean constant) {</span>
+<span class="fc" id="L40">            this.constant = constant;</span>
+<span class="fc" id="L41">        }</span>
 
         @Override
-        public boolean $(T value) {
-<span class="fc" id="L41">            return constant;</span>
+        public final boolean $(T value) {
+<span class="fc" id="L45">            return constant;</span>
         }
     }
 }

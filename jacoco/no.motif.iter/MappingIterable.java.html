@@ -3,31 +3,32 @@
 import static no.motif.Iterate.hasNext;
 import static no.motif.Singular.optional;
 
+import java.io.Serializable;
 import java.util.Iterator;
 
 import no.motif.Iterate;
 import no.motif.f.Fn;
 import no.motif.option.Optional;
 
-final class MappingIterable&lt;I, O&gt; implements Iterable&lt;O&gt; {
+final class MappingIterable&lt;I, O&gt; implements Iterable&lt;O&gt;, Serializable {
 
     private final Iterable&lt;I&gt; elements;
 
     private final Fn&lt;? super I, O&gt; map;
 
-<span class="fc" id="L18">    MappingIterable(Iterable&lt;I&gt; elements, Fn&lt;? super I, O&gt; map) {</span>
-<span class="fc" id="L19">        this.elements = elements;</span>
-<span class="fc" id="L20">        this.map = map;</span>
-<span class="fc" id="L21">    }</span>
+<span class="fc" id="L19">    MappingIterable(Iterable&lt;I&gt; elements, Fn&lt;? super I, O&gt; map) {</span>
+<span class="fc" id="L20">        this.elements = elements;</span>
+<span class="fc" id="L21">        this.map = map;</span>
+<span class="fc" id="L22">    }</span>
 
     @Override
     public Iterator&lt;O&gt; iterator() {
-<span class="fc" id="L25">        return new SimpleIterator&lt;O&gt;() {</span>
-<span class="fc" id="L26">            final Iterator&lt;I&gt; iterator = elements.iterator();</span>
+<span class="fc" id="L26">        return new SimpleIterator&lt;O&gt;() {</span>
+<span class="fc" id="L27">            final Iterator&lt;I&gt; iterator = elements.iterator();</span>
 
             @Override
             protected Optional&lt;O&gt; nextIfAvailable() {
-<span class="fc" id="L30">                return optional(hasNext, iterator).map(Iterate.&lt;I&gt;next()).map(map);</span>
+<span class="fc" id="L31">                return optional(hasNext, iterator).map(Iterate.&lt;I&gt;next()).map(map);</span>
             }
         };
     }

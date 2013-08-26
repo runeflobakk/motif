@@ -2,6 +2,7 @@
 
 import static java.util.Collections.unmodifiableList;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -20,20 +21,20 @@ import no.motif.types.Reducible;
  *
  * @param &lt;T&gt; The type of elements in this iterable.
  */
-<span class="fc" id="L23">public abstract class CollectingIterable&lt;T&gt; implements Iterable&lt;T&gt;, Reducible&lt;T&gt; {</span>
+<span class="fc" id="L24">public abstract class CollectingIterable&lt;T&gt; implements Iterable&lt;T&gt;, Reducible&lt;T&gt;, Serializable {</span>
 
     @Override
     public final &lt;O&gt; O reduce(O unit, Fn2&lt;? super O, ? super T, ? extends O&gt; reducer) {
-<span class="fc" id="L27">        O reduced = unit;</span>
-<span class="fc bfc" id="L28" title="All 2 branches covered.">        for (T element : this) reduced = reducer.$(reduced, element);</span>
-<span class="fc" id="L29">        return reduced;</span>
+<span class="fc" id="L28">        O reduced = unit;</span>
+<span class="fc bfc" id="L29" title="All 2 branches covered.">        for (T element : this) reduced = reducer.$(reduced, element);</span>
+<span class="fc" id="L30">        return reduced;</span>
     }
 
     /**
      * @return the contents of the iterable as an unmodifiable list.
      */
     public final List&lt;T&gt; collect() {
-<span class="fc" id="L36">        return unmodifiableList(collectIn(new ArrayList&lt;T&gt;()));</span>
+<span class="fc" id="L37">        return unmodifiableList(collectIn(new ArrayList&lt;T&gt;()));</span>
     }
 
     /**
@@ -50,10 +51,10 @@ import no.motif.types.Reducible;
      * @return the given collection is returned.
      */
     public final &lt;C extends Collection&lt;T&gt;&gt; C collectIn(C collection) {
-<span class="fc bfc" id="L53" title="All 2 branches covered.">        for (T t : this) {</span>
-<span class="fc" id="L54">            collection.add(t);</span>
-<span class="fc" id="L55">        }</span>
-<span class="fc" id="L56">        return collection;</span>
+<span class="fc bfc" id="L54" title="All 2 branches covered.">        for (T t : this) {</span>
+<span class="fc" id="L55">            collection.add(t);</span>
+<span class="fc" id="L56">        }</span>
+<span class="fc" id="L57">        return collection;</span>
     }
 
 
@@ -61,7 +62,7 @@ import no.motif.types.Reducible;
      * @return &lt;code&gt;true&lt;/code&gt; if empty, &lt;code&gt;false&lt;/code&gt; otherwise.
      */
     public boolean isEmpty() {
-<span class="fc bfc" id="L64" title="All 2 branches covered.">        return !iterator().hasNext();</span>
+<span class="fc bfc" id="L65" title="All 2 branches covered.">        return !iterator().hasNext();</span>
     }
 
 
@@ -73,8 +74,8 @@ import no.motif.types.Reducible;
      *         otherwise &lt;code&gt;false&lt;/code&gt;.
      */
     public boolean exists(Predicate&lt;? super T&gt; predicate) {
-<span class="fc bfc" id="L76" title="All 4 branches covered.">        for (T t : this) if (predicate.$(t)) return true;</span>
-<span class="fc" id="L77">        return false;</span>
+<span class="fc bfc" id="L77" title="All 4 branches covered.">        for (T t : this) if (predicate.$(t)) return true;</span>
+<span class="fc" id="L78">        return false;</span>
     }
 
 
@@ -85,7 +86,7 @@ import no.motif.types.Reducible;
      */
     @Override
     public String toString() {
-<span class="fc" id="L88">        return collect().toString();</span>
+<span class="fc" id="L89">        return collect().toString();</span>
     }
 
 }

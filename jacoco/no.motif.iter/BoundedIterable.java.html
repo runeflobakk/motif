@@ -2,26 +2,27 @@
 
 import static no.motif.Singular.optional;
 
+import java.io.Serializable;
 import java.util.Iterator;
 
 import no.motif.Singular;
 import no.motif.option.Optional;
 
-class BoundedIterable&lt;T&gt; implements Iterable&lt;T&gt; {
+class BoundedIterable&lt;T&gt; implements Iterable&lt;T&gt;, Serializable {
 
     private final Iterable&lt;T&gt; elements;
     private final int maxAmount;
 
-<span class="fc" id="L15">    public BoundedIterable(int maxAmount, Iterable&lt;T&gt; elements) {</span>
-<span class="fc" id="L16">        this.maxAmount = maxAmount;</span>
-<span class="fc" id="L17">        this.elements = elements;}</span>
+<span class="fc" id="L16">    public BoundedIterable(int maxAmount, Iterable&lt;T&gt; elements) {</span>
+<span class="fc" id="L17">        this.maxAmount = maxAmount;</span>
+<span class="fc" id="L18">        this.elements = elements;}</span>
 
     @Override public Iterator&lt;T&gt; iterator() {
-<span class="fc" id="L20">        return new SimpleIterator&lt;T&gt;() {</span>
-<span class="fc" id="L21">            int returned = 0;</span>
-<span class="fc" id="L22">            final Iterator&lt;T&gt; iterator = elements.iterator();</span>
+<span class="fc" id="L21">        return new SimpleIterator&lt;T&gt;() {</span>
+<span class="fc" id="L22">            int returned = 0;</span>
+<span class="fc" id="L23">            final Iterator&lt;T&gt; iterator = elements.iterator();</span>
             @Override protected Optional&lt;T&gt; nextIfAvailable() {
-<span class="fc bfc" id="L24" title="All 4 branches covered.">                return returned++ &lt; maxAmount &amp;&amp; iterator.hasNext()? optional(iterator.next()) : Singular.&lt;T&gt;none();</span>
+<span class="fc bfc" id="L25" title="All 4 branches covered.">                return returned++ &lt; maxAmount &amp;&amp; iterator.hasNext()? optional(iterator.next()) : Singular.&lt;T&gt;none();</span>
             }};
     }
 

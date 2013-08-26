@@ -3,33 +3,34 @@
 import static no.motif.Singular.none;
 import static no.motif.Singular.optional;
 
+import java.io.Serializable;
 import java.util.Iterator;
 
 import no.motif.f.Predicate;
 import no.motif.option.Optional;
 
-final class FilteredIterable&lt;T&gt; implements Iterable&lt;T&gt; {
+final class FilteredIterable&lt;T&gt; implements Iterable&lt;T&gt;, Serializable {
 
     private final Iterable&lt;T&gt; elements;
     private final Predicate&lt;? super T&gt; accepts;
 
-<span class="fc" id="L16">    FilteredIterable(Iterable&lt;T&gt; elements, Predicate&lt;? super T&gt; filter) {</span>
-<span class="fc" id="L17">        this.elements = elements;</span>
-<span class="fc" id="L18">        this.accepts = filter;</span>
-<span class="fc" id="L19">    }</span>
+<span class="fc" id="L17">    FilteredIterable(Iterable&lt;T&gt; elements, Predicate&lt;? super T&gt; filter) {</span>
+<span class="fc" id="L18">        this.elements = elements;</span>
+<span class="fc" id="L19">        this.accepts = filter;</span>
+<span class="fc" id="L20">    }</span>
 
     @Override
     public Iterator&lt;T&gt; iterator() {
-<span class="fc" id="L23">        return new SimpleIterator&lt;T&gt;() {</span>
-<span class="fc" id="L24">            final Iterator&lt;T&gt; iterator = elements.iterator();</span>
+<span class="fc" id="L24">        return new SimpleIterator&lt;T&gt;() {</span>
+<span class="fc" id="L25">            final Iterator&lt;T&gt; iterator = elements.iterator();</span>
 
             @Override
             protected Optional&lt;T&gt; nextIfAvailable() {
-<span class="fc bfc" id="L28" title="All 2 branches covered.">                while (iterator.hasNext()) {</span>
-<span class="fc" id="L29">                    T next = iterator.next();</span>
-<span class="fc bfc" id="L30" title="All 2 branches covered.">                    if (accepts.$(next)) return optional(next);</span>
-<span class="fc" id="L31">                }</span>
-<span class="fc" id="L32">                return none();</span>
+<span class="fc bfc" id="L29" title="All 2 branches covered.">                while (iterator.hasNext()) {</span>
+<span class="fc" id="L30">                    T next = iterator.next();</span>
+<span class="fc bfc" id="L31" title="All 2 branches covered.">                    if (accepts.$(next)) return optional(next);</span>
+<span class="fc" id="L32">                }</span>
+<span class="fc" id="L33">                return none();</span>
             }
         };
     }
