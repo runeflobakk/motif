@@ -165,17 +165,6 @@
                         <target>1.7</target>
                         <fork>true</fork>
                         <showDeprecation>true</showDeprecation>
-                        <showWarnings>true</showWarnings>
-                        <compilerArguments>
-                            <Werror />
-                            <Xlint />
-                            <Xlint:-serial />
-                        </compilerArguments>
-                        <testCompilerArguments>
-                            <Werror />
-                            <Xlint />
-                            <Xlint:-serial />
-                        </testCompilerArguments>
                     </configuration>
                 </plugin>
                 <plugin>
