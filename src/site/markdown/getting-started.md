@@ -55,7 +55,7 @@ So what is going on in the code? How was the 5 lines of idiomatic Java reduced d
 
 ## What is a predicate?
 
-If you are familiar with unit testing using [JUnit](http://junit.org), you are probably familiar with using
+If you are unit testing using [JUnit](http://junit.org), you are probably familiar with
 the `assertThat(something, is(expected))` method where you pass
 [Hamcrest matchers](http://code.google.com/p/hamcrest/wiki/Tutorial) which tell if an object is what is
 expected. The `assertThat` implementation decides how to react to non-expected objects, i.e. fail the test,
