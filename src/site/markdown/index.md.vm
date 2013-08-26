@@ -34,7 +34,7 @@ Include the following declaration in your POM to start using motif in your proje
 <dependency>
     <groupId>com.github.runeflobakk</groupId>
     <artifactId>motif</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>${project.version}</version>
 </dependency>
 ```
 
