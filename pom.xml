@@ -380,6 +380,7 @@
                         <version>1.4</version>
                         <configuration>
                             <executable>gpg2</executable>
+                            <useAgent>true</useAgent>
                         </configuration>
                         <executions>
                             <execution>
