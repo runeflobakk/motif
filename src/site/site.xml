@@ -25,7 +25,7 @@
             <item name="Motif compared to other libraries" href="libraries-compare.html" />
             <item name="Javadocs" href="apidocs/index.html" />
         </menu>
-        <menu ref="reports" />
+        <menu name="Generated reports" ref="reports" />
     </body>
 
 
