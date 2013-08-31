@@ -5,6 +5,7 @@ Documentation
 
 - [Getting started](getting-started.html)
 - [The `Optional` type](optional.html)
+- [Motif compared to other similar libraries](libraries-compare.html)
 
 
 
