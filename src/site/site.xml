@@ -4,6 +4,9 @@
     xsi:schemaLocation="http://maven.apache.org/DECORATION/1.3.0 http://maven.apache.org/xsd/decoration-1.3.0.xsd"
     name="Motif">
 
+
+    <googleAnalyticsAccountId>UA-43676174-1</googleAnalyticsAccountId>
+
     <skin>
         <groupId>lt.velykis.maven.skins</groupId>
         <artifactId>reflow-maven-skin</artifactId>
