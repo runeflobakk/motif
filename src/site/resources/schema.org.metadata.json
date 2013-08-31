@@ -1,0 +1,9 @@
+{
+  "@context" : "http://schema.org",
+  "@type" : "SoftwareApplication",
+  "name" : "Motif",
+  "url" : "http://runeflobakk.github.io/motif"
+  "downloadUrl" : "http://runeflobakk.github.io/motif/dependency-info.html",
+  "applicationCategory" : "Library, Java",
+  "requirements" : "Java",
+}

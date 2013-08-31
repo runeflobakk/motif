@@ -1,6 +1,9 @@
-
 Welcome!
 =============
+
+<script type="application/ld+json" src="schema.org.metadata.json">
+</script>
+
 
 
 __Motif__ is a Java library that helps you to compose simple units of program logic, which together
