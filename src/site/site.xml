@@ -15,12 +15,15 @@
 
     <body>
         <menu name="Main">
-            <item name="Home" href="index.html" />
-            <item name="View on GitHub" href="http://github.com/runeflobakk/motif" />
+            <item name="Getting Motif" href="dependency-info.html" />
+            <item name="Motif on GitHub" href="http://github.com/runeflobakk/motif" />
         </menu>
-        <menu name="Documentation">
+        <menu name="Documentation" >
+            <item name="Overview" href="documentation.html"/>
         	<item name="Getting Started" href="getting-started.html" />
         	<item name="The Optional type" href="optional.html" />
+            <item name="Motif compared to other libraries" href="libraries-compare.html" />
+            <item name="Javadocs" href="apidocs/index.html" />
         </menu>
         <menu ref="reports" />
     </body>
