@@ -1,14 +1,18 @@
 package no.motif.iter;
 
+import static java.util.Collections.sort;
 import static java.util.Collections.unmodifiableList;
+import static no.motif.Iterate.by;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import no.motif.f.Fn;
 import no.motif.f.Fn2;
 import no.motif.f.Predicate;
 import no.motif.types.Reducible;
@@ -31,7 +35,15 @@ public abstract class CollectingIterable<T> implements Iterable<T>, Reducible<T>
     }
 
     /**
-     * @return the contents of the iterable as an unmodifiable list.
+     * Get the elements as an immutable {@link List}. This is the
+     * most common way to obtain a regular implementation of a Java
+     * collection.
+     *
+     * If you need more control on the returned {@link Collection}
+     * implementation, use {@link #collectIn(Collection)}, e.g. if
+     * you need a mutable collection.
+     *
+     * @return the elements of the iterable as an unmodifiable list.
      */
     public final List<T> collect() {
         return unmodifiableList(collectIn(new ArrayList<T>()));
@@ -56,6 +68,31 @@ public abstract class CollectingIterable<T> implements Iterable<T>, Reducible<T>
         }
         return collection;
     }
+
+
+    /**
+     * Get a sorted immutable {@link List} of the contents of this iterable.
+     *
+     * @param property The function to obtain the property to sort by of each element.
+     * @return the elements of the iterable as a sorted list.
+     */
+    public final <P extends Comparable<P>> List<T> sortedBy(Fn<? super T, P> property) {
+        return sorted(by(property));
+    }
+
+
+    /**
+     * Get a sorted immutable {@link List} of the contents of this iterable.
+     *
+     * @param property The function to obtain the property to sort by of each element.
+     * @return the elements of the iterable as a sorted list.
+     */
+    public final List<T> sorted(Comparator<? super T> comparator) {
+        List<T> elements = collectIn(new ArrayList<T>());
+        sort(elements, comparator);
+        return unmodifiableList(elements);
+    }
+
 
 
     /**

@@ -3,6 +3,7 @@ package no.motif;
 import static java.util.Arrays.asList;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -65,6 +66,34 @@ public final class Iterate {
         else return new PreparedIterable<T>(elements);
     }
 
+
+
+    /**
+     * Create a {@link java.util.Comparator} from an {@link Fn}, typically to
+     * sort using a {@link Comparable} property of a type.
+     *
+     * @param property the {@link Fn} which obtains the comparable property
+     *
+     * @return a {@link Comparator} using the value yielded from the given {@link Fn}.
+     */
+    public static <T, P extends Comparable<P>> Comparator<T> by(final Fn<T, P> property) {
+        return new Comparator<T>() { @Override public int compare(T first, T second) {
+            return property.$(first).compareTo(property.$(second)); }}; }
+
+
+    /**
+     * Convert a type with natural ordering, i.e. implements {@link Comparable}, to
+     * an external {@link Comparator}. This is a little quirk to provide a typesafe
+     * way to sort iterables containing <code>Comparables</code>, instead of risking
+     * a runtime ClassCastException. Pass this to the
+     * {@link no.motif.iter.CollectingIterable#sorted(Comparator) .sorted(..)}
+     * method to get elements as a sorted list.
+     *
+     * @param comparableType The {@link Comparable} type to create a {@link Comparator} from.
+     * @return the <code>Comparator</code>
+     */
+    public static <T extends Comparable<T>> Comparator<T> byOrderingOf(Class<T> comparableType) {
+        return by(NOP.<T>fn()); }
 
 
     /**
