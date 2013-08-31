@@ -8,7 +8,7 @@
 
 	<head>
 		<meta charset="UTF-8" />
-		<title>Motif - Issue Tracking</title>
+		<title>Motif - Motif compared to other similar libraries</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<meta name="description" content="" />
 		<meta http-equiv="content-language" content="en" />
@@ -32,7 +32,7 @@
 
 	</head>
 
-	<body class="page-issue-tracking project-motif" data-spy="scroll" data-offset="60" data-target="#toc-scroll-target">
+	<body class="page-libraries-compare project-motif" data-spy="scroll" data-offset="60" data-target="#toc-scroll-target">
 
 		<div class="navbar navbar-fixed-top">
 			<div class="navbar-inner">
@@ -45,17 +45,17 @@
 					<a class="brand" href="./">Motif</a>
 					<div class="nav-collapse">
 						<ul class="nav pull-right">
-							<li class="dropdown">
+							<li class="dropdown active">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Documentation <b class="caret"></b></a>
 								<ul class="dropdown-menu">
 									<li><a href="documentation.html" title="Overview">Overview </a></li>
 									<li><a href="getting-started.html" title="Getting Started">Getting Started </a></li>
 									<li><a href="optional.html" title="The Optional type">The Optional type </a></li>
-									<li><a href="libraries-compare.html" title="Motif compared to other libraries">Motif compared to other libraries </a></li>
+									<li class="active"><a href="" title="Motif compared to other libraries">Motif compared to other libraries </a></li>
 									<li><a href="apidocs/index.html" title="Javadocs">Javadocs </a></li>
 								</ul>
 							</li>
-							<li class="dropdown active">
+							<li class="dropdown">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Generated reports <b class="caret"></b></a>
 								<ul class="dropdown-menu">
 									<li class="dropdown-submenu">
@@ -66,7 +66,7 @@
 											<li><a href="license.html" title="Project License">Project License </a></li>
 											<li><a href="team-list.html" title="Project Team">Project Team </a></li>
 											<li><a href="project-summary.html" title="Project Summary">Project Summary </a></li>
-											<li class="active"><a href="" title="Issue Tracking">Issue Tracking </a></li>
+											<li><a href="issue-tracking.html" title="Issue Tracking">Issue Tracking </a></li>
 											<li><a href="source-repository.html" title="Source Repository">Source Repository </a></li>
 										</ul>
 									</li>
@@ -100,9 +100,12 @@
 			<div class="navbar-inner">
 				<div id="toc-scroll-target" class="container">
 					<ul id="toc" class="nav">
-						<li class="toplevel"><a href="#Overview" title="Overview">Overview</a></li>
+						<li class="toplevel"><a href="#motif_compared_to_other_similar_libraries" title="Motif compared to other similar libraries">Motif compared to other similar libraries</a></li>
+						<li class="toplevel"><a href="#LambdaJ" title="LambdaJ">LambdaJ</a></li>
+						<li class="toplevel"><a href="#Guava" title="Guava">Guava</a></li>
+						<li class="toplevel"><a href="#Functional_Java" title="Functional Java">Functional Java</a></li>
 						<li class="divider-vertical"></li>
-						<li class="toplevel"><a href="#Issue_Tracking" title="Issue Tracking">Issue Tracking</a></li>
+						<li class="toplevel"><a href="#disclaimer" title="Disclaimer">Disclaimer</a></li>
 					</ul>
 				</div>
 			</div>
@@ -113,20 +116,31 @@
 	<div class="row">
 		<div class="span12">
 			<div class="body-content">
+<div class="page-header">
+ <h1 id="motif_compared_to_other_similar_libraries">Motif compared to other similar libraries</h1>
+</div> 
+<p>Why do we need yet another “pseudo-functional” library for Java?</p> 
+<p>Choosing Motif over other similar libraries is mostly a matter of preference. I wish to emphasize that this should <i>not</i> be read as “you should use Motif because library X is bad”, but rather some important aspects about a few of the most common similar libraries which differ from Motif, which can help you make an informed decision as to which library to choose.</p> 
 <div class="section"> 
- <div class="page-header">
-  <h2 id="Overview">Overview</h2>
- </div> 
- <a name="Overview"></a> 
- <p>This project uses GitHub to manage its issues.</p> 
+ <h2 id="LambdaJ"><a class="externalLink" href="http://code.google.com/p/lambdaj/">LambdaJ</a></h2> 
+ <p>This library probably goes the farthest in remedying Java’s lack of first class functions, and quite elegantly manages to implement statically typed method references, and even <a class="externalLink" href="http://en.wikipedia.org/wiki/Currying">currying</a>. The idea behind it is quite brilliant, and there are few libraries employing the same technique, <a class="externalLink" href="http://code.google.com/p/mockito/">Mockito</a> being one of them.</p> 
+ <p>LambdaJ uses dynamic proxies to achieve its magic, and it imposes some constraints and limitations on the code on which it is used. Method references can only be made on <i>non-final</i> classes and/or <i>non-final</i> methods. For instance, you can not make any method references on <tt>String</tt>. Such errors are encountered at runtime, not compile-time.</p> 
+ <p>To “register” and defer a method invocation, LambdaJ needs to store it in a <tt>ThreadLocal</tt> static variable. It is impossible to compose complex functions which are reuseable, because making a method reference does not actually yield a function object, but pushes state to a <tt>ThreadLocal</tt>, though it is managed internally by LambdaJ to give the impression that real functions are passed. The management of this <tt>ThreadLocal</tt> is very dependent of the various method calls on the LambdaJ API, and in particular <i>the order</i> of the calls, and it may in some situations yield some surprises. </p> 
+ <p>Its implementation is complex, but the library is mature. I have never encountered any bugs, only the limitations which is inherent of the underlying implementation technique of LambdaJ.</p> 
+ <p>Motif is based on pure, familiar Java-objects, where no constraints are put on how your objects are designed and implemented. The “functions” of Motif can be composed to form new functions, which can be stored and reused throughout your application(s).</p> 
 </div> 
 <div class="section"> 
- <h2 id="Issue_Tracking">Issue Tracking</h2> 
- <a name="Issue_Tracking"></a> 
- <p>Issues, bugs, and feature requests should be submitted to the following issue tracking system for this project.</p> 
- <div class="source"> 
-  <pre><a class="externalLink" href="https://github.com/runeflobakk/motif/issues">https://github.com/runeflobakk/motif/issues</a></pre> 
- </div> 
+ <h2 id="Guava"><a class="externalLink" href="http://code.google.com/p/guava-libraries/">Guava</a></h2> 
+ <p>Google’s Guava library covers far broader scope of functionality than Motif. Guava is quite common to be used in projects, and this comparison is based only on its functionality which overlaps with Motif. </p> 
+ <p>Guava is similar to Motif in that its “functions” are based on ordinary Java objects. As Motif, Guava also has a variant of the <tt>Optional</tt> type, but its capabilities are slightly different from Motif’s <tt>Optional</tt>. The <tt>Optional</tt> type in Motif allows one to adapt when an object should be viewed as “present”, the most common example may be to also treat empty or blank strings as absent. Motif also has a more unified view the <tt>Optional</tt> type as a special case of a “list-like” container which may contain a maximum of 1 element, and as such implements the <tt>Iterable</tt> interface.</p> 
+ <p>The operations in Guava which corresponds to <tt>filter</tt> and <tt>map</tt> are implemented as static methods, and to achieve lazyness one must reason about which variant of those operations to use. Motif provides a simpler API to access the <tt>filter</tt>, <tt>map</tt> and related operations, and all the manipulations are done as chaining method calls on an <tt>Iterable</tt>. The nature of an <tt>Iterable</tt> makes laziness occur very naturally. When a Collection implementation is needed, one can call one of the <tt>collect</tt> methods to get a standard Java Collection back, which explicitly ends the lazy behavior and computes the resulting elements. Java Collections are not originally lazy, nor is the API designed for lazyness, and Motif does not try to fix that; there are no lazy implementations of the <tt>List</tt> interface in Motif. This principle enables a very simplistic internal implementation in Motif.</p> 
+</div> 
+<div class="section"> 
+ <h2 id="Functional_Java"><a class="externalLink" href="http://functionaljava.org">Functional Java</a></h2> 
+ <p>This is a library which aims to bring a very complete functional programming experience to Java, and in that sense has a bit different philosophy than Motif. As such, it implements many more of the operations one expect to have available in a functional language. It makes the library a bit “all-in”; you must make a certain commitment to use it, and use its data structures throughout your code. Motifs tries to, as transparent as possible, to amend existing Java collections with its API, as it acknowledges the ubiquity of the Java Collections Framework.</p> 
+ <h1 id="disclaimer">Disclaimer</h1> 
+ <p>As comparing your own creation to existing solutions is a bit “dangerous”, a small disclaimer seems apropriate. I ackowledge that the comparisons are in no way objective, and a certain bias is obviously unavoidable.</p> 
+ <p>I apologize in advance if there are any non-balanced or simply inaccurate statements occuring above, and should you identify any inaccuracies, please don’t hesitate to contact me, so I can do proper adjustements to this document.</p> 
 </div>
 			</div>
 		</div>
@@ -159,38 +173,15 @@
 						<li>
 							<a href="optional.html" title="The Optional type">The Optional type </a>
 						</li>
-						<li>
-							<a href="libraries-compare.html" title="Motif compared to other libraries">Motif compared to other libraries </a>
+						<li class="active">
+							<a href="#" title="Motif compared to other libraries">Motif compared to other libraries </a>
 						</li>
 						<li>
 							<a href="apidocs/index.html" title="Javadocs">Javadocs </a>
 						</li>
 						<li class="nav-header">Generated reports</li>
 						<li>
-							<a href="project-info.html" title="Project Information">Project Information <i class="icon-chevron-down"></i></a>
-							<ul class="nav nav-list">
-						<li>
-							<a href="dependency-info.html" title="Dependency Information">Dependency Information </a>
-						</li>
-						<li>
-							<a href="dependencies.html" title="Dependencies">Dependencies </a>
-						</li>
-						<li>
-							<a href="license.html" title="Project License">Project License </a>
-						</li>
-						<li>
-							<a href="team-list.html" title="Project Team">Project Team </a>
-						</li>
-						<li>
-							<a href="project-summary.html" title="Project Summary">Project Summary </a>
-						</li>
-						<li class="active">
-							<a href="#" title="Issue Tracking">Issue Tracking </a>
-						</li>
-						<li>
-							<a href="source-repository.html" title="Source Repository">Source Repository </a>
-						</li>
-							</ul>
+							<a href="project-info.html" title="Project Information">Project Information <i class="icon-chevron-right"></i></a>
 						</li>
 						<li>
 							<a href="project-reports.html" title="Project Reports">Project Reports <i class="icon-chevron-right"></i></a>
