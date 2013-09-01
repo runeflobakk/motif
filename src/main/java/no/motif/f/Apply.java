@@ -27,6 +27,17 @@ public final class Apply {
             @Override public O $(I2 v2) { return fn2.$(v1.$(), v2); }}; }}; }
 
 
+    /**
+     * {@link PartialApplication Partially apply} a {@link Fn function taking 1 argument}.
+     *
+     * @param fn The function to partially apply.
+     * @return use {@link PartialApplication#of(Object) of()}
+     *         to partially invoke <code>fn</code> and yield an {@link Fn0}
+     */
+    public static final <I, O> PartialApplication<Fn<I, O>, I, Fn0<O>> partially(Fn<I, O> fn) { return new PartialApplication<Fn<I, O>, I, Fn0<O>>(fn) {
+        @Override public Fn0<O> partiallyApply(final Fn<I, O> fn, final Fn0<I> v1) { return new Fn0<O>() {
+            @Override public O $() { return fn.$(v1.$()); }}; }}; }
+
 
     private Apply() {}
 
