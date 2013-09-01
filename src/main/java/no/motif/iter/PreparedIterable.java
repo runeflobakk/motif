@@ -10,6 +10,7 @@ import java.util.NoSuchElementException;
 
 import no.motif.f.Fn;
 import no.motif.f.Predicate;
+import no.motif.single.Elem;
 import no.motif.types.Elements;
 
 /**
@@ -31,6 +32,17 @@ public class PreparedIterable<T> extends CollectingIterable<T> implements Elemen
 
     public PreparedIterable(Iterable<T> elements) {
         this.elements = elements;
+    }
+
+
+    @Override
+    public Elements<Elem<T>> indexed() {
+        return indexedFrom(0);
+    }
+
+    @Override
+    public Elements<Elem<T>> indexedFrom(int startIndex) {
+        return new PreparedIterable<>(new IndexedIterable<>(startIndex, elements));
     }
 
 

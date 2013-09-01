@@ -5,6 +5,7 @@ import java.util.NoSuchElementException;
 import no.motif.Singular;
 import no.motif.f.Fn;
 import no.motif.f.Predicate;
+import no.motif.single.Elem;
 import no.motif.single.Optional;
 
 /**
@@ -23,6 +24,23 @@ public interface Elements<T> extends
     Existance<T>,
     Iterable<T>,
     Reducible<T> {
+
+    /**
+     * Couple each element with its positional index.
+     *
+     * @return The elements wrapped in {@link Elem}s.
+     */
+    Elements<Elem<T>> indexed();
+
+
+    /**
+     * Couple each element with its positional index,
+     * starting from a given index.
+     *
+     * @param startIndex the beginning index to assign to the first element.
+     * @return The elements wrapped in {@link Elem}s.
+     */
+    Elements<Elem<T>> indexedFrom(int startIndex);
 
 
     /**
