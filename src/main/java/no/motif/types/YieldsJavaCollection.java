@@ -60,9 +60,9 @@ public interface YieldsJavaCollection<T> {
     /**
      * Get a sorted immutable {@link List} of the contents of this iterable.
      *
-     * @param property The function to obtain the property to sort by of each element.
-     *                 Use {@link Iterate#byOrderingOf(Class)} to use the natural ordering
-     *                 of the contained elements.
+     * @param comparator The comparator to use when sorting the elements.
+     *                   Use {@link Iterate#byOrderingOf(Class)} to use the
+     *                   natural ordering of the contained elements.
      * @return the elements of the iterable as a sorted list.
      */
     List<T> sorted(Comparator<? super T> comparator);

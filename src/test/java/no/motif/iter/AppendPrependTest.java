@@ -4,13 +4,13 @@ import static no.motif.Iterate.on;
 import static no.motif.Strings.concat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
-import no.motif.types.EnhancedIterable;
+import no.motif.types.Elements;
 
 import org.junit.Test;
 
 public class AppendPrependTest {
 
-    private final EnhancedIterable<Character> hello = on("hello");
+    private final Elements<Character> hello = on("hello");
 
     @Test public void appendToExistingElements() {
         assertThat(hello.append(on(", world!")).reduce("", concat), is("hello, world!"));

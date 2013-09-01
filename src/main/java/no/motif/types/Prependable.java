@@ -14,7 +14,7 @@ public interface Prependable<T> extends Iterable<T> {
      * @param value the element to prepend.
      * @return the resulting elements.
      */
-    EnhancedIterable<T> prepend(T value);
+    Elements<T> prepend(T value);
 
 
     /**
@@ -23,5 +23,5 @@ public interface Prependable<T> extends Iterable<T> {
      * @param leadingElements the elements to prepend.
      * @return the resulting elements.
      */
-    EnhancedIterable<T> prepend(Iterable<? extends T> leadingElements);
+    Elements<T> prepend(Iterable<? extends T> leadingElements);
 }

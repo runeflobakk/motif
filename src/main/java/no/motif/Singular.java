@@ -8,8 +8,6 @@ import no.motif.option.Optional.Some;
 
 /**
  * Operations for working with single values.
- *
- * @apiviz.landmark
  */
 public final class Singular {
 

@@ -248,7 +248,7 @@ call a `collect` method to get the current state of the elements back into a Jav
 Bridging methods summarized:
 
  - [`on(..)`][Iterate] Java Collection Framework to Motif
- - [`collect()`][CollectingIterable] Motif to Java Collection Framework
+ - [`collect()`][YieldsJavaCollection] Motif to Java Collection Framework
 
 
 
@@ -262,18 +262,19 @@ until a Java collection is really needed. By making your own code accepting `Ite
 rarely need to actually call `collect()`. E.g. if a method only uses its passed elements in a `for`-loop,
 the method should accept an `Iterable` and not a `Collection/List/Set`.
 
-The [`Elements`][Elements] interface defines the lazy operations on collections
-implemented by Motif. This "reactor" interface does mostly gather operations from several smaller interfaces
-to form a type for container of elements. Among the operations are [`map(Fn)`][Mappable]
-and [`filter(Predicate)`][Filterable] discussed in this Getting Started guide.
-
 The laziness of Motif can pretty much be ignored from a behavioral perspective, but may be interesting from a
 performance perspective if using large collections. Motif provides an easy way to compose how elements of a
 collection are viewed, and ensuring that iterating those elements only happens when necessary, preferably once.
-You can even pass around [the iterable obtained from Iterate.on(..)][PreparedIterable]
+You can even pass around [the iterable obtained from Iterate.on(..)][Elements]
 for several participators to adapt, remove and/or add elements, without any iterating taking place until it arriving
 to for instance a final `for`-loop, or passed to a 3rd party framework as a Java collection obtained from calling
 `.collect()`.
+
+It is worth noting that Motif's main focus is not on performance, but on readability, correctness, and elegance.
+The lazyness is merely an implementation detail which is for most practical purposes not really exposed
+outside of the API. If manipulating very large collections, high performance, and precise control on lazy
+computation are amoung your requirements, Motif may not be suitable for you. For most purposes, Motif will not
+have a meassurable degradation on the performance of your code.
  
  
  
@@ -283,8 +284,8 @@ to for instance a final `for`-loop, or passed to a 3rd party framework as a Java
 [Elements]: apidocs/no/motif/types/Elements.html "Elements API"
 [Filterable]: apidocs/no/motif/types/Filterable.html "Filterable API"
 [Mappable]: apidocs/no/motif/types/Mappable.html "Mappable API"
-[PreparedIterable]: apidocs/no/motif/iter/PreparedIterable.html "PreparedIterable class"
-[CollectingIterable]: apidocs/no/motif/iter/CollectingIterable.html "CollectingIterable class"
+[Elements]: apidocs/no/motif/types/Elements.html "Elements API"
+[YieldsJavaCollection]: apidocs/no/motif/types/YieldsJavaCollection.html "YieldsJavaCollection API"
 [Iterate]: apidocs/no/motif/Iterate.html "Iterate class"
 [Strings]: apidocs/no/motif/Strings.html "String functions"
 [Longs]: apidocs/no/motif/Longs.html "Long functions"

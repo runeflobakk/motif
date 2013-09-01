@@ -13,7 +13,7 @@ public interface Appendable<T> extends Iterable<T> {
      * @param value the element to append.
      * @return the resulting elements.
      */
-    EnhancedIterable<T> append(T value);
+    Elements<T> append(T value);
 
 
     /**
@@ -22,6 +22,6 @@ public interface Appendable<T> extends Iterable<T> {
      * @param trailingElements the elements to append.
      * @return the resulting elements.
      */
-    EnhancedIterable<T> append(Iterable<? extends T> trailingElements);
+    Elements<T> append(Iterable<? extends T> trailingElements);
 
 }

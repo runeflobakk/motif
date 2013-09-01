@@ -3,18 +3,22 @@ package no.motif.types;
 import no.motif.f.Fn;
 import no.motif.f.Predicate;
 
-
 /**
- * This is a reactor type, gathering the collection operations
- * which is implemented lazily by Motif. Methods that only need
- * to append, prepend, and/or in any way adapt the elements of
- * a collection can accept this type as method argument to ensure,
- * as well as communicating to the callee, that no iterating will
- * take place.
+ * This is the main type of Motif's collection API and
+ * encompasses all the operations available to manipulate
+ * and query the the contained elements, as well as
+ * converting back to Java Collection Framework
+ * collections.
  *
- * @param <T> The type of the contained elements.
+ *
+ * @param <T> The type of the contained objects.
  */
-public interface Elements<T> extends Mappable<T>, Filterable<T>, Appendable<T>, Prependable<T> {
+public interface Elements<T> extends
+    Mappable<T>, Filterable<T>, Appendable<T>, Prependable<T>,
+    YieldsJavaCollection<T>,
+    Existance<T>,
+    Iterable<T>,
+    Reducible<T> {
 
 
     /**
@@ -48,7 +52,7 @@ public interface Elements<T> extends Mappable<T>, Filterable<T>, Appendable<T>, 
     Elements<T> takeUntil(Predicate<? super T> predicate);
 
 
-
     @Override public <O> Elements<O> map(Fn<? super T, O> function);
     @Override public Elements<T> filter(Predicate<? super T> filter);
+
 }

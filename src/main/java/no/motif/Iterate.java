@@ -11,7 +11,7 @@ import java.util.Set;
 import no.motif.f.Fn;
 import no.motif.f.Predicate;
 import no.motif.iter.PreparedIterable;
-import no.motif.types.EnhancedIterable;
+import no.motif.types.Elements;
 
 
 /**
@@ -20,7 +20,6 @@ import no.motif.types.EnhancedIterable;
  * of {@link Iterable}. Can also
  * {@link #on(CharSequence) treat Strings as a container of Characters}.
  *
- * @apiviz.landmark
  */
 public final class Iterate {
 
@@ -30,9 +29,9 @@ public final class Iterate {
      * Characters.
      *
      * @param string The string
-     * @return {@link EnhancedIterable} characters
+     * @return {@link Elements} characters
      */
-    public static EnhancedIterable<Character> on(CharSequence string) {
+    public static Elements<Character> on(CharSequence string) {
         if (string == null) return PreparedIterable.empty();
         List<Character> charList = new ArrayList<>(string.length());
         for (char c : string.toString().toCharArray()) charList.add(c);
@@ -44,11 +43,11 @@ public final class Iterate {
      * Work with multiple elements.
      *
      * @param elements the elements to manipulate as vararg/array.
-     * @return {@link EnhancedIterable}
+     * @return {@link Elements}
      */
     @SafeVarargs
     @SuppressWarnings("varargs")
-    public static <T> EnhancedIterable<T> on(T ... elements) {
+    public static <T> Elements<T> on(T ... elements) {
         return newInstance(elements != null ? asList(elements) : null);
     }
 
@@ -57,14 +56,14 @@ public final class Iterate {
      * Work with multiple elements.
      *
      * @param elements the elements to manipulate as an {@link Iterable}.
-     * @return {@link EnhancedIterable}
+     * @return {@link Elements}
      */
-    public static <T> EnhancedIterable<T> on(Iterable<T> elements) {
-        return elements instanceof EnhancedIterable ? (EnhancedIterable<T>) elements : newInstance(elements);
+    public static <T> Elements<T> on(Iterable<T> elements) {
+        return elements instanceof Elements ? (Elements<T>) elements : newInstance(elements);
     }
 
 
-    private static <T> EnhancedIterable<T> newInstance(Iterable<T> elements) {
+    private static <T> Elements<T> newInstance(Iterable<T> elements) {
         if (elements == null) return PreparedIterable.empty();
         else return new PreparedIterable<T>(elements);
     }

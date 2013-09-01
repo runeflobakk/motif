@@ -9,7 +9,7 @@ import java.util.Iterator;
 
 import no.motif.f.Fn;
 import no.motif.f.Predicate;
-import no.motif.types.EnhancedIterable;
+import no.motif.types.Elements;
 
 /**
  * This class wraps an arbitrary {@link Iterable} and provides access to
@@ -17,7 +17,7 @@ import no.motif.types.EnhancedIterable;
  *
  * @param <T> The type of the elements in the iterable.
  */
-public class PreparedIterable<T> extends CollectingIterable<T> implements EnhancedIterable<T>, Serializable {
+public class PreparedIterable<T> extends CollectingIterable<T> implements Elements<T>, Serializable {
 
     private static final PreparedIterable<?> EMPTY = new PreparedIterable<>(emptyList());
 
