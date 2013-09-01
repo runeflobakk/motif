@@ -2,7 +2,9 @@ package no.motif;
 
 import static no.motif.Strings.alphabetic;
 import static no.motif.Strings.alphanumeric;
+import static no.motif.Strings.append;
 import static no.motif.Strings.blank;
+import static no.motif.Strings.concat;
 import static no.motif.Strings.contains;
 import static no.motif.Strings.endsWith;
 import static no.motif.Strings.hasLength;
@@ -10,6 +12,7 @@ import static no.motif.Strings.length;
 import static no.motif.Strings.lowerCased;
 import static no.motif.Strings.matches;
 import static no.motif.Strings.numeric;
+import static no.motif.Strings.prepend;
 import static no.motif.Strings.startsWith;
 import static no.motif.Strings.toDouble;
 import static no.motif.Strings.toInt;
@@ -142,6 +145,29 @@ public class StringsTest {
         assertFalse(hasLength(4).$("abc"));
         assertTrue(hasLength(0).$(null));
         assertFalse(hasLength(1).$(null));
+    }
+
+
+    @Test
+    public void concatenating() {
+        assertThat(concat.$(1, 2), is("12"));
+    }
+
+    @Test
+    public void concatNullIsEmptyString() {
+        assertThat(concat.$(null, "a"), is("a"));
+        assertThat(concat.$("a", null), is("a"));
+        assertThat(concat.$(null, null), is(""));
+    }
+
+    @Test
+    public void appending() {
+        assertThat(append("y").$("x"), is("xy"));
+    }
+
+    @Test
+    public void prepending() {
+        assertThat(prepend("x").$("y"), is("xy"));
     }
 
 

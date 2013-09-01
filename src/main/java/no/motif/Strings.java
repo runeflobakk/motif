@@ -10,6 +10,8 @@ import static no.motif.Chars.digit;
 import static no.motif.Chars.letter;
 import static no.motif.Chars.letterOrDigit;
 import static no.motif.Chars.whitespace;
+import static no.motif.f.Apply.argsReversed;
+import no.motif.f.Apply;
 import no.motif.f.Fn;
 import no.motif.f.Fn2;
 import no.motif.f.Predicate;
@@ -147,8 +149,9 @@ public final class Strings {
      * Concatenate a string with the {@link Object#toString() string representation}
      * of an arbitrary object, i.e. <em>reduces</em> two strings to one.
      */
-    public static final Fn2<String, Object, String> concat = new Fn2<String, Object, String>() {
-        @Override public String $(String acc, Object c) { return acc + c; }};
+    public static final Fn2<Object, Object, String> concat = new Fn2<Object, Object, String>() {
+        String emptyIfNull(Object o) { return (o != null? String.valueOf(o) : ""); }
+        @Override public String $(Object acc, Object c) { return emptyIfNull(acc) + emptyIfNull(c); }};
 
 
     /**
@@ -194,6 +197,20 @@ public final class Strings {
     public static Predicate<String> matches(final String regex) {
         return regex == null ? Always.<String>no() : new FalseIfNullOrElse<String>() {
         @Override protected boolean $nullsafe(String string) { return string.matches(regex); }};}
+
+
+    /**
+     * Create a new strings by prepending a prefix.
+     * @param prefix the prefix to prepend
+     */
+    public static Fn<Object, String> prepend(String prefix) { return Apply.partially(concat).of(prefix); }
+
+
+    /**
+     * Create a new strings by appending a suffix.
+     * @param suffix the suffix to append
+     */
+    public static Fn<Object, String> append(String suffix) { return Apply.partially(argsReversed(concat)).of(suffix); }
 
 
     private Strings() {}
