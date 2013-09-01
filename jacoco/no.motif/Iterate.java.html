@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Iterate.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Motif</a> &gt; <a href="index.html" class="el_package">no.motif</a> &gt; <span class="el_source">Iterate.java</span></div><h1>Iterate.java</h1><pre class="source lang-java linenums">package no.motif;
+
+import static java.util.Arrays.asList;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
+import no.motif.f.Fn;
+import no.motif.f.Predicate;
+import no.motif.iter.PreparedIterable;
+import no.motif.types.Elements;
+
+
+/**
+ * Operations for containers, e.g. arrays,
+ * {@link List lists}, {@link Set sets}, or any implementation
+ * of {@link Iterable}. Can also
+ * {@link #on(CharSequence) treat Strings as a container of Characters}.
+ *
+ */
+public final class Iterate {
+
+
+    /**
+     * Manipulate CharSequences/Strings as if they were iterables of
+     * Characters.
+     *
+     * @param string The string
+     * @return {@link Elements} characters
+     */
+    public static Elements&lt;Character&gt; on(CharSequence string) {
+<span class="fc bfc" id="L35" title="All 2 branches covered.">        if (string == null) return PreparedIterable.empty();</span>
+<span class="fc" id="L36">        List&lt;Character&gt; charList = new ArrayList&lt;&gt;(string.length());</span>
+<span class="fc bfc" id="L37" title="All 2 branches covered.">        for (char c : string.toString().toCharArray()) charList.add(c);</span>
+<span class="fc" id="L38">        return newInstance(charList);</span>
+    }
+
+
+    /**
+     * Work with multiple elements.
+     *
+     * @param elements the elements to manipulate as vararg/array.
+     * @return {@link Elements}
+     */
+    @SafeVarargs
+    @SuppressWarnings(&quot;varargs&quot;)
+    public static &lt;T&gt; Elements&lt;T&gt; on(T ... elements) {
+<span class="fc bfc" id="L51" title="All 2 branches covered.">        return newInstance(elements != null ? asList(elements) : null);</span>
+    }
+
+
+    /**
+     * Work with multiple elements.
+     *
+     * @param elements the elements to manipulate as an {@link Iterable}.
+     * @return {@link Elements}
+     */
+    public static &lt;T&gt; Elements&lt;T&gt; on(Iterable&lt;T&gt; elements) {
+<span class="fc bfc" id="L62" title="All 2 branches covered.">        return elements instanceof Elements ? (Elements&lt;T&gt;) elements : newInstance(elements);</span>
+    }
+
+
+    private static &lt;T&gt; Elements&lt;T&gt; newInstance(Iterable&lt;T&gt; elements) {
+<span class="fc bfc" id="L67" title="All 2 branches covered.">        if (elements == null) return PreparedIterable.empty();</span>
+<span class="fc" id="L68">        else return new PreparedIterable&lt;T&gt;(elements);</span>
+    }
+
+
+
+    /**
+     * Create a {@link java.util.Comparator} from an {@link Fn}, typically to
+     * sort using a {@link Comparable} property of a type.
+     *
+     * @param property the {@link Fn} which obtains the comparable property
+     *
+     * @return a {@link Comparator} using the value yielded from the given {@link Fn}.
+     */
+    public static &lt;T, P extends Comparable&lt;P&gt;&gt; Comparator&lt;T&gt; by(final Fn&lt;T, P&gt; property) {
+<span class="fc" id="L82">        return new Comparator&lt;T&gt;() { @Override public int compare(T first, T second) {</span>
+<span class="fc" id="L83">            return property.$(first).compareTo(property.$(second)); }}; }</span>
+
+
+    /**
+     * Convert a type with natural ordering, i.e. implements {@link Comparable}, to
+     * an external {@link Comparator}. This is a little quirk to provide a typesafe
+     * way to sort iterables containing &lt;code&gt;Comparables&lt;/code&gt;, instead of risking
+     * a runtime ClassCastException. Pass this to the
+     * {@link no.motif.iter.CollectingIterable#sorted(Comparator) .sorted(..)}
+     * method to get elements as a sorted list.
+     *
+     * @param comparableType The {@link Comparable} type to create a {@link Comparator} from.
+     * @return the &lt;code&gt;Comparator&lt;/code&gt;
+     */
+    public static &lt;T extends Comparable&lt;T&gt;&gt; Comparator&lt;T&gt; byOrderingOf(Class&lt;T&gt; comparableType) {
+<span class="fc" id="L98">        return by(NOP.&lt;T&gt;fn()); }</span>
+
+
+    /**
+     * Evaluates if an {@link Iterable} is empty.
+     */
+<span class="fc" id="L104">    public static final Predicate&lt;Iterable&lt;?&gt;&gt; empty = new Predicate&lt;Iterable&lt;?&gt;&gt;() {</span>
+<span class="fc" id="L105">        @Override public boolean $(Iterable&lt;?&gt; iterable) { return on(iterable).isEmpty(); }};</span>
+
+
+    /**
+     * The {@link Iterator#hasNext()} method as a function.
+     */
+<span class="fc" id="L111">    public static final Predicate&lt;Iterator&lt;?&gt;&gt; hasNext = new Predicate&lt;Iterator&lt;?&gt;&gt;() {</span>
+<span class="fc" id="L112">        @Override public boolean $(Iterator&lt;?&gt; iterator) { return iterator.hasNext(); }};</span>
+
+
+    /**
+     * @return The {@link Iterator#next()} as a function.
+     */
+<span class="fc" id="L118">    public static final &lt;T&gt; Fn&lt;Iterator&lt;T&gt;, T&gt; next() { return new Fn&lt;Iterator&lt;T&gt;, T&gt;() {</span>
+<span class="fc" id="L119">        @Override public T $(Iterator&lt;T&gt; iterator) { return iterator.next(); }};};</span>
+
+
+
+
+<span class="fc" id="L124">    private Iterate() {}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.3.201306030806</span></div></body></html>

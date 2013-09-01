@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Longs.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Motif</a> &gt; <a href="index.html" class="el_package">no.motif</a> &gt; <span class="el_source">Longs.java</span></div><h1>Longs.java</h1><pre class="source lang-java linenums">package no.motif;
+
+import no.motif.f.Apply;
+import no.motif.f.Fn;
+import no.motif.f.Fn2;
+
+public final class Longs {
+
+<span class="fc" id="L9">    public static final Fn&lt;Number, Long&gt; longValue = new Fn&lt;Number, Long&gt;() {</span>
+<span class="fc bfc" id="L10" title="All 2 branches covered.">        @Override public Long $(Number value) { return value != null ? value.longValue() : 0; }};</span>
+
+
+<span class="fc" id="L13">    public static final Fn2&lt;Number, Number, Long&gt; sum = new Fn2&lt;Number, Number, Long&gt;() {</span>
+        @Override public Long $(Number first, Number second) {
+<span class="fc" id="L15">            return first.longValue() + second.longValue(); }};</span>
+
+
+<span class="fc" id="L18">    public static final Fn2&lt;Number, Number, Long&gt; multiply = new Fn2&lt;Number, Number, Long&gt;() {</span>
+        @Override public Long $(Number factor1, Number factor2) {
+<span class="fc" id="L20">            return factor1.longValue() * factor2.longValue(); }};</span>
+
+
+<span class="fc" id="L23">    public static final Fn&lt;Number, Long&gt; doubled = Apply.partially(multiply).of(2);</span>
+
+
+<span class="fc" id="L26">    public static final Fn&lt;Number, Long&gt; rounded = new Fn&lt;Number, Long&gt;() {</span>
+<span class="fc" id="L27">        @Override public Long $(Number decimal) { return Math.round(decimal.doubleValue()); }};</span>
+
+
+<span class="fc" id="L30">    private Longs() {}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.3.201306030806</span></div></body></html>

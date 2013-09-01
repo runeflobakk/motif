@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>FalseIfNullOrElse.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Motif</a> &gt; <a href="index.html" class="el_package">no.motif.f.base</a> &gt; <span class="el_source">FalseIfNullOrElse.java</span></div><h1>FalseIfNullOrElse.java</h1><pre class="source lang-java linenums">package no.motif.f.base;
+
+import no.motif.f.Predicate;
+
+/**
+ * A base implementation for predicates where the case of &lt;code&gt;null&lt;/code&gt;
+ * values is evaluated as false. For every other non-null value, sub-classes
+ * must implement the {@link #$nullsafe(Object)} method to decide if
+ * the value should evaluate to &lt;code&gt;true&lt;/code&gt; or &lt;code&gt;false&lt;/code&gt;,
+ * but need not to worry about checking if the value is &lt;code&gt;null&lt;/code&gt;.
+ */
+<span class="fc" id="L12">public abstract class FalseIfNullOrElse&lt;T&gt; implements Predicate&lt;T&gt; {</span>
+
+    /**
+     * @param value The value to evaluate, never &lt;code&gt;null&lt;/code&gt;.
+     * @return &lt;code&gt;true&lt;/code&gt; or &lt;code&gt;false&lt;/code&gt;
+     */
+    protected abstract boolean $nullsafe(T value);
+
+    @Override
+    public boolean $(T value) {
+<span class="fc bfc" id="L22" title="All 4 branches covered.">        return value != null &amp;&amp; $nullsafe(value);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.3.201306030806</span></div></body></html>

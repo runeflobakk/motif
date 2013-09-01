@@ -22,7 +22,7 @@
 <a class="jxr_linenumber" name="12" href="#12">12</a>  <strong class="jxr_keyword">import</strong> java.util.Iterator;
 <a class="jxr_linenumber" name="13" href="#13">13</a>  
 <a class="jxr_linenumber" name="14" href="#14">14</a>  <strong class="jxr_keyword">import</strong> no.motif.f.Fn;
-<a class="jxr_linenumber" name="15" href="#15">15</a>  <strong class="jxr_keyword">import</strong> no.motif.iter.PreparedIterable;
+<a class="jxr_linenumber" name="15" href="#15">15</a>  <strong class="jxr_keyword">import</strong> no.motif.types.Elements;
 <a class="jxr_linenumber" name="16" href="#16">16</a>  
 <a class="jxr_linenumber" name="17" href="#17">17</a>  <strong class="jxr_keyword">import</strong> org.hamcrest.Matchers;
 <a class="jxr_linenumber" name="18" href="#18">18</a>  <strong class="jxr_keyword">import</strong> org.junit.Test;
@@ -43,7 +43,7 @@
 <a class="jxr_linenumber" name="33" href="#33">33</a>  
 <a class="jxr_linenumber" name="34" href="#34">34</a>      @Test
 <a class="jxr_linenumber" name="35" href="#35">35</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> filterDomainObjectsUsingWherePredicate() {
-<a class="jxr_linenumber" name="36" href="#36">36</a>          PreparedIterable&lt;A&gt; onlyXEqualTo2 = on(<strong class="jxr_keyword">new</strong> <a href="../../no/motif/WherePredicateTest.html">A</a>(){{x = <span class="jxr_string">"1"</span>;}}, <strong class="jxr_keyword">new</strong> A(){{x = <span class="jxr_string">"2"</span>;}}).filter(where(A.X, equalTo(<span class="jxr_string">"2"</span>)));
+<a class="jxr_linenumber" name="36" href="#36">36</a>          Elements&lt;A&gt; onlyXEqualTo2 = on(<strong class="jxr_keyword">new</strong> <a href="../../no/motif/WherePredicateTest.html">A</a>(){{x = <span class="jxr_string">"1"</span>;}}, <strong class="jxr_keyword">new</strong> A(){{x = <span class="jxr_string">"2"</span>;}}).filter(where(A.X, equalTo(<span class="jxr_string">"2"</span>)));
 <a class="jxr_linenumber" name="37" href="#37">37</a>          assertThat(onlyXEqualTo2, Matchers.&lt;A&gt;iterableWithSize(1));
 <a class="jxr_linenumber" name="38" href="#38">38</a>          Iterator&lt;A&gt; iterator = onlyXEqualTo2.iterator();
 <a class="jxr_linenumber" name="39" href="#39">39</a>          <a href="../../no/motif/WherePredicateTest.html">A</a> head = iterator.next();

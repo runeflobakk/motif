@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Apply.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Motif</a> &gt; <a href="index.html" class="el_package">no.motif.f</a> &gt; <span class="el_source">Apply.java</span></div><h1>Apply.java</h1><pre class="source lang-java linenums">package no.motif.f;
+
+/**
+ * Utilities to adapt how functions are invoked.
+ *
+ * &lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt;
+ * This is part of the more advanced API, and might seem
+ * a bit intimidating to some. It is however &lt;em&gt;not&lt;/em&gt;
+ * a requirement to be acquainted with this API and still
+ * benefit from using the Motif library. This part of the API
+ * should be considered as a small &quot;value-add&quot; for developers who
+ * are comfortable with these concepts.&lt;/p&gt;
+ */
+public final class Apply {
+
+
+    /**
+     * Transform a function taking 2 arguments to another function where
+     * the argument order is reversed.
+     *
+     * @param fn2 the function
+     * @return a new {@link Fn2} where the argument order is reversed.
+     */
+    public static final &lt;I1, I2, O&gt; Fn2&lt;I2, I1, O&gt; argsReversed(final Fn2&lt;I1, I2, O&gt; fn2) {
+<span class="fc" id="L25">        return new Fn2&lt;I2, I1, O&gt;() { @Override public O $(I2 second, I1 first) { return fn2.$(first, second); }}; }</span>
+
+
+    /**
+     * {@link PartialApplication Partially apply} a {@link Fn2 function taking 2 arguments}.
+     * @see    PartialApplication
+     *
+     * @param  fn2 The function to partially apply.
+     * @return use {@link PartialApplication#of(Object) of()}
+     *         to partially invoke &lt;code&gt;fn2&lt;/code&gt; and yield an {@link Fn}
+     */
+<span class="fc" id="L36">    public static final &lt;I1, I2, O&gt; PartialApplication&lt;Fn2&lt;I1, I2, O&gt;, I1, Fn&lt;I2, O&gt;&gt; partially(Fn2&lt;I1, I2, O&gt; fn2) { return new PartialApplication&lt;Fn2&lt;I1, I2, O&gt;, I1, Fn&lt;I2,O&gt;&gt;(fn2) {</span>
+<span class="fc" id="L37">        @Override public Fn&lt;I2, O&gt; partiallyApply(final Fn2&lt;I1, I2, O&gt; fn2, final Fn0&lt;I1&gt; v1) { return new Fn&lt;I2, O&gt;() {</span>
+<span class="fc" id="L38">            @Override public O $(I2 v2) { return fn2.$(v1.$(), v2); }}; }}; }</span>
+
+
+    /**
+     * {@link PartialApplication Partially apply} a {@link Fn function taking 1 argument}.
+     *
+     * @param fn The function to partially apply.
+     * @return use {@link PartialApplication#of(Object) of()}
+     *         to partially invoke &lt;code&gt;fn&lt;/code&gt; and yield an {@link Fn0}
+     */
+<span class="fc" id="L48">    public static final &lt;I, O&gt; PartialApplication&lt;Fn&lt;I, O&gt;, I, Fn0&lt;O&gt;&gt; partially(Fn&lt;I, O&gt; fn) { return new PartialApplication&lt;Fn&lt;I, O&gt;, I, Fn0&lt;O&gt;&gt;(fn) {</span>
+<span class="fc" id="L49">        @Override public Fn0&lt;O&gt; partiallyApply(final Fn&lt;I, O&gt; fn, final Fn0&lt;I&gt; v1) { return new Fn0&lt;O&gt;() {</span>
+<span class="fc" id="L50">            @Override public O $() { return fn.$(v1.$()); }}; }}; }</span>
+
+
+<span class="fc" id="L53">    private Apply() {}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.3.201306030806</span></div></body></html>

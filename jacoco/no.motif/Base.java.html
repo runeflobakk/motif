@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Base.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Motif</a> &gt; <a href="index.html" class="el_package">no.motif</a> &gt; <span class="el_source">Base.java</span></div><h1>Base.java</h1><pre class="source lang-java linenums">package no.motif;
+
+import static no.motif.Iterate.on;
+
+import java.util.Objects;
+
+import no.motif.f.Fn;
+import no.motif.f.Fn0;
+import no.motif.f.Fn2;
+import no.motif.f.Predicate;
+import no.motif.f.combine.Conjunction;
+import no.motif.f.combine.Disjunction;
+import no.motif.f.combine.Fn2Chain;
+import no.motif.f.combine.FnChain;
+import no.motif.f.combine.RunnableChain;
+import no.motif.f.combine.Where;
+
+/**
+ * Basic functions.
+ *
+ * @see Predicate
+ * @see Fn
+ */
+public final class Base {
+
+    /**
+     * Negates a predicate.
+     * @param p The predicate to negate.
+     * @return The new predicate.
+     */
+    public static &lt;T&gt; Predicate&lt;T&gt; not(final Predicate&lt;T&gt; p) {
+<span class="fc bfc" id="L32" title="All 2 branches covered.">        return new Predicate&lt;T&gt;() { @Override public boolean $(T value) { return !p.$(value); }}; }</span>
+
+
+    /**
+     * Compose a predicate from taking the result of a function and apply it to
+     * another predicate.
+     *
+     * &lt;pre&gt;
+     * fn(T) &amp;isin; P
+     * p(P) &amp;isin; {true, false}
+     * &lt;b&gt;&amp;fnof;(T) = p(fn(T)) &amp;isin; {true, false}&lt;/b&gt;
+     * &lt;/pre&gt;
+     *
+     * &lt;p&gt;
+     * This simple composition enables one to focus on writing {@link Fn functions}
+     * for your particular domain, and reusing basic predicates provided by &lt;em&gt;Motif&lt;/em&gt;.
+     * &lt;/p&gt;
+     *
+     * @param &lt;P&gt;       The type of the predicate evaluating the function result.
+     * @param &lt;T&gt;       The type of the resulting predicate.
+     * @param fn        The function which result will be evaluated by the predicate. Takes
+     *                  an argument of &lt;code&gt;T&lt;/code&gt;
+     * @param predicate Evaluates the result from the function, i.e. a value of &lt;code&gt;P&lt;/code&gt;
+     * @return          A predicate of &lt;code&gt;T&lt;/code&gt;
+     */
+    public static &lt;T, P&gt; Predicate&lt;T&gt; where(final Fn&lt;T, P&gt; fn, final Predicate&lt;? super P&gt; predicate) {
+<span class="fc" id="L58">        return new Where&lt;T, P&gt;(fn, predicate); }</span>
+
+
+
+    /**
+     * Create a AND-expression of several predicates, starting with the one
+     * given to this method.
+     *
+     * @see Conjunction
+     * @see #allOf(Predicate...)
+     * @param predicate The first predicate.
+     * @return a new predicate which may be used to build up an AND-expression by
+     *         chaining the {@link Conjunction#and(Predicate) and(anotherPredicate)} method.
+     */
+    public static &lt;T&gt; Conjunction&lt;T&gt; both(Predicate&lt;T&gt; predicate) {
+<span class="fc" id="L73">        return new Conjunction&lt;T&gt;(predicate);</span>
+    }
+
+
+
+    /**
+     * Compose an AND-expression of several predicates.
+     *
+     * @see Conjunction
+     * @param predicates the predicates.
+     * @return a new predicate which is the conjunction (AND) of the given predicates.
+     */
+    @SafeVarargs
+    @SuppressWarnings(&quot;varargs&quot;)
+    public static &lt;T&gt; Conjunction&lt;T&gt; allOf(Predicate&lt;? super T&gt; ... predicates) {
+<span class="fc" id="L88">        return new Conjunction&lt;&gt;(predicates);</span>
+    }
+
+
+
+    /**
+     * Create a OR-expression of several predicates, starting with the one
+     * given to this method.
+     *
+     * @see Disjunction
+     * @see #anyOf(Predicate...)
+     * @param predicate The first predicate.
+     * @return a new predicate which may be used to build up an OR-expression by
+     *         chaining the {@link Disjunction#or(Predicate) or(anotherPredicate)} method.
+     */
+    public static &lt;T&gt; Disjunction&lt;T&gt; either(Predicate&lt;T&gt; predicate) {
+<span class="fc" id="L104">        return new Disjunction&lt;T&gt;(predicate);</span>
+    }
+
+
+
+    /**
+     * Compose an OR-expression of several predicates.
+     *
+     * @see Disjunction
+     * @param predicates the predicates.
+     * @return a new predicate which is the disjunction (OR) of the given predicates.
+     */
+    @SafeVarargs
+    @SuppressWarnings(&quot;varargs&quot;)
+    public static &lt;T&gt; Disjunction&lt;T&gt; anyOf(Predicate&lt;? super T&gt; ... predicates) {
+<span class="fc" id="L119">        return new Disjunction&lt;&gt;(predicates);</span>
+    }
+
+
+    /**
+     * Evaluate if all elements satisfies a predicate, i.e. the &lt;em&gt;Universal quantifier function&lt;/em&gt;.
+     * Note that the predicate
+     *
+     * @param predicate The predicate which will evaluate all elements.
+     * @return a predicate which evaluates to &lt;code&gt;true&lt;/code&gt; if all elements evaluates
+     *         to true by the given predicate, false if any evaluates to &lt;code&gt;false&lt;/code&gt;.
+     */
+    public static &lt;E, I extends Iterable&lt;E&gt;&gt; Predicate&lt;I&gt; all(final Predicate&lt;? super E&gt; predicate) {
+<span class="fc" id="L132">        return new Predicate&lt;I&gt;() { @Override public boolean $(I iterable) {</span>
+<span class="fc" id="L133">            return on(iterable).filter(not(predicate)).isEmpty(); }};}</span>
+
+
+    /**
+     * Evaluate if an element exists, i.e. the &lt;em&gt;Existential quantifier function&lt;/em&gt;.
+     *
+     * @param element The existance-deciding predicate.
+     * @return a predicate which evaluates to &lt;code&gt;true&lt;/code&gt; if any element evaluates
+     *         to true by the given predicate, &lt;code&gt;false&lt;/code&gt; otherwise.
+     */
+    public static &lt;E, I extends Iterable&lt;E&gt;&gt; Predicate&lt;I&gt; exists(final Predicate&lt;? super E&gt; element) {
+<span class="fc" id="L144">        return new Predicate&lt;I&gt;() { @Override public boolean $(I iterable) {</span>
+<span class="fc" id="L145">            return on(iterable).exists(element); }};}</span>
+
+
+    /**
+     * A synonym for {@link #equalTo(Object)}.
+     */
+<span class="fc" id="L151">    public static &lt;T&gt; Predicate&lt;T&gt; is(T value) { return equalTo(value); }</span>
+
+
+    /**
+     * Equality predicate, checks if values are equal to the given value.
+     *
+     * @param value the value the predicate should check for equality against.
+     * @return the equality predicate.
+     */
+    public static &lt;T&gt; Predicate&lt;T&gt; equalTo(final T value) {
+<span class="fc" id="L161">        return new Predicate&lt;T&gt;() { @Override public boolean $(T input) { return Objects.equals(input, value); }}; }</span>
+
+
+    /**
+     * Predicate evaluating if values are less than a given value.
+     *
+     * @param value the right operand, i.e. the predicate will evaluate
+     *              if values are less than this value.
+     * @return the &quot;&lt;em&gt;&amp;lt; value&lt;/em&gt;&quot; predicate
+     */
+    public static &lt;T extends Comparable&lt;? super T&gt;&gt; Predicate&lt;T&gt; lessThan(final T value) {
+<span class="fc bfc" id="L172" title="All 2 branches covered.">        return new Predicate&lt;T&gt;() { @Override public boolean $(T candidate) { return candidate.compareTo(value) &lt; 0; }}; }</span>
+
+
+    /**
+     * Predicate evaluating if values are equal to or less than a given value.
+     *
+     * @param value the right operand, i.e. the predicate will evaluate
+     *              if values are equal to or less than this value.
+     * @return the &quot;&lt;em&gt;=&amp;lt; value&lt;/em&gt;&quot; predicate
+     */
+    public static &lt;T extends Comparable&lt;? super T&gt;&gt; Predicate&lt;T&gt; equalOrLessThan(T value) {
+<span class="fc" id="L183">        return either(equalTo(value)).or(lessThan(value)); }</span>
+
+
+
+    /**
+     * Predicate evaluating if values are greater than a given value.
+     *
+     * @param value the right operand, i.e. the predicate will evaluate
+     *              if values are greater than this value.
+     * @return the &quot;&lt;em&gt;&amp;gt; value&lt;/em&gt;&quot; predicate
+     */
+    public static &lt;T extends Comparable&lt;? super T&gt;&gt; Predicate&lt;T&gt; greaterThan(final T value) {
+<span class="fc bfc" id="L195" title="All 2 branches covered.">        return new Predicate&lt;T&gt;() { @Override public boolean $(T candidate) { return candidate.compareTo(value) &gt; 0; }}; }</span>
+
+
+    /**
+     * Predicate evaluating if values are equal to or greater than a given value.
+     *
+     * @param value the right operand, i.e. the predicate will evaluate
+     *              if values are equal to or greater than this value.
+     * @return the &quot;&lt;em&gt;&amp;gt;= value&lt;/em&gt;&quot; predicate
+     */
+    public static &lt;T extends Comparable&lt;? super T&gt;&gt; Predicate&lt;T&gt; equalOrGreaterThan(T value) {
+<span class="fc" id="L206">        return either(equalTo(value)).or(greaterThan(value)); }</span>
+
+
+
+<span class="fc" id="L210">    public static final Predicate&lt;Object&gt; isNull = new Predicate&lt;Object&gt;() {</span>
+<span class="fc bfc" id="L211" title="All 2 branches covered.">        @Override public boolean $(Object value) { return value == null; }};</span>
+
+
+<span class="fc" id="L214">    public static final Predicate&lt;Object&gt; notNull = not(isNull);</span>
+
+
+<span class="fc" id="L217">    public static final Fn&lt;Object, String&gt; toString = new Fn&lt;Object, String&gt;() {</span>
+<span class="fc" id="L218">        @Override public String $(Object value) { return String.valueOf(value); }};</span>
+
+
+<span class="fc" id="L221">    public static &lt;V&gt; Fn0&lt;V&gt; constant(final V value) { return new Fn0&lt;V&gt;() {</span>
+<span class="fc" id="L222">        @Override public V $() { return value; }}; }</span>
+
+
+    /**
+     * Compose a chain of several functions into one {@link Fn}, where the result of
+     * each function is passed to its successor, and the last will yield the
+     * actual result of the chain. Use {@link FnChain#then(Fn) .then(Fn)} to append
+     * functions to the chain.
+     *
+     * &lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; The chain does no internal inspection of the intermediate
+     * results passed to the next function, which means that any function which may
+     * return &lt;code&gt;null&lt;/code&gt;, &lt;em&gt;must&lt;/em&gt; have a &lt;code&gt;null&lt;/code&gt;-safe successor
+     * function.
+     *
+     * @param fn The first function in the chain.
+     * @return the given function as the first function in a chain.
+     */
+    public static final &lt;I, O&gt; FnChain&lt;I, O, O&gt; first(Fn&lt;I, O&gt; fn) {
+<span class="fc" id="L240">        return new FnChain&lt;&gt;(fn, NOP.&lt;O&gt;fn());</span>
+    }
+
+
+    /**
+     * Compose a chain of several functions into one {@link Fn2}, where the result of
+     * each function is passed to its successor, and the last will yield the
+     * actual result of the chain. Use {@link Fn2Chain#then(Fn) .then(Fn)} to append
+     * functions to the chain.
+     *
+     * &lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; The chain does no inspection of the intermediate
+     * results passed to the next function, which means that any function which may
+     * return &lt;code&gt;null&lt;/code&gt;, &lt;em&gt;must&lt;/em&gt; have a &lt;code&gt;null&lt;/code&gt;-safe successor
+     * function.
+     *
+     * @param fn2 The first function in the chain.
+     * @return the given function as the first function in a chain.
+     */
+    public static final &lt;I1, I2, O&gt; Fn2Chain&lt;I1, I2, O, O&gt; first(Fn2&lt;I1, I2, O&gt; fn2) {
+<span class="fc" id="L259">        return new Fn2Chain&lt;&gt;(fn2, NOP.&lt;O&gt;fn());</span>
+    }
+
+
+    /**
+     * Compose several {@link Runnable}s as a single Runnable which will
+     * execute the given Runnables in sequence.
+     *
+     * @param runnable The first Runnable.
+     * @return the given Runnable as the first Runnable in a sequence.
+     */
+    public static final RunnableChain first(Runnable runnable) {
+<span class="fc" id="L271">        return new RunnableChain(runnable, NOP.runnable);</span>
+    }
+
+
+    /**
+     * A bridge from functions yielding arrays, to functions yielding iterables.
+     *
+     * @param yieldsArray the array-yielding function.
+     * @return an adapted function yielding an iterable of the array yielded from the original function.
+     */
+    public static final &lt;I, O&gt; Fn&lt;I, Iterable&lt;O&gt;&gt; toIterable(final Fn&lt;I, O[]&gt; yieldsArray) {
+<span class="fc" id="L282">        return new Fn&lt;I, Iterable&lt;O&gt;&gt;() { @Override public Iterable&lt;O&gt; $(I value) { return on(yieldsArray.$(value)); }}; }</span>
+
+
+<span class="fc" id="L285">    private Base() {}</span>
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.3.201306030806</span></div></body></html>

@@ -18,14 +18,14 @@
 <a class="jxr_linenumber" name="8" href="#8">8</a>   
 <a class="jxr_linenumber" name="9" href="#9">9</a>   <strong class="jxr_keyword">import</strong> no.motif.Iterate;
 <a class="jxr_linenumber" name="10" href="#10">10</a>  <strong class="jxr_keyword">import</strong> no.motif.f.Predicate;
-<a class="jxr_linenumber" name="11" href="#11">11</a>  <strong class="jxr_keyword">import</strong> no.motif.option.Optional;
+<a class="jxr_linenumber" name="11" href="#11">11</a>  <strong class="jxr_keyword">import</strong> no.motif.single.Optional;
 <a class="jxr_linenumber" name="12" href="#12">12</a>  
-<a class="jxr_linenumber" name="13" href="#13">13</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> PredicateBoundedIterable&lt;T&gt; <strong class="jxr_keyword">implements</strong> Iterable&lt;T&gt;, Serializable {
+<a class="jxr_linenumber" name="13" href="#13">13</a>  <strong class="jxr_keyword">class</strong> PredicateBoundedIterable&lt;T&gt; <strong class="jxr_keyword">implements</strong> Iterable&lt;T&gt;, Serializable {
 <a class="jxr_linenumber" name="14" href="#14">14</a>  
 <a class="jxr_linenumber" name="15" href="#15">15</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> Predicate&lt;? <strong class="jxr_keyword">super</strong> T&gt; predicate;
 <a class="jxr_linenumber" name="16" href="#16">16</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> Iterable&lt;T&gt; elements;
 <a class="jxr_linenumber" name="17" href="#17">17</a>  
-<a class="jxr_linenumber" name="18" href="#18">18</a>      <strong class="jxr_keyword">public</strong> <a href="../../../no/motif/iter/PredicateBoundedIterable.html">PredicateBoundedIterable</a>(Predicate&lt;? <strong class="jxr_keyword">super</strong> T&gt; predicate, Iterable&lt;T&gt; elements) {
+<a class="jxr_linenumber" name="18" href="#18">18</a>      <a href="../../../no/motif/iter/PredicateBoundedIterable.html">PredicateBoundedIterable</a>(Predicate&lt;? <strong class="jxr_keyword">super</strong> T&gt; predicate, Iterable&lt;T&gt; elements) {
 <a class="jxr_linenumber" name="19" href="#19">19</a>          <strong class="jxr_keyword">this</strong>.predicate = predicate;
 <a class="jxr_linenumber" name="20" href="#20">20</a>          <strong class="jxr_keyword">this</strong>.elements = elements;
 <a class="jxr_linenumber" name="21" href="#21">21</a>      }
