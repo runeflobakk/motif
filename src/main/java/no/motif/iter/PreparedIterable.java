@@ -6,6 +6,7 @@ import static no.motif.Singular.optional;
 
 import java.io.Serializable;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import no.motif.f.Fn;
 import no.motif.f.Predicate;
@@ -84,6 +85,13 @@ public class PreparedIterable<T> extends CollectingIterable<T> implements Elemen
     @Override
     public PreparedIterable<T> takeUntil(Predicate<? super T> predicate) {
         return new PreparedIterable<>(new PredicateBoundedIterable<>(not(predicate), elements));
+    }
+
+
+    @Override
+    public PreparedIterable<T> tail() {
+        if (isEmpty()) throw new NoSuchElementException();
+        else return new PreparedIterable<>(new SkipLeadingIterable<>(1, elements));
     }
 
 

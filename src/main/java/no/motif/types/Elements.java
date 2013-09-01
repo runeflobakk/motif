@@ -1,7 +1,11 @@
 package no.motif.types;
 
+import java.util.NoSuchElementException;
+
+import no.motif.Singular;
 import no.motif.f.Fn;
 import no.motif.f.Predicate;
+import no.motif.option.Optional;
 
 /**
  * This is the main type of Motif's collection API and
@@ -50,6 +54,23 @@ public interface Elements<T> extends
      * @return the elements
      */
     Elements<T> takeUntil(Predicate<? super T> predicate);
+
+
+    /**
+     * Gets the first element if it exists.
+     */
+    Optional<T> head();
+
+
+    /**
+     * Skips the first element and gets the remaining elements.
+     *
+     * @return The remaining elements, or empty elements if there is only one element.
+     * @throws NoSuchElementException if there are no elements contained in this <code>Elements</code>,
+     *                                i.e. if {@link #head()} returns {@link Singular#none() none}.
+     *
+     */
+    Elements<T> tail();
 
 
     @Override public <O> Elements<O> map(Fn<? super T, O> function);

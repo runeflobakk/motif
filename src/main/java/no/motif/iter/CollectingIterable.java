@@ -3,6 +3,7 @@ package no.motif.iter;
 import static java.util.Collections.sort;
 import static java.util.Collections.unmodifiableList;
 import static no.motif.Iterate.by;
+import static no.motif.Singular.optional;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -10,12 +11,12 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 
+import no.motif.Singular;
 import no.motif.f.Fn;
 import no.motif.f.Fn2;
 import no.motif.f.Predicate;
-import no.motif.types.Existance;
-import no.motif.types.Reducible;
-import no.motif.types.YieldsJavaCollection;
+import no.motif.option.Optional;
+import no.motif.types.Elements;
 
 /**
  * This iterable offers operations which requires collecting (i.e.
@@ -25,7 +26,7 @@ import no.motif.types.YieldsJavaCollection;
  *
  * @param <T> The type of elements in this iterable.
  */
-abstract class CollectingIterable<T> implements Iterable<T>, YieldsJavaCollection<T>, Existance<T>, Reducible<T>, Serializable {
+abstract class CollectingIterable<T> implements Elements<T>, Serializable {
 
     @Override
     public final <O> O reduce(O unit, Fn2<? super O, ? super T, ? extends O> reducer) {
@@ -76,6 +77,12 @@ abstract class CollectingIterable<T> implements Iterable<T>, YieldsJavaCollectio
     public boolean exists(Predicate<? super T> predicate) {
         for (T t : this) if (predicate.$(t)) return true;
         return false;
+    }
+
+
+    @Override
+    public Optional<T> head() {
+        return !isEmpty() ? optional(iterator().next()) : Singular.<T>none();
     }
 
 
