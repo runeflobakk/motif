@@ -221,4 +221,6 @@ public abstract class Optional<V> implements Iterable<V>, Mappable<V>, Serializa
     public abstract <O> PreparedIterable<O> split(Fn<? super V, ? extends Iterable<O>> splitter);
 
 
+
+    private Optional() {}
 }
