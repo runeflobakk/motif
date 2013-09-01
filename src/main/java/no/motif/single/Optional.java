@@ -1,4 +1,4 @@
-package no.motif.option;
+package no.motif.single;
 
 import static no.motif.Base.notNull;
 

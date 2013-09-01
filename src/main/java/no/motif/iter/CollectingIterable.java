@@ -18,7 +18,7 @@ import no.motif.Strings;
 import no.motif.f.Fn;
 import no.motif.f.Fn2;
 import no.motif.f.Predicate;
-import no.motif.option.Optional;
+import no.motif.single.Optional;
 import no.motif.types.Elements;
 
 /**

@@ -5,7 +5,7 @@ import java.util.NoSuchElementException;
 import no.motif.Singular;
 import no.motif.f.Fn;
 import no.motif.f.Predicate;
-import no.motif.option.Optional;
+import no.motif.single.Optional;
 
 /**
  * This is the main type of Motif's collection API and

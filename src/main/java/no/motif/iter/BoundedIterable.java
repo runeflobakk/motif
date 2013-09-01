@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.Iterator;
 
 import no.motif.Singular;
-import no.motif.option.Optional;
+import no.motif.single.Optional;
 
 class BoundedIterable<T> implements Iterable<T>, Serializable {
 

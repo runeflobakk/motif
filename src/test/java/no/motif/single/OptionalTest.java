@@ -1,4 +1,4 @@
-package no.motif.option;
+package no.motif.single;
 
 import static no.motif.Base.not;
 import static no.motif.Base.notNull;
@@ -24,8 +24,8 @@ import java.util.NoSuchElementException;
 import no.motif.Singular;
 import no.motif.f.Fn;
 import no.motif.f.Predicate;
-import no.motif.option.Optional.None;
-import no.motif.option.Optional.Some;
+import no.motif.single.Optional.None;
+import no.motif.single.Optional.Some;
 
 import org.junit.Test;
 

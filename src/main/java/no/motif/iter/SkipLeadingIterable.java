@@ -6,7 +6,7 @@ import static no.motif.Singular.optional;
 import java.util.Iterator;
 
 import no.motif.Iterate;
-import no.motif.option.Optional;
+import no.motif.single.Optional;
 
 class SkipLeadingIterable<T> implements Iterable<T> {
 

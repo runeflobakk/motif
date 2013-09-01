@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.Iterator;
 
 import no.motif.f.Predicate;
-import no.motif.option.Optional;
+import no.motif.single.Optional;
 
 final class FilteredIterable<T> implements Iterable<T>, Serializable {
 

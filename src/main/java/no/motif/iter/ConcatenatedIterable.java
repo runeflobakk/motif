@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Iterator;
 
 import no.motif.Singular;
-import no.motif.option.Optional;
+import no.motif.single.Optional;
 
 class ConcatenatedIterable<T> implements Iterable<T>, Serializable {
 

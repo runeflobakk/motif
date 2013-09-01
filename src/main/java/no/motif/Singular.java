@@ -2,9 +2,9 @@ package no.motif;
 
 import static no.motif.Base.notNull;
 import no.motif.f.Predicate;
-import no.motif.option.Optional;
-import no.motif.option.Optional.None;
-import no.motif.option.Optional.Some;
+import no.motif.single.Optional;
+import no.motif.single.Optional.None;
+import no.motif.single.Optional.Some;
 
 /**
  * Operations for working with single values.

@@ -9,7 +9,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import no.motif.Singular;
-import no.motif.option.Optional;
+import no.motif.single.Optional;
 
 import org.junit.Test;
 

@@ -8,7 +8,7 @@ import java.util.Iterator;
 
 import no.motif.Iterate;
 import no.motif.f.Fn;
-import no.motif.option.Optional;
+import no.motif.single.Optional;
 
 final class MappingIterable<I, O> implements Iterable<O>, Serializable {
 

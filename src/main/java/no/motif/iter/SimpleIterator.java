@@ -1,11 +1,12 @@
 package no.motif.iter;
 
 import static no.motif.Singular.none;
+
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import no.motif.Singular;
-import no.motif.option.Optional;
+import no.motif.single.Optional;
 
 /**
  * SimpleIterator offers an easier way to implement the

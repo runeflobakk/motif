@@ -8,7 +8,7 @@ import java.util.Iterator;
 
 import no.motif.Iterate;
 import no.motif.f.Predicate;
-import no.motif.option.Optional;
+import no.motif.single.Optional;
 
 class PredicateBoundedIterable<T> implements Iterable<T>, Serializable {
 
