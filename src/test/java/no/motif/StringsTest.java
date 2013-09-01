@@ -1,5 +1,6 @@
 package no.motif;
 
+import static no.motif.Iterate.on;
 import static no.motif.Strings.alphabetic;
 import static no.motif.Strings.alphanumeric;
 import static no.motif.Strings.append;
@@ -192,6 +193,19 @@ public class StringsTest {
         assertThat(last(3).$("abcd"), is("bcd"));
         assertThat(last(3).$("ab"), is("ab"));
         assertThat(last(0).$("ab"), is(""));
+    }
+
+    @Test
+    public void join() {
+        assertThat(on("a", "b", 1).join(), is("ab1"));
+        assertThat(on().join(), is(""));
+    }
+
+    @Test
+    public void joinedWithSeparator() {
+        assertThat(on("a", "b", 1).join(", "), is("a, b, 1"));
+        assertThat(on("a").join(", "), is("a"));
+        assertThat(on().join(", "), is(""));
     }
 
 

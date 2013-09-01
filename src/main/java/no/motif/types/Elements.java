@@ -73,6 +73,23 @@ public interface Elements<T> extends
     Elements<T> tail();
 
 
+    /**
+     * Join all elements to one <code>String</code>.
+     *
+     * @return the joined string
+     */
+    String join();
+
+
+    /**
+     * Join all elements to one <code>String</code> with all
+     * elements joined with the given separator.
+     *
+     * @return the joined string
+     */
+    String join(String separator);
+
+
     @Override public <O> Elements<O> map(Fn<? super T, O> function);
     @Override public Elements<T> filter(Predicate<? super T> filter);
 

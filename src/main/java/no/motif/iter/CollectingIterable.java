@@ -2,8 +2,10 @@ package no.motif.iter;
 
 import static java.util.Collections.sort;
 import static java.util.Collections.unmodifiableList;
+import static no.motif.Base.toString;
 import static no.motif.Iterate.by;
 import static no.motif.Singular.optional;
+import static no.motif.Strings.concat;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -12,6 +14,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import no.motif.Singular;
+import no.motif.Strings;
 import no.motif.f.Fn;
 import no.motif.f.Fn2;
 import no.motif.f.Predicate;
@@ -83,6 +86,19 @@ abstract class CollectingIterable<T> implements Elements<T>, Serializable {
     @Override
     public Optional<T> head() {
         return !isEmpty() ? optional(iterator().next()) : Singular.<T>none();
+    }
+
+
+    @Override
+    public String join() {
+        return reduce("", concat);
+    }
+
+
+    @Override
+    public String join(String separator) {
+        if (isEmpty()) return "";
+        return head().map(toString).append(tail().map(Strings.prepend(separator))).reduce("", concat);
     }
 
 
