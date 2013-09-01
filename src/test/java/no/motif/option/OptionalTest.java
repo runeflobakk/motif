@@ -1,6 +1,7 @@
 package no.motif.option;
 
 import static no.motif.Base.not;
+import static no.motif.Base.notNull;
 import static no.motif.Iterate.on;
 import static no.motif.Singular.none;
 import static no.motif.Singular.optional;
@@ -162,6 +163,13 @@ public class OptionalTest {
         Iterable<Character> splittedString = optional("").split(new Fn<Object, Iterable<Character>>() {
             @Override public Iterable<Character> $(Object o) { return chars; }});
         assertThat(splittedString, sameInstance(chars));
+    }
+
+    @Test
+    public void filteringOptional() {
+        assertThat(optional("").filter(not(blank)), is(Singular.<String>none()));
+        assertThat(optional("x").filter(not(blank)), contains("x"));
+        assertThat(none().filter(notNull), is(none()));
     }
 
 

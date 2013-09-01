@@ -15,6 +15,7 @@ import no.motif.iter.EmptyIterator;
 import no.motif.iter.PreparedIterable;
 import no.motif.iter.SingularIterator;
 import no.motif.types.Elements;
+import no.motif.types.Filterable;
 import no.motif.types.Mappable;
 
 /**
@@ -25,7 +26,7 @@ import no.motif.types.Mappable;
  *
  * @param <V> The type of the wrapped object.
  */
-public abstract class Optional<V> implements Iterable<V>, Mappable<V>, Serializable {
+public abstract class Optional<V> implements Iterable<V>, Mappable<V>, Filterable<V>, Serializable {
 
 
     /**
@@ -87,6 +88,11 @@ public abstract class Optional<V> implements Iterable<V>, Mappable<V>, Serializa
         }
 
         @Override
+        public Optional<V> filter(Predicate<? super V> accepted) {
+            return resolve(accepted, value);
+        }
+
+        @Override
         public <O> Elements<O> split(Fn<? super V, ? extends Iterable<O>> splitter) {
             return Iterate.on(splitter.$(value));
         }
@@ -131,6 +137,11 @@ public abstract class Optional<V> implements Iterable<V>, Mappable<V>, Serializa
 
         @Override
         public <O> Optional<O> map(Predicate<? super O> isPresent, Fn<? super V, O> mapper) {
+            return None.getInstance();
+        }
+
+        @Override
+        public Optional<V> filter(Predicate<? super V> filter) {
             return None.getInstance();
         }
 
@@ -185,6 +196,10 @@ public abstract class Optional<V> implements Iterable<V>, Mappable<V>, Serializa
      * @see #resolve(Predicate, Object)
      */
     public abstract <O> Optional<O> map(Predicate<? super O> isPresent, Fn<? super V, O> transformer);
+
+
+    @Override
+    public abstract Optional<V> filter(Predicate<? super V> filter);
 
 
     /**
