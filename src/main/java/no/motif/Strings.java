@@ -213,6 +213,47 @@ public final class Strings {
     public static Fn<Object, String> append(String suffix) { return Apply.partially(argsReversed(concat)).of(suffix); }
 
 
+    /**
+     * Extract substring from strings. As
+     * this function simply delegates to {@link String#substring(int, int)}, it
+     * may throw an {@link IndexOutOfBoundsException} if the given indexes
+     * are invalid.
+     *
+     * @param beginIndex The index of the first character to include.
+     * @param endIndex The index to end the extraction.
+     */
+    public static Fn<String, String> substring(final int beginIndex, final int endIndex) {
+        return new Fn<String, String>() { @Override public String $(String s) { return s.substring(beginIndex, endIndex); }}; }
+
+
+    /**
+     * Get at most a given amount of the first characters of strings.
+     * If the string is shorter than the amount, the original string is returned.
+     */
+    public static Fn<String, String> first(final int charAmount) {
+        return new Fn<String, String>() {
+            @Override public String $(String s) {
+                if (s == null) return "";
+                return (charAmount > s.length()) ? s : s.substring(0, charAmount);
+            }};
+    }
+
+
+    /**
+     * Get at most a given amount of the last characters of strings.
+     * If the string is shorter than the amount, the original string is returned.
+     */
+    public static Fn<String, String> last(final int charAmount) {
+        return new Fn<String, String>() {
+            @Override public String $(String s) {
+                if (s == null) return "";
+                return (charAmount > s.length()) ? s : s.substring(s.length() - charAmount, s.length());
+            }};
+    }
+
+
+
+
     private Strings() {}
 
 }

@@ -7,7 +7,9 @@ import static no.motif.Strings.blank;
 import static no.motif.Strings.concat;
 import static no.motif.Strings.contains;
 import static no.motif.Strings.endsWith;
+import static no.motif.Strings.first;
 import static no.motif.Strings.hasLength;
+import static no.motif.Strings.last;
 import static no.motif.Strings.length;
 import static no.motif.Strings.lowerCased;
 import static no.motif.Strings.matches;
@@ -168,6 +170,28 @@ public class StringsTest {
     @Test
     public void prepending() {
         assertThat(prepend("x").$("y"), is("xy"));
+    }
+
+    @Test
+    public void substring() {
+        assertThat(Strings.substring(1, 3).$("abcd"), is("bc"));
+    }
+
+    @Test
+    public void leadingCharacters() {
+        assertThat(first(3).$("abcd"), is("abc"));
+        assertThat(first(3).$(null), is(""));
+        assertThat(first(3).$("ab"), is("ab"));
+        assertThat(first(0).$("ab"), is(""));
+    }
+
+    @Test
+    public void trailingCharacters() {
+        assertThat(last(3).$(null), is(""));
+        assertThat(last(3).$("abc"), is("abc"));
+        assertThat(last(3).$("abcd"), is("bcd"));
+        assertThat(last(3).$("ab"), is("ab"));
+        assertThat(last(0).$("ab"), is(""));
     }
 
 
