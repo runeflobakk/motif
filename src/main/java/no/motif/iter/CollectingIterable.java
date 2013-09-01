@@ -8,14 +8,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import no.motif.f.Fn;
 import no.motif.f.Fn2;
 import no.motif.f.Predicate;
+import no.motif.types.Existance;
 import no.motif.types.Reducible;
+import no.motif.types.YieldsJavaCollection;
 
 /**
  * This iterable offers operations which requires collecting (i.e.
@@ -25,7 +25,7 @@ import no.motif.types.Reducible;
  *
  * @param <T> The type of elements in this iterable.
  */
-public abstract class CollectingIterable<T> implements Iterable<T>, Reducible<T>, Serializable {
+abstract class CollectingIterable<T> implements Iterable<T>, YieldsJavaCollection<T>, Existance<T>, Reducible<T>, Serializable {
 
     @Override
     public final <O> O reduce(O unit, Fn2<? super O, ? super T, ? extends O> reducer) {
@@ -34,34 +34,14 @@ public abstract class CollectingIterable<T> implements Iterable<T>, Reducible<T>
         return reduced;
     }
 
-    /**
-     * Get the elements as an immutable {@link List}. This is the
-     * most common way to obtain a regular implementation of a Java
-     * collection.
-     *
-     * If you need more control on the returned {@link Collection}
-     * implementation, use {@link #collectIn(Collection)}, e.g. if
-     * you need a mutable collection.
-     *
-     * @return the elements of the iterable as an unmodifiable list.
-     */
+
+    @Override
     public final List<T> collect() {
         return unmodifiableList(collectIn(new ArrayList<T>()));
     }
 
-    /**
-     * Collects the elements in this iterable in the given collection.
-     * The caller is responsible for supplying an appropriate collection
-     * implementation for what behavior that is expected. Keep in mind that
-     * {@link Set sets} does not allow duplicates, and {@link HashSet many implementations}
-     * also does not maintain the order of the elements. The collection must obviously
-     * support the {@link Collection#add(Object) add(..)} operation. Unless you
-     * have particular needs for the resulting collection, consider using
-     * the {@link #collect()} method instead.
-     *
-     * @param collection The collection to add the elements to.
-     * @return the given collection is returned.
-     */
+
+    @Override
     public final <C extends Collection<T>> C collectIn(C collection) {
         for (T t : this) {
             collection.add(t);
@@ -70,23 +50,15 @@ public abstract class CollectingIterable<T> implements Iterable<T>, Reducible<T>
     }
 
 
-    /**
-     * Get a sorted immutable {@link List} of the contents of this iterable.
-     *
-     * @param property The function to obtain the property to sort by of each element.
-     * @return the elements of the iterable as a sorted list.
-     */
+
+    @Override
     public final <P extends Comparable<P>> List<T> sortedBy(Fn<? super T, P> property) {
         return sorted(by(property));
     }
 
 
-    /**
-     * Get a sorted immutable {@link List} of the contents of this iterable.
-     *
-     * @param property The function to obtain the property to sort by of each element.
-     * @return the elements of the iterable as a sorted list.
-     */
+
+    @Override
     public final List<T> sorted(Comparator<? super T> comparator) {
         List<T> elements = collectIn(new ArrayList<T>());
         sort(elements, comparator);
@@ -94,22 +66,13 @@ public abstract class CollectingIterable<T> implements Iterable<T>, Reducible<T>
     }
 
 
-
-    /**
-     * @return <code>true</code> if empty, <code>false</code> otherwise.
-     */
+    @Override
     public boolean isEmpty() {
         return !iterator().hasNext();
     }
 
 
-    /**
-     * Decide if an element exist.
-     *
-     * @param predicate evaluates each element.
-     * @return <code>true</code> once the predicate evaluates to true,
-     *         otherwise <code>false</code>.
-     */
+    @Override
     public boolean exists(Predicate<? super T> predicate) {
         for (T t : this) if (predicate.$(t)) return true;
         return false;

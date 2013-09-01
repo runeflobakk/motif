@@ -6,7 +6,7 @@ package no.motif.types;
  * @param <T> The type of elements contained.
  */
 
-public interface Prependable<T> {
+public interface Prependable<T> extends Iterable<T> {
 
     /**
      * Prepend one element.
@@ -14,7 +14,7 @@ public interface Prependable<T> {
      * @param value the element to prepend.
      * @return the resulting elements.
      */
-    Prependable<T> prepend(T value);
+    EnhancedIterable<T> prepend(T value);
 
 
     /**
@@ -23,5 +23,5 @@ public interface Prependable<T> {
      * @param leadingElements the elements to prepend.
      * @return the resulting elements.
      */
-    Prependable<T> prepend(Iterable<? extends T> leadingElements);
+    EnhancedIterable<T> prepend(Iterable<? extends T> leadingElements);
 }

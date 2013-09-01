@@ -2,13 +2,13 @@ package no.motif.option;
 
 import static no.motif.Base.not;
 import static no.motif.Iterate.on;
+import static no.motif.Singular.none;
+import static no.motif.Singular.optional;
 import static no.motif.Strings.blank;
 import static no.motif.Strings.lowerCased;
 import static no.motif.Strings.toChars;
-import static no.motif.Strings.upperCased;
 import static no.motif.Strings.trimmed;
-import static no.motif.Singular.none;
-import static no.motif.Singular.optional;
+import static no.motif.Strings.upperCased;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.emptyIterable;
 import static org.hamcrest.Matchers.is;
@@ -157,7 +157,7 @@ public class OptionalTest {
     }
 
     @Test
-    public void splittingUsingFunctionYieldingPreparedIterableReturnsThatSameInstance() {
+    public void splittingUsingFunctionYieldingEnhancedIterableReturnsThatSameInstance() {
         final Iterable<Character> chars = on("xyz");
         Iterable<Character> splittedString = optional("").split(new Fn<Object, Iterable<Character>>() {
             @Override public Iterable<Character> $(Object o) { return chars; }});

@@ -12,7 +12,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.Iterator;
 
 import no.motif.f.Fn;
-import no.motif.iter.PreparedIterable;
+import no.motif.types.EnhancedIterable;
 
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -33,7 +33,7 @@ public class WherePredicateTest {
 
     @Test
     public void filterDomainObjectsUsingWherePredicate() {
-        PreparedIterable<A> onlyXEqualTo2 = on(new A(){{x = "1";}}, new A(){{x = "2";}}).filter(where(A.X, equalTo("2")));
+        EnhancedIterable<A> onlyXEqualTo2 = on(new A(){{x = "1";}}, new A(){{x = "2";}}).filter(where(A.X, equalTo("2")));
         assertThat(onlyXEqualTo2, Matchers.<A>iterableWithSize(1));
         Iterator<A> iterator = onlyXEqualTo2.iterator();
         A head = iterator.next();

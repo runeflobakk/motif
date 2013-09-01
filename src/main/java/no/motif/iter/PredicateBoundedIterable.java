@@ -10,12 +10,12 @@ import no.motif.Iterate;
 import no.motif.f.Predicate;
 import no.motif.option.Optional;
 
-public class PredicateBoundedIterable<T> implements Iterable<T>, Serializable {
+class PredicateBoundedIterable<T> implements Iterable<T>, Serializable {
 
     private final Predicate<? super T> predicate;
     private final Iterable<T> elements;
 
-    public PredicateBoundedIterable(Predicate<? super T> predicate, Iterable<T> elements) {
+    PredicateBoundedIterable(Predicate<? super T> predicate, Iterable<T> elements) {
         this.predicate = predicate;
         this.elements = elements;
     }

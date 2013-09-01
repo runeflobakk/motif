@@ -6,12 +6,12 @@ import java.util.Iterator;
 import no.motif.Singular;
 import no.motif.option.Optional;
 
-public class ConcatenatedIterable<T> implements Iterable<T>, Serializable {
+class ConcatenatedIterable<T> implements Iterable<T>, Serializable {
 
     private final Iterable<? extends T> leadingElements;
     private final Iterable<? extends T> trailingElements;
 
-    public ConcatenatedIterable(Iterable<? extends T> leadingElements, Iterable<? extends T> trailingElements) {
+    ConcatenatedIterable(Iterable<? extends T> leadingElements, Iterable<? extends T> trailingElements) {
         this.leadingElements = leadingElements;
         this.trailingElements = trailingElements;
     }

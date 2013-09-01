@@ -14,6 +14,7 @@ import no.motif.f.Predicate;
 import no.motif.iter.EmptyIterator;
 import no.motif.iter.PreparedIterable;
 import no.motif.iter.SingularIterator;
+import no.motif.types.EnhancedIterable;
 import no.motif.types.Mappable;
 
 /**
@@ -23,7 +24,7 @@ import no.motif.types.Mappable;
  * be customized with a {@link Predicate}.
  *
  * @param <V> The type of the wrapped object.
- *
+ * @apiviz.landmark
  */
 public abstract class Optional<V> implements Iterable<V>, Mappable<V>, Serializable {
 
@@ -87,7 +88,7 @@ public abstract class Optional<V> implements Iterable<V>, Mappable<V>, Serializa
         }
 
         @Override
-        public <O> PreparedIterable<O> split(Fn<? super V, ? extends Iterable<O>> splitter) {
+        public <O> EnhancedIterable<O> split(Fn<? super V, ? extends Iterable<O>> splitter) {
             return Iterate.on(splitter.$(value));
         }
     }
@@ -135,7 +136,7 @@ public abstract class Optional<V> implements Iterable<V>, Mappable<V>, Serializa
         }
 
         @Override
-        public <O> PreparedIterable<O> split(Fn<? super V, ? extends Iterable<O>> splitter) {
+        public <O> EnhancedIterable<O> split(Fn<? super V, ? extends Iterable<O>> splitter) {
             return PreparedIterable.empty();
         }
 
@@ -218,7 +219,7 @@ public abstract class Optional<V> implements Iterable<V>, Mappable<V>, Serializa
      * @param splitter a function yielding an iterable.
      * @return the elements, or empty iterable if undefined value.
      */
-    public abstract <O> PreparedIterable<O> split(Fn<? super V, ? extends Iterable<O>> splitter);
+    public abstract <O> EnhancedIterable<O> split(Fn<? super V, ? extends Iterable<O>> splitter);
 
 
 

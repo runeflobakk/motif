@@ -1,5 +1,6 @@
 package no.motif.types;
 
+import no.motif.f.Fn;
 import no.motif.f.Predicate;
 
 
@@ -12,7 +13,6 @@ import no.motif.f.Predicate;
  * take place.
  *
  * @param <T> The type of the contained elements.
- * @see no.motif.iter.PreparedIterable
  */
 public interface Elements<T> extends Mappable<T>, Filterable<T>, Appendable<T>, Prependable<T> {
 
@@ -46,4 +46,9 @@ public interface Elements<T> extends Mappable<T>, Filterable<T>, Appendable<T>, 
      * @return the elements
      */
     Elements<T> takeUntil(Predicate<? super T> predicate);
+
+
+
+    @Override public <O> Elements<O> map(Fn<? super T, O> function);
+    @Override public Elements<T> filter(Predicate<? super T> filter);
 }

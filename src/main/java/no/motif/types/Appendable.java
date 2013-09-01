@@ -5,7 +5,7 @@ package no.motif.types;
  *
  * @param <T> The type of elements contained.
  */
-public interface Appendable<T> {
+public interface Appendable<T> extends Iterable<T> {
 
     /**
      * Append one element.
@@ -13,7 +13,7 @@ public interface Appendable<T> {
      * @param value the element to append.
      * @return the resulting elements.
      */
-    Appendable<T> append(T value);
+    EnhancedIterable<T> append(T value);
 
 
     /**
@@ -22,6 +22,6 @@ public interface Appendable<T> {
      * @param trailingElements the elements to append.
      * @return the resulting elements.
      */
-    Appendable<T> append(Iterable<? extends T> trailingElements);
+    EnhancedIterable<T> append(Iterable<? extends T> trailingElements);
 
 }

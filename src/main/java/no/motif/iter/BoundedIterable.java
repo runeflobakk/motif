@@ -13,7 +13,7 @@ class BoundedIterable<T> implements Iterable<T>, Serializable {
     private final Iterable<T> elements;
     private final int maxAmount;
 
-    public BoundedIterable(int maxAmount, Iterable<T> elements) {
+    BoundedIterable(int maxAmount, Iterable<T> elements) {
         this.maxAmount = maxAmount;
         this.elements = elements;}
 

@@ -3,7 +3,6 @@ package no.motif.f.combine;
 import static java.util.Arrays.asList;
 import no.motif.Iterate;
 import no.motif.f.Predicate;
-import no.motif.iter.PreparedIterable;
 
 /**
  * A disjunction is a composition of several predicates which evaluates
@@ -13,7 +12,7 @@ import no.motif.iter.PreparedIterable;
  */
 public class Disjunction<T> implements Predicate<T> {
 
-    private final PreparedIterable<Predicate<? super T>> predicates;
+    private final no.motif.types.Appendable<Predicate<? super T>> predicates;
 
     @SafeVarargs
     @SuppressWarnings("varargs")
