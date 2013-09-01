@@ -21,6 +21,7 @@ import static org.junit.Assert.fail;
 
 import java.util.NoSuchElementException;
 
+import nl.jqno.equalsverifier.EqualsVerifier;
 import no.motif.Singular;
 import no.motif.f.Fn;
 import no.motif.f.Predicate;
@@ -182,6 +183,18 @@ public class OptionalTest {
     public void prepending() {
         assertThat(optional("World").prepend("Hello"), contains("Hello", "World"));
         assertThat(optional("World").prepend(on("Hello", ",")), contains("Hello", ",", "World"));
+    }
+
+    @Test
+    public void adheresToEqualsHashcodeContract() {
+        EqualsVerifier.forClass(Some.class).verify();
+        EqualsVerifier.forClass(None.class).verify();
+    }
+
+    @Test
+    public void hasNiceToString() {
+        assertThat(optional(null).toString(), is("None"));
+        assertThat(optional("value").toString(), is("Some(value)"));
     }
 
 }

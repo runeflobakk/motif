@@ -5,6 +5,7 @@ import static no.motif.Base.notNull;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 import no.motif.Base;
 import no.motif.Iterate;
@@ -99,6 +100,25 @@ public abstract class Optional<V>
         public <O> Elements<O> split(Fn<? super V, ? extends Iterable<O>> splitter) {
             return Iterate.on(splitter.$(value));
         }
+
+        @Override
+        public boolean equals(Object o) {
+            if (o instanceof Some) {
+                Some<?> other = (Some<?>) o;
+                return Objects.equals(this.value, other.value);
+            }
+            return false;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hashCode(value);
+        }
+
+        @Override
+        public String toString() {
+            return "Some(" + value + ")";
+        }
     }
 
     /**
@@ -151,6 +171,11 @@ public abstract class Optional<V>
         @Override
         public <O> Elements<O> split(Fn<? super V, ? extends Iterable<O>> splitter) {
             return PreparedIterable.empty();
+        }
+
+        @Override
+        public String toString() {
+            return "None";
         }
 
     }
