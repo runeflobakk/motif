@@ -15,6 +15,17 @@ public final class Apply {
 
 
     /**
+     * Transform a function taking 2 arguments to another function where
+     * the argument order is reversed.
+     *
+     * @param fn2 the function
+     * @return a new {@link Fn2} where the argument order is reversed.
+     */
+    public static final <I1, I2, O> Fn2<I2, I1, O> argsReversed(final Fn2<I1, I2, O> fn2) {
+        return new Fn2<I2, I1, O>() { @Override public O $(I2 second, I1 first) { return fn2.$(first, second); }}; }
+
+
+    /**
      * {@link PartialApplication Partially apply} a {@link Fn2 function taking 2 arguments}.
      * @see    PartialApplication
      *
