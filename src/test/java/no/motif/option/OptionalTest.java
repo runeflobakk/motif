@@ -172,5 +172,16 @@ public class OptionalTest {
         assertThat(none().filter(notNull), is(none()));
     }
 
+    @Test
+    public void appending() {
+        assertThat(optional("a").append("b"), contains("a", "b"));
+        assertThat(optional("a").append(on("b", "c")), contains("a", "b", "c"));
+    }
+
+    @Test
+    public void prepending() {
+        assertThat(optional("World").prepend("Hello"), contains("Hello", "World"));
+        assertThat(optional("World").prepend(on("Hello", ",")), contains("Hello", ",", "World"));
+    }
 
 }

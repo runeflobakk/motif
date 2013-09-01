@@ -14,9 +14,11 @@ import no.motif.f.Predicate;
 import no.motif.iter.EmptyIterator;
 import no.motif.iter.PreparedIterable;
 import no.motif.iter.SingularIterator;
+import no.motif.types.Appendable;
 import no.motif.types.Elements;
 import no.motif.types.Filterable;
 import no.motif.types.Mappable;
+import no.motif.types.Prependable;
 
 /**
  * An <code>Optional</code> wraps a value that is either defined or
@@ -26,7 +28,8 @@ import no.motif.types.Mappable;
  *
  * @param <V> The type of the wrapped object.
  */
-public abstract class Optional<V> implements Iterable<V>, Mappable<V>, Filterable<V>, Serializable {
+public abstract class Optional<V>
+    implements Iterable<V>, Mappable<V>, Filterable<V>, Appendable<V>, Prependable<V>, Serializable {
 
 
     /**
@@ -235,6 +238,26 @@ public abstract class Optional<V> implements Iterable<V>, Mappable<V>, Filterabl
      */
     public abstract <O> Elements<O> split(Fn<? super V, ? extends Iterable<O>> splitter);
 
+
+    @Override
+    public Elements<V> append(Iterable<? extends V> trailingElements) {
+        return Iterate.on(this).append(trailingElements);
+    }
+
+    @Override
+    public Elements<V> append(V value) {
+        return Iterate.on(this).append(value);
+    }
+
+    @Override
+    public Elements<V> prepend(Iterable<? extends V> leadingElements) {
+        return Iterate.on(this).prepend(leadingElements);
+    }
+
+    @Override
+    public Elements<V> prepend(V value) {
+        return Iterate.on(this).prepend(value);
+    }
 
 
     private Optional() {}
