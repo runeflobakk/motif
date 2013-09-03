@@ -15,6 +15,7 @@ import java.util.List;
 
 import no.motif.Singular;
 import no.motif.Strings;
+import no.motif.f.Do;
 import no.motif.f.Fn;
 import no.motif.f.Fn2;
 import no.motif.f.Predicate;
@@ -67,6 +68,12 @@ abstract class CollectingIterable<T> implements Elements<T>, Serializable {
         List<T> elements = collectIn(new ArrayList<T>());
         sort(elements, comparator);
         return unmodifiableList(elements);
+    }
+
+
+    @Override
+    public void each(Do<? super T> sideEffect) {
+        for (T element : this) sideEffect.$(element);
     }
 
 

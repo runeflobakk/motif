@@ -19,7 +19,7 @@ import no.motif.single.Optional;
  * @param <T> The type of the contained objects.
  */
 public interface Elements<T> extends
-    Mappable<T>, Filterable<T>, Appendable<T>, Prependable<T>,
+    Mappable<T>, Filterable<T>, Appendable<T>, Prependable<T>, SideEffectable<T>,
     YieldsJavaCollection<T>,
     Existance<T>,
     Iterable<T>,
