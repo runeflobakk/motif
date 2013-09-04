@@ -27,6 +27,7 @@
         	<item name="The Optional type" href="optional.html" />
             <item name="Motif compared to other libraries" href="libraries-compare.html" />
             <item name="Javadocs" href="apidocs/index.html" />
+            <item name="FAQ" href="faq.html" />
         </menu>
         <menu name="Generated reports" ref="reports" />
     </body>
