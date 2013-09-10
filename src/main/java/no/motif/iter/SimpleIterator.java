@@ -19,12 +19,12 @@ import no.motif.single.Optional;
  */
 public abstract class SimpleIterator<T> extends ReadOnlyIterator<T> {
 
-    private Optional<T> next = none();
+    private Optional<? extends T> next = none();
 
     /**
      * @return The next element if any, or {@link Singular#none() none} if there are no more elements.
      */
-    protected abstract Optional<T> nextIfAvailable();
+    protected abstract Optional<? extends T> nextIfAvailable();
 
     @Override
     public final boolean hasNext() {
