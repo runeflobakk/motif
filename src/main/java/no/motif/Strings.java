@@ -252,6 +252,16 @@ public final class Strings {
     }
 
 
+    /**
+     * Insert strings between a prefix and a suffix.
+     *
+     * @param prefix The prefix to appear before the string.
+     * @param suffix The suffix to appear after the string
+     */
+    public static Fn<Object,String> between(final String prefix, final String suffix) {
+        return Base.first(prepend(prefix)).then(append(suffix)); }
+
+
 
 
     private Strings() {}
