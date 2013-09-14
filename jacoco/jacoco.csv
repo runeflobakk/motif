@@ -1,0 +1,92 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+Motif,no.motif,Iterate.new Fn() {...},0,6,0,0,0,2,0,2,0,2
+Motif,no.motif,Strings.new FalseIfNullOrElse() {...},0,11,0,0,0,2,0,2,0,2
+Motif,no.motif,Iterate.new Comparator() {...},0,17,0,0,0,2,0,2,0,2
+Motif,no.motif,Ints,0,28,0,0,0,6,0,2,0,2
+Motif,no.motif,Iterate.new Predicate() {...},0,7,0,0,0,2,0,2,0,2
+Motif,no.motif,Iterate.new Predicate() {...},0,6,0,0,0,2,0,2,0,2
+Motif,no.motif,Strings.new Fn() {...},0,27,0,4,0,3,0,4,0,2
+Motif,no.motif,Chars.new FalseIfNullOrElse() {...},0,7,0,0,0,2,0,2,0,2
+Motif,no.motif,Chars.new FalseIfNullOrElse() {...},0,7,0,0,0,2,0,2,0,2
+Motif,no.motif,Chars.new FalseIfNullOrElse() {...},0,7,0,0,0,2,0,2,0,2
+Motif,no.motif,Longs,0,27,0,0,0,6,0,2,0,2
+Motif,no.motif,Chars.new FalseIfNullOrElse() {...},0,7,0,0,0,2,0,2,0,2
+Motif,no.motif,Strings.new FalseIfNullOrElse() {...},0,11,0,0,0,2,0,2,0,2
+Motif,no.motif,Strings.new FalseIfNullOrElse() {...},0,11,0,0,0,2,0,2,0,2
+Motif,no.motif,Strings.new Fn() {...},0,16,0,0,0,1,0,2,0,2
+Motif,no.motif,Strings.new Fn() {...},0,23,0,4,0,3,0,4,0,2
+Motif,no.motif,Iterate,0,86,0,10,0,14,0,14,0,9
+Motif,no.motif,NOP.new Fn() {...},0,5,0,0,0,1,0,2,0,2
+Motif,no.motif,NOP.new Runnable() {...},0,4,0,0,0,1,0,2,0,2
+Motif,no.motif,Decimals,0,8,0,0,0,2,0,2,0,2
+Motif,no.motif,Longs.new Fn() {...},0,11,0,2,0,2,0,3,0,2
+Motif,no.motif,NOP,0,14,0,0,0,4,0,3,0,3
+Motif,no.motif,Longs.new Fn2() {...},0,10,0,0,0,2,0,2,0,2
+Motif,no.motif,Base.new Fn() {...},0,13,0,0,0,1,0,2,0,2
+Motif,no.motif,Longs.new Fn2() {...},0,10,0,0,0,2,0,2,0,2
+Motif,no.motif,Base.new Predicate() {...},0,14,0,0,0,2,0,2,0,2
+Motif,no.motif,Longs.new Fn() {...},0,8,0,0,0,2,0,2,0,2
+Motif,no.motif,Base.new Predicate() {...},0,15,0,2,0,1,0,3,0,2
+Motif,no.motif,Base.new Predicate() {...},0,11,0,0,0,1,0,2,0,2
+Motif,no.motif,Base.new Predicate() {...},0,12,0,0,0,2,0,2,0,2
+Motif,no.motif,Base.new Predicate() {...},0,15,0,2,0,1,0,3,0,2
+Motif,no.motif,Base.new Predicate() {...},0,15,0,2,0,1,0,3,0,2
+Motif,no.motif,Strings.new FalseIfNullOrElse() {...},0,11,0,0,0,2,0,2,0,2
+Motif,no.motif,Base.new Predicate() {...},0,9,0,2,0,2,0,3,0,2
+Motif,no.motif,Strings.new Fn2() {...},0,23,0,2,0,3,0,4,0,3
+Motif,no.motif,Base.new Fn() {...},0,6,0,0,0,2,0,2,0,2
+Motif,no.motif,Base.new Fn0() {...},0,9,0,0,0,2,0,2,0,2
+Motif,no.motif,Singular,0,13,0,0,0,4,0,4,0,4
+Motif,no.motif,Strings.new Fn() {...},0,6,0,0,0,2,0,2,0,2
+Motif,no.motif,Strings.new Fn() {...},0,12,0,2,0,2,0,3,0,2
+Motif,no.motif,Strings.new Fn() {...},0,12,0,2,0,2,0,3,0,2
+Motif,no.motif,Strings.new Fn() {...},0,11,0,2,0,2,0,3,0,2
+Motif,no.motif,Strings.new PassThruIfNullOrElse() {...},0,6,0,0,0,2,0,2,0,2
+Motif,no.motif,Strings.new PassThruIfNullOrElse() {...},0,6,0,0,0,2,0,2,0,2
+Motif,no.motif,Strings.new PassThruIfNullOrElse() {...},0,6,0,0,0,2,0,2,0,2
+Motif,no.motif,Ints.new Fn() {...},0,11,0,2,0,2,0,3,0,2
+Motif,no.motif,Strings,0,141,0,8,0,27,0,19,0,15
+Motif,no.motif,Base,0,126,0,0,0,23,0,21,0,21
+Motif,no.motif,Decimals.new Fn2() {...},0,10,0,0,0,2,0,2,0,2
+Motif,no.motif,Chars,0,20,0,0,0,5,0,2,0,2
+Motif,no.motif.f.base,FalseIfNullOrElse,0,13,0,4,0,2,0,4,0,2
+Motif,no.motif.f.base,PassThruIfNullOrElse,0,11,0,2,0,2,0,3,0,2
+Motif,no.motif.f.combine,FnChain,0,23,0,0,0,6,0,3,0,3
+Motif,no.motif.f.combine,Where,0,17,0,0,0,5,0,2,0,2
+Motif,no.motif.f.combine,RunnableChain,0,22,0,0,0,8,0,3,0,3
+Motif,no.motif.f.combine,Conjunction,0,40,0,4,0,8,0,6,0,4
+Motif,no.motif.f.combine,Disjunction,0,40,0,4,0,8,0,6,0,4
+Motif,no.motif.f.combine,Fn2Chain,0,24,0,0,0,6,0,3,0,3
+Motif,no.motif.single,Optional.Some,0,78,0,2,0,18,0,12,0,11
+Motif,no.motif.single,Optional.None,0,27,0,0,0,11,0,11,0,11
+Motif,no.motif.single,Elem,0,75,0,6,0,12,0,9,0,6
+Motif,no.motif.single,Elem.new Fn() {...},0,14,0,0,0,2,0,2,0,2
+Motif,no.motif.single,Optional,0,39,0,2,0,9,0,8,0,7
+Motif,no.motif.iter,SkipLeadingIterable.new SimpleIterator() {...},0,47,0,4,0,10,0,4,0,2
+Motif,no.motif.iter,SimpleIterator,0,34,0,4,0,8,0,5,0,3
+Motif,no.motif.iter,PreparedIterable,0,130,0,2,0,19,0,17,0,16
+Motif,no.motif.iter,ConcatenatedIterable.new SimpleIterator() {...},0,38,0,4,0,7,0,4,0,2
+Motif,no.motif.iter,IndexedIterable,0,14,0,0,0,5,0,2,0,2
+Motif,no.motif.iter,SingularIterator,0,29,0,4,0,8,0,5,0,3
+Motif,no.motif.iter,FilteredIterable.new SimpleIterator() {...},0,32,0,4,0,7,0,4,0,2
+Motif,no.motif.iter,BoundedIterable,0,14,0,0,0,4,0,2,0,2
+Motif,no.motif.iter,PredicateBoundedIterable,0,14,0,0,0,5,0,2,0,2
+Motif,no.motif.iter,EmptyIterator,0,16,0,0,0,5,0,5,0,5
+Motif,no.motif.iter,BoundedIterable.new SimpleIterator() {...},0,37,0,4,0,4,0,4,0,2
+Motif,no.motif.iter,ConcatenatedIterable,0,14,0,0,0,5,0,2,0,2
+Motif,no.motif.iter,PredicateBoundedIterable.new SimpleIterator() {...},0,22,0,0,0,3,0,2,0,2
+Motif,no.motif.iter,ReadOnlyIterator,0,7,0,0,0,2,0,2,0,2
+Motif,no.motif.iter,FilteredIterable,0,14,0,0,0,5,0,2,0,2
+Motif,no.motif.iter,MappingIterable,0,14,0,0,0,5,0,2,0,2
+Motif,no.motif.iter,CollectingIterable,0,130,0,14,0,21,0,19,0,12
+Motif,no.motif.iter,MappingIterable.new SimpleIterator() {...},0,23,0,0,0,3,0,2,0,2
+Motif,no.motif.iter,IndexedIterable.new SimpleIterator() {...},0,33,0,0,0,4,0,2,0,2
+Motif,no.motif.iter,SkipLeadingIterable,0,14,0,0,0,5,0,2,0,2
+Motif,no.motif.f,Apply,0,18,0,0,0,4,0,4,0,4
+Motif,no.motif.f,Apply.new Fn2() {...},0,12,0,0,0,1,0,2,0,2
+Motif,no.motif.f,Apply.new PartialApplication() {...},0,11,0,0,0,2,0,2,0,2
+Motif,no.motif.f,Apply.new PartialApplication() {...},0,11,0,0,0,2,0,2,0,2
+Motif,no.motif.f,Apply.3.new Fn0() {...},0,19,0,0,0,2,0,2,0,2
+Motif,no.motif.f,Predicate.Always,0,24,0,0,0,8,0,5,0,5
+Motif,no.motif.f,Apply.2.new Fn() {...},0,20,0,0,0,2,0,2,0,2
+Motif,no.motif.f,PartialApplication,0,21,0,0,0,4,0,4,0,4

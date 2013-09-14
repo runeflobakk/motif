@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Ints.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Motif</a> &gt; <a href="index.html" class="el_package">no.motif</a> &gt; <span class="el_source">Ints.java</span></div><h1>Ints.java</h1><pre class="source lang-java linenums">package no.motif;
+
+import static no.motif.Base.first;
+import no.motif.f.Fn;
+import no.motif.f.Fn2;
+
+/**
+ * Integer operations. Most of these operations will not fail on numbers to
+ * large to fit into a {@link java.lang.Integer}, only truncate as necessary.
+ * If operating on larger numbers, consider using the equivalent set of operations
+ * from the {@link Longs} class.
+ */
+public final class Ints {
+
+    /**
+     * Yields the {@link Number#intValue() integer value} of any number.
+     */
+<span class="fc" id="L18">    public static final Fn&lt;Number, Integer&gt; intValue = new Fn&lt;Number, Integer&gt;() {</span>
+<span class="fc bfc" id="L19" title="All 2 branches covered.">        @Override public Integer $(Number value) { return value != null ? value.intValue() : 0; }};</span>
+
+<span class="fc" id="L21">    public static final Fn2&lt;Number, Number, Integer&gt; sum = first(Longs.sum).then(intValue);</span>
+
+<span class="fc" id="L23">    public static final Fn2&lt;Number, Number, Integer&gt; multiply = first(Longs.multiply).then(intValue);</span>
+
+<span class="fc" id="L25">    public static final Fn&lt;Number, Integer&gt; doubled = first(Longs.doubled).then(intValue);</span>
+
+<span class="fc" id="L27">    public static final Fn&lt;Number, Integer&gt; rounded = first(Longs.rounded).then(intValue);</span>
+
+
+<span class="fc" id="L30">    private Ints() {}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.3.201306030806</span></div></body></html>
