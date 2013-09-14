@@ -97,6 +97,14 @@ abstract class CollectingIterable<T> implements Elements<T>, Serializable {
 
 
     @Override
+    public Optional<T> last() {
+        T last = null;
+        for (T elem : this) last = elem;
+        return optional(last);
+    }
+
+
+    @Override
     public String join() {
         return reduce("", concat);
     }
