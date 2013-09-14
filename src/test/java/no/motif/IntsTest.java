@@ -1,6 +1,7 @@
 package no.motif;
 
 import static no.motif.Ints.doubled;
+import static no.motif.Ints.increment;
 import static no.motif.Ints.multiply;
 import static no.motif.Iterate.on;
 import static no.motif.f.Apply.partially;
@@ -36,8 +37,14 @@ public class IntsTest {
         assertThat(on(2, 5).map(doubled), is4And10);
     }
 
-	@Test public void intValueIsNullsafe() {
+	@Test
+	public void intValueIsNullsafe() {
 	    assertThat(Ints.intValue.$(null), is(0));
     }
 
+
+	@Test
+    public void incrementInteger() {
+        assertThat(increment.$(4), is(5));
+    }
 }

@@ -1,6 +1,7 @@
 package no.motif;
 
 import static java.util.Arrays.asList;
+import static no.motif.Singular.optional;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -120,7 +121,26 @@ public final class Iterate {
 
 
 
+    /**
+     * Using a function which takes an object and returns another object of the same type,
+     * recursively call this function until it yields <code>null</code>, and ultimately yield the
+     * last object.
+     *
+     * @param next The function which takes an object and yields another object of the same type.
+     *             This is typically used for objects implementing a linked list-like structure,
+     *             where each object refers to the next in a chain.
+     *
+     * @return A function which will descend the chain and yield the last object. If the given
+     *         <code>next</code> {@link Fn} never returns <code>null</code>, calling this
+     *         returned function will result in an infinite recursion.
+     */
+    public static <T> Fn<T, T> last(final Fn<? super T, ? extends T> next) {
+        return new Fn<T, T>() {
+        @Override public T $(T value) {
+            return optional(next.$(value)).map(this).getOrElse(value);
+        }};
+    }
+
 
     private Iterate() {}
-
 }

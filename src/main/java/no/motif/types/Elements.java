@@ -1,8 +1,5 @@
 package no.motif.types;
 
-import java.util.NoSuchElementException;
-
-import no.motif.Singular;
 import no.motif.f.Fn;
 import no.motif.f.Predicate;
 import no.motif.single.Elem;
@@ -20,6 +17,7 @@ import no.motif.single.Optional;
  */
 public interface Elements<T> extends
     Mappable<T>, Filterable<T>, Appendable<T>, Prependable<T>, SideEffectable<T>,
+    HeadAndTail<T>,
     YieldsJavaCollection<T>,
     Existance<T>,
     Iterable<T>,
@@ -74,21 +72,18 @@ public interface Elements<T> extends
     Elements<T> takeUntil(Predicate<? super T> predicate);
 
 
+
     /**
-     * Gets the first element if it exists.
+     * Gets the last element.
      */
+    Optional<T> last();
+
+    @Override
     Optional<T> head();
 
-
-    /**
-     * Skips the first element and gets the remaining elements.
-     *
-     * @return The remaining elements, or empty elements if there is only one element.
-     * @throws NoSuchElementException if there are no elements contained in this <code>Elements</code>,
-     *                                i.e. if {@link #head()} returns {@link Singular#none() none}.
-     *
-     */
+    @Override
     Elements<T> tail();
+
 
 
     /**

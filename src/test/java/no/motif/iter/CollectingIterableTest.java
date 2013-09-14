@@ -2,7 +2,10 @@ package no.motif.iter;
 
 import static no.motif.Iterate.byOrderingOf;
 import static no.motif.Iterate.on;
+import static no.motif.Singular.none;
+import static no.motif.Singular.optional;
 import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
@@ -45,6 +48,17 @@ public class CollectingIterableTest {
     @Test
     public void exerciseToString() {
         ints.toString();
+    }
+
+    @Test
+    public void getLastElement() {
+        assertThat(on(1, 2, 3).last(), is(optional(3)));
+    }
+
+    @Test
+    public void lastElementOfEmptyElementsIsNone() {
+        assertThat(on().last(), is(none()));
+
     }
 
 }

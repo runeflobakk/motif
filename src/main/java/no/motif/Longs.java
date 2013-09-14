@@ -27,6 +27,10 @@ public final class Longs {
         @Override public Long $(Number decimal) { return Math.round(decimal.doubleValue()); }};
 
 
+    public static final Fn<Number, Long> increment = new Fn<Number, Long>() {
+        @Override public Long $(Number n) { return n.longValue() + 1; }};
+
+
     private Longs() {}
 
 }

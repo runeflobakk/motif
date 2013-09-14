@@ -26,6 +26,8 @@ public final class Ints {
 
     public static final Fn<Number, Integer> rounded = first(Longs.rounded).then(intValue);
 
+    public static final Fn<Number, Integer> increment = first(Longs.increment).then(intValue);
+
 
     private Ints() {}
 }
