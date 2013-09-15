@@ -29,7 +29,7 @@
                 unit tests (and you should!), you will often feel that the test actually more or
                 less repeats what you have already "declared" in the production code. In these cases
                 it is often appropriate to move the tests to a higher level of abstraction; a bit closer
-                to the actualy problem or feature you are solving. Use a code coverage tool to verify that
+                to the actual problem or feature you are solving. Use a code coverage tool to verify that
                 the different parts are executed with a higher level test. Since you don't have all
                 these paths your code may exectute for different cases, the need for very low level
                 unit testing diminishes, and tests can focus on higher level behavior.</p>  
@@ -61,6 +61,28 @@
                 All these libraries are great ways to learn how to program in
                 a more functional manner. You can read an opinionated comparison between
                 Motif and some other librarys <a href="libraries-compare.html">here</a>.
+            </answer>
+        </faq>
+        <faq id="use-only-motif">
+            <question>My project already uses Guava. Should I stick with Guava or should I refactor my
+            code to use Motif instead?</question>
+            <answer>
+                <p>Guava, or any other library which offers implementations of various Collections, will work
+                fine together with Motif. You don't need to actually choose one or the other. 
+                In fact, Motif focuses on being conveniently usable with existing
+                collections instead of providing its own, so Guava's collections will work just as well with Motif as
+                the collections in the JDK. In addition, Guava offers a much broader scope of functionality
+                and utilities than Motif, which is more focused on functional composition.</p>
+                <p>If you already use Guava's functional interfaces, then there is a matter of which API you prefer to use
+                with such pseudo-functions. You should probably stick with only one set of functional
+                interfaces, as implementations of different libraries' functional interfaces will not be
+                compatible with each other.</p>
+                <p>Should you choose to use Motif's functional interfaces and
+                the compositions offered by the library, you have a small refactoring task to do with
+                existing code that uses Guava's functional interfaces. For your existing function implementations,
+                it will be a simple matter of implementing another interface, and change the name of the
+                implemented method. Most of Guava's API which accepts functions has corresponding
+                concept in the Motif API.</p>
             </answer>
         </faq>
     </part>
