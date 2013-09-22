@@ -228,74 +228,78 @@
 <a class="jxr_linenumber" name="218" href="#218">218</a>         @Override <strong class="jxr_keyword">public</strong> String $(Object value) { <strong class="jxr_keyword">return</strong> String.valueOf(value); }};
 <a class="jxr_linenumber" name="219" href="#219">219</a> 
 <a class="jxr_linenumber" name="220" href="#220">220</a> 
-<a class="jxr_linenumber" name="221" href="#221">221</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> &lt;V&gt; Fn0&lt;V&gt; constant(<strong class="jxr_keyword">final</strong> V value) { <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> Fn0&lt;V&gt;() {
-<a class="jxr_linenumber" name="222" href="#222">222</a>         @Override <strong class="jxr_keyword">public</strong> V $() { <strong class="jxr_keyword">return</strong> value; }}; }
-<a class="jxr_linenumber" name="223" href="#223">223</a> 
-<a class="jxr_linenumber" name="224" href="#224">224</a> 
-<a class="jxr_linenumber" name="225" href="#225">225</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="226" href="#226">226</a> <em class="jxr_javadoccomment">     * Compose a chain of several functions into one {@link Fn}, where the result of</em>
-<a class="jxr_linenumber" name="227" href="#227">227</a> <em class="jxr_javadoccomment">     * each function is passed to its successor, and the last will yield the</em>
-<a class="jxr_linenumber" name="228" href="#228">228</a> <em class="jxr_javadoccomment">     * actual result of the chain. Use {@link FnChain#then(Fn) .then(Fn)} to append</em>
-<a class="jxr_linenumber" name="229" href="#229">229</a> <em class="jxr_javadoccomment">     * functions to the chain.</em>
-<a class="jxr_linenumber" name="230" href="#230">230</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="231" href="#231">231</a> <em class="jxr_javadoccomment">     * &lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; The chain does no internal inspection of the intermediate</em>
-<a class="jxr_linenumber" name="232" href="#232">232</a> <em class="jxr_javadoccomment">     * results passed to the next function, which means that any function which may</em>
-<a class="jxr_linenumber" name="233" href="#233">233</a> <em class="jxr_javadoccomment">     * return &lt;code&gt;null&lt;/code&gt;, &lt;em&gt;must&lt;/em&gt; have a &lt;code&gt;null&lt;/code&gt;-safe successor</em>
-<a class="jxr_linenumber" name="234" href="#234">234</a> <em class="jxr_javadoccomment">     * function.</em>
-<a class="jxr_linenumber" name="235" href="#235">235</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="236" href="#236">236</a> <em class="jxr_javadoccomment">     * @param fn The first function in the chain.</em>
-<a class="jxr_linenumber" name="237" href="#237">237</a> <em class="jxr_javadoccomment">     * @return the given function as the first function in a chain.</em>
-<a class="jxr_linenumber" name="238" href="#238">238</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="239" href="#239">239</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> &lt;I, O&gt; FnChain&lt;I, O, O&gt; first(Fn&lt;I, O&gt; fn) {
-<a class="jxr_linenumber" name="240" href="#240">240</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> FnChain&lt;&gt;(fn, NOP.&lt;O&gt;fn());
-<a class="jxr_linenumber" name="241" href="#241">241</a>     }
-<a class="jxr_linenumber" name="242" href="#242">242</a> 
-<a class="jxr_linenumber" name="243" href="#243">243</a> 
-<a class="jxr_linenumber" name="244" href="#244">244</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="245" href="#245">245</a> <em class="jxr_javadoccomment">     * Compose a chain of several functions into one {@link Fn2}, where the result of</em>
-<a class="jxr_linenumber" name="246" href="#246">246</a> <em class="jxr_javadoccomment">     * each function is passed to its successor, and the last will yield the</em>
-<a class="jxr_linenumber" name="247" href="#247">247</a> <em class="jxr_javadoccomment">     * actual result of the chain. Use {@link Fn2Chain#then(Fn) .then(Fn)} to append</em>
-<a class="jxr_linenumber" name="248" href="#248">248</a> <em class="jxr_javadoccomment">     * functions to the chain.</em>
+<a class="jxr_linenumber" name="221" href="#221">221</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="222" href="#222">222</a> <em class="jxr_javadoccomment">     * Get the {@link Throwable#getMessage() message} of a &lt;code&gt;Throwable&lt;/code&gt;.</em>
+<a class="jxr_linenumber" name="223" href="#223">223</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="224" href="#224">224</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> Fn&lt;Throwable, String&gt; message = <strong class="jxr_keyword">new</strong> Fn&lt;Throwable, String&gt;() {
+<a class="jxr_linenumber" name="225" href="#225">225</a>         @Override <strong class="jxr_keyword">public</strong> String $(Throwable throwable) { <strong class="jxr_keyword">return</strong> throwable.getMessage(); }};
+<a class="jxr_linenumber" name="226" href="#226">226</a> 
+<a class="jxr_linenumber" name="227" href="#227">227</a> 
+<a class="jxr_linenumber" name="228" href="#228">228</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="229" href="#229">229</a> <em class="jxr_javadoccomment">     * Get the {@link Throwable#getCause() cause} of a &lt;code&gt;Throwable&lt;/code&gt;.</em>
+<a class="jxr_linenumber" name="230" href="#230">230</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="231" href="#231">231</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> Fn&lt;Throwable, Throwable&gt; cause = <strong class="jxr_keyword">new</strong> Fn&lt;Throwable, Throwable&gt;() {
+<a class="jxr_linenumber" name="232" href="#232">232</a>         @Override <strong class="jxr_keyword">public</strong> Throwable $(Throwable throwable) { <strong class="jxr_keyword">return</strong> throwable.getCause(); }};
+<a class="jxr_linenumber" name="233" href="#233">233</a> 
+<a class="jxr_linenumber" name="234" href="#234">234</a> 
+<a class="jxr_linenumber" name="235" href="#235">235</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> &lt;V&gt; Fn0&lt;V&gt; constant(<strong class="jxr_keyword">final</strong> V value) { <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> Fn0&lt;V&gt;() {
+<a class="jxr_linenumber" name="236" href="#236">236</a>         @Override <strong class="jxr_keyword">public</strong> V $() { <strong class="jxr_keyword">return</strong> value; }}; }
+<a class="jxr_linenumber" name="237" href="#237">237</a> 
+<a class="jxr_linenumber" name="238" href="#238">238</a> 
+<a class="jxr_linenumber" name="239" href="#239">239</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="240" href="#240">240</a> <em class="jxr_javadoccomment">     * Compose a chain of several functions into one {@link Fn}, where the result of</em>
+<a class="jxr_linenumber" name="241" href="#241">241</a> <em class="jxr_javadoccomment">     * each function is passed to its successor, and the last will yield the</em>
+<a class="jxr_linenumber" name="242" href="#242">242</a> <em class="jxr_javadoccomment">     * actual result of the chain. Use {@link FnChain#then(Fn) .then(Fn)} to append</em>
+<a class="jxr_linenumber" name="243" href="#243">243</a> <em class="jxr_javadoccomment">     * functions to the chain.</em>
+<a class="jxr_linenumber" name="244" href="#244">244</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="245" href="#245">245</a> <em class="jxr_javadoccomment">     * &lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; The chain does no internal inspection of the intermediate</em>
+<a class="jxr_linenumber" name="246" href="#246">246</a> <em class="jxr_javadoccomment">     * results passed to the next function, which means that any function which may</em>
+<a class="jxr_linenumber" name="247" href="#247">247</a> <em class="jxr_javadoccomment">     * return &lt;code&gt;null&lt;/code&gt;, &lt;em&gt;must&lt;/em&gt; have a &lt;code&gt;null&lt;/code&gt;-safe successor</em>
+<a class="jxr_linenumber" name="248" href="#248">248</a> <em class="jxr_javadoccomment">     * function.</em>
 <a class="jxr_linenumber" name="249" href="#249">249</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="250" href="#250">250</a> <em class="jxr_javadoccomment">     * &lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; The chain does no inspection of the intermediate</em>
-<a class="jxr_linenumber" name="251" href="#251">251</a> <em class="jxr_javadoccomment">     * results passed to the next function, which means that any function which may</em>
-<a class="jxr_linenumber" name="252" href="#252">252</a> <em class="jxr_javadoccomment">     * return &lt;code&gt;null&lt;/code&gt;, &lt;em&gt;must&lt;/em&gt; have a &lt;code&gt;null&lt;/code&gt;-safe successor</em>
-<a class="jxr_linenumber" name="253" href="#253">253</a> <em class="jxr_javadoccomment">     * function.</em>
-<a class="jxr_linenumber" name="254" href="#254">254</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="255" href="#255">255</a> <em class="jxr_javadoccomment">     * @param fn2 The first function in the chain.</em>
-<a class="jxr_linenumber" name="256" href="#256">256</a> <em class="jxr_javadoccomment">     * @return the given function as the first function in a chain.</em>
-<a class="jxr_linenumber" name="257" href="#257">257</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="258" href="#258">258</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> &lt;I1, I2, O&gt; Fn2Chain&lt;I1, I2, O, O&gt; first(Fn2&lt;I1, I2, O&gt; fn2) {
-<a class="jxr_linenumber" name="259" href="#259">259</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> Fn2Chain&lt;&gt;(fn2, NOP.&lt;O&gt;fn());
-<a class="jxr_linenumber" name="260" href="#260">260</a>     }
-<a class="jxr_linenumber" name="261" href="#261">261</a> 
-<a class="jxr_linenumber" name="262" href="#262">262</a> 
-<a class="jxr_linenumber" name="263" href="#263">263</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="264" href="#264">264</a> <em class="jxr_javadoccomment">     * Compose several {@link Runnable}s as a single Runnable which will</em>
-<a class="jxr_linenumber" name="265" href="#265">265</a> <em class="jxr_javadoccomment">     * execute the given Runnables in sequence.</em>
-<a class="jxr_linenumber" name="266" href="#266">266</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="267" href="#267">267</a> <em class="jxr_javadoccomment">     * @param runnable The first Runnable.</em>
-<a class="jxr_linenumber" name="268" href="#268">268</a> <em class="jxr_javadoccomment">     * @return the given Runnable as the first Runnable in a sequence.</em>
-<a class="jxr_linenumber" name="269" href="#269">269</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="270" href="#270">270</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <a href="../../no/motif/f/combine/RunnableChain.html">RunnableChain</a> first(Runnable runnable) {
-<a class="jxr_linenumber" name="271" href="#271">271</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> <a href="../../no/motif/f/combine/RunnableChain.html">RunnableChain</a>(runnable, NOP.runnable);
-<a class="jxr_linenumber" name="272" href="#272">272</a>     }
-<a class="jxr_linenumber" name="273" href="#273">273</a> 
-<a class="jxr_linenumber" name="274" href="#274">274</a> 
-<a class="jxr_linenumber" name="275" href="#275">275</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="276" href="#276">276</a> <em class="jxr_javadoccomment">     * A bridge from functions yielding arrays, to functions yielding iterables.</em>
-<a class="jxr_linenumber" name="277" href="#277">277</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="278" href="#278">278</a> <em class="jxr_javadoccomment">     * @param yieldsArray the array-yielding function.</em>
-<a class="jxr_linenumber" name="279" href="#279">279</a> <em class="jxr_javadoccomment">     * @return an adapted function yielding an iterable of the array yielded from the original function.</em>
-<a class="jxr_linenumber" name="280" href="#280">280</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="281" href="#281">281</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> &lt;I, O&gt; Fn&lt;I, Iterable&lt;O&gt;&gt; toIterable(<strong class="jxr_keyword">final</strong> Fn&lt;I, O[]&gt; yieldsArray) {
-<a class="jxr_linenumber" name="282" href="#282">282</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> Fn&lt;I, Iterable&lt;O&gt;&gt;() { @Override <strong class="jxr_keyword">public</strong> Iterable&lt;O&gt; $(I value) { <strong class="jxr_keyword">return</strong> on(yieldsArray.$(value)); }}; }
-<a class="jxr_linenumber" name="283" href="#283">283</a> 
-<a class="jxr_linenumber" name="284" href="#284">284</a> 
-<a class="jxr_linenumber" name="285" href="#285">285</a>     <strong class="jxr_keyword">private</strong> <a href="../../no/motif/Base.html">Base</a>() {}
-<a class="jxr_linenumber" name="286" href="#286">286</a> 
+<a class="jxr_linenumber" name="250" href="#250">250</a> <em class="jxr_javadoccomment">     * @param fn The first function in the chain.</em>
+<a class="jxr_linenumber" name="251" href="#251">251</a> <em class="jxr_javadoccomment">     * @return the given function as the first function in a chain.</em>
+<a class="jxr_linenumber" name="252" href="#252">252</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="253" href="#253">253</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> &lt;I, O&gt; FnChain&lt;I, O, O&gt; first(Fn&lt;I, O&gt; fn) {
+<a class="jxr_linenumber" name="254" href="#254">254</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> FnChain&lt;&gt;(fn, NOP.&lt;O&gt;fn());
+<a class="jxr_linenumber" name="255" href="#255">255</a>     }
+<a class="jxr_linenumber" name="256" href="#256">256</a> 
+<a class="jxr_linenumber" name="257" href="#257">257</a> 
+<a class="jxr_linenumber" name="258" href="#258">258</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="259" href="#259">259</a> <em class="jxr_javadoccomment">     * Compose a chain of several functions into one {@link Fn2}, where the result of</em>
+<a class="jxr_linenumber" name="260" href="#260">260</a> <em class="jxr_javadoccomment">     * each function is passed to its successor, and the last will yield the</em>
+<a class="jxr_linenumber" name="261" href="#261">261</a> <em class="jxr_javadoccomment">     * actual result of the chain. Use {@link Fn2Chain#then(Fn) .then(Fn)} to append</em>
+<a class="jxr_linenumber" name="262" href="#262">262</a> <em class="jxr_javadoccomment">     * functions to the chain.</em>
+<a class="jxr_linenumber" name="263" href="#263">263</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="264" href="#264">264</a> <em class="jxr_javadoccomment">     * &lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; The chain does no inspection of the intermediate</em>
+<a class="jxr_linenumber" name="265" href="#265">265</a> <em class="jxr_javadoccomment">     * results passed to the next function, which means that any function which may</em>
+<a class="jxr_linenumber" name="266" href="#266">266</a> <em class="jxr_javadoccomment">     * return &lt;code&gt;null&lt;/code&gt;, &lt;em&gt;must&lt;/em&gt; have a &lt;code&gt;null&lt;/code&gt;-safe successor</em>
+<a class="jxr_linenumber" name="267" href="#267">267</a> <em class="jxr_javadoccomment">     * function.</em>
+<a class="jxr_linenumber" name="268" href="#268">268</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="269" href="#269">269</a> <em class="jxr_javadoccomment">     * @param fn2 The first function in the chain.</em>
+<a class="jxr_linenumber" name="270" href="#270">270</a> <em class="jxr_javadoccomment">     * @return the given function as the first function in a chain.</em>
+<a class="jxr_linenumber" name="271" href="#271">271</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="272" href="#272">272</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> &lt;I1, I2, O&gt; Fn2Chain&lt;I1, I2, O, O&gt; first(Fn2&lt;I1, I2, O&gt; fn2) {
+<a class="jxr_linenumber" name="273" href="#273">273</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> Fn2Chain&lt;&gt;(fn2, NOP.&lt;O&gt;fn());
+<a class="jxr_linenumber" name="274" href="#274">274</a>     }
+<a class="jxr_linenumber" name="275" href="#275">275</a> 
+<a class="jxr_linenumber" name="276" href="#276">276</a> 
+<a class="jxr_linenumber" name="277" href="#277">277</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="278" href="#278">278</a> <em class="jxr_javadoccomment">     * Compose several {@link Runnable}s as a single Runnable which will</em>
+<a class="jxr_linenumber" name="279" href="#279">279</a> <em class="jxr_javadoccomment">     * execute the given Runnables in sequence.</em>
+<a class="jxr_linenumber" name="280" href="#280">280</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="281" href="#281">281</a> <em class="jxr_javadoccomment">     * @param runnable The first Runnable.</em>
+<a class="jxr_linenumber" name="282" href="#282">282</a> <em class="jxr_javadoccomment">     * @return the given Runnable as the first Runnable in a sequence.</em>
+<a class="jxr_linenumber" name="283" href="#283">283</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="284" href="#284">284</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <a href="../../no/motif/f/combine/RunnableChain.html">RunnableChain</a> first(Runnable runnable) {
+<a class="jxr_linenumber" name="285" href="#285">285</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> <a href="../../no/motif/f/combine/RunnableChain.html">RunnableChain</a>(runnable, NOP.runnable);
+<a class="jxr_linenumber" name="286" href="#286">286</a>     }
 <a class="jxr_linenumber" name="287" href="#287">287</a> 
-<a class="jxr_linenumber" name="288" href="#288">288</a> }
+<a class="jxr_linenumber" name="288" href="#288">288</a> 
+<a class="jxr_linenumber" name="289" href="#289">289</a>     <strong class="jxr_keyword">private</strong> <a href="../../no/motif/Base.html">Base</a>() {}
+<a class="jxr_linenumber" name="290" href="#290">290</a> 
+<a class="jxr_linenumber" name="291" href="#291">291</a> 
+<a class="jxr_linenumber" name="292" href="#292">292</a> }
 </pre>
 <hr/><div id="footer">This page was automatically generated by <a href="http://maven.apache.org/">Maven</a></div></body>
 </html>

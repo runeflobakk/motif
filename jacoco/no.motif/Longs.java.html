@@ -27,7 +27,11 @@ public final class Longs {
 <span class="fc" id="L27">        @Override public Long $(Number decimal) { return Math.round(decimal.doubleValue()); }};</span>
 
 
-<span class="fc" id="L30">    private Longs() {}</span>
+<span class="fc" id="L30">    public static final Fn&lt;Number, Long&gt; increment = new Fn&lt;Number, Long&gt;() {</span>
+<span class="fc" id="L31">        @Override public Long $(Number n) { return n.longValue() + 1; }};</span>
+
+
+<span class="fc" id="L34">    private Longs() {}</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.3.201306030806</span></div></body></html>

@@ -252,9 +252,19 @@ public final class Strings {
     }
 
 
+    /**
+     * Insert strings between a prefix and a suffix.
+     *
+     * @param prefix The prefix to appear before the string.
+     * @param suffix The suffix to appear after the string
+     */
+    public static Fn&lt;Object,String&gt; between(final String prefix, final String suffix) {
+<span class="fc" id="L262">        return Base.first(prepend(prefix)).then(append(suffix)); }</span>
 
 
-<span class="fc" id="L257">    private Strings() {}</span>
+
+
+<span class="fc" id="L267">    private Strings() {}</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.3.201306030806</span></div></body></html>

@@ -218,8 +218,22 @@ public final class Base {
 <span class="fc" id="L218">        @Override public String $(Object value) { return String.valueOf(value); }};</span>
 
 
-<span class="fc" id="L221">    public static &lt;V&gt; Fn0&lt;V&gt; constant(final V value) { return new Fn0&lt;V&gt;() {</span>
-<span class="fc" id="L222">        @Override public V $() { return value; }}; }</span>
+    /**
+     * Get the {@link Throwable#getMessage() message} of a &lt;code&gt;Throwable&lt;/code&gt;.
+     */
+<span class="fc" id="L224">    public static final Fn&lt;Throwable, String&gt; message = new Fn&lt;Throwable, String&gt;() {</span>
+<span class="fc" id="L225">        @Override public String $(Throwable throwable) { return throwable.getMessage(); }};</span>
+
+
+    /**
+     * Get the {@link Throwable#getCause() cause} of a &lt;code&gt;Throwable&lt;/code&gt;.
+     */
+<span class="fc" id="L231">    public static final Fn&lt;Throwable, Throwable&gt; cause = new Fn&lt;Throwable, Throwable&gt;() {</span>
+<span class="fc" id="L232">        @Override public Throwable $(Throwable throwable) { return throwable.getCause(); }};</span>
+
+
+<span class="fc" id="L235">    public static &lt;V&gt; Fn0&lt;V&gt; constant(final V value) { return new Fn0&lt;V&gt;() {</span>
+<span class="fc" id="L236">        @Override public V $() { return value; }}; }</span>
 
 
     /**
@@ -237,7 +251,7 @@ public final class Base {
      * @return the given function as the first function in a chain.
      */
     public static final &lt;I, O&gt; FnChain&lt;I, O, O&gt; first(Fn&lt;I, O&gt; fn) {
-<span class="fc" id="L240">        return new FnChain&lt;&gt;(fn, NOP.&lt;O&gt;fn());</span>
+<span class="fc" id="L254">        return new FnChain&lt;&gt;(fn, NOP.&lt;O&gt;fn());</span>
     }
 
 
@@ -256,7 +270,7 @@ public final class Base {
      * @return the given function as the first function in a chain.
      */
     public static final &lt;I1, I2, O&gt; Fn2Chain&lt;I1, I2, O, O&gt; first(Fn2&lt;I1, I2, O&gt; fn2) {
-<span class="fc" id="L259">        return new Fn2Chain&lt;&gt;(fn2, NOP.&lt;O&gt;fn());</span>
+<span class="fc" id="L273">        return new Fn2Chain&lt;&gt;(fn2, NOP.&lt;O&gt;fn());</span>
     }
 
 
@@ -268,21 +282,11 @@ public final class Base {
      * @return the given Runnable as the first Runnable in a sequence.
      */
     public static final RunnableChain first(Runnable runnable) {
-<span class="fc" id="L271">        return new RunnableChain(runnable, NOP.runnable);</span>
+<span class="fc" id="L285">        return new RunnableChain(runnable, NOP.runnable);</span>
     }
 
 
-    /**
-     * A bridge from functions yielding arrays, to functions yielding iterables.
-     *
-     * @param yieldsArray the array-yielding function.
-     * @return an adapted function yielding an iterable of the array yielded from the original function.
-     */
-    public static final &lt;I, O&gt; Fn&lt;I, Iterable&lt;O&gt;&gt; toIterable(final Fn&lt;I, O[]&gt; yieldsArray) {
-<span class="fc" id="L282">        return new Fn&lt;I, Iterable&lt;O&gt;&gt;() { @Override public Iterable&lt;O&gt; $(I value) { return on(yieldsArray.$(value)); }}; }</span>
-
-
-<span class="fc" id="L285">    private Base() {}</span>
+<span class="fc" id="L289">    private Base() {}</span>
 
 
 }

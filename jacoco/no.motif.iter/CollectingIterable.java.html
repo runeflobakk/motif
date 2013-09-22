@@ -15,6 +15,7 @@ import java.util.List;
 
 import no.motif.Singular;
 import no.motif.Strings;
+import no.motif.f.Do;
 import no.motif.f.Fn;
 import no.motif.f.Fn2;
 import no.motif.f.Predicate;
@@ -29,76 +30,90 @@ import no.motif.types.Elements;
  *
  * @param &lt;T&gt; The type of elements in this iterable.
  */
-<span class="fc" id="L32">abstract class CollectingIterable&lt;T&gt; implements Elements&lt;T&gt;, Serializable {</span>
+<span class="fc" id="L33">abstract class CollectingIterable&lt;T&gt; implements Elements&lt;T&gt;, Serializable {</span>
 
     @Override
     public final &lt;O&gt; O reduce(O unit, Fn2&lt;? super O, ? super T, ? extends O&gt; reducer) {
-<span class="fc" id="L36">        O reduced = unit;</span>
-<span class="fc bfc" id="L37" title="All 2 branches covered.">        for (T element : this) reduced = reducer.$(reduced, element);</span>
-<span class="fc" id="L38">        return reduced;</span>
+<span class="fc" id="L37">        O reduced = unit;</span>
+<span class="fc bfc" id="L38" title="All 2 branches covered.">        for (T element : this) reduced = reducer.$(reduced, element);</span>
+<span class="fc" id="L39">        return reduced;</span>
     }
 
 
     @Override
     public final List&lt;T&gt; collect() {
-<span class="fc" id="L44">        return unmodifiableList(collectIn(new ArrayList&lt;T&gt;()));</span>
+<span class="fc" id="L45">        return unmodifiableList(collectIn(new ArrayList&lt;T&gt;()));</span>
     }
 
 
     @Override
     public final &lt;C extends Collection&lt;T&gt;&gt; C collectIn(C collection) {
-<span class="fc bfc" id="L50" title="All 2 branches covered.">        for (T t : this) {</span>
-<span class="fc" id="L51">            collection.add(t);</span>
-<span class="fc" id="L52">        }</span>
-<span class="fc" id="L53">        return collection;</span>
+<span class="fc bfc" id="L51" title="All 2 branches covered.">        for (T t : this) {</span>
+<span class="fc" id="L52">            collection.add(t);</span>
+<span class="fc" id="L53">        }</span>
+<span class="fc" id="L54">        return collection;</span>
     }
 
 
 
     @Override
     public final &lt;P extends Comparable&lt;P&gt;&gt; List&lt;T&gt; sortedBy(Fn&lt;? super T, P&gt; property) {
-<span class="fc" id="L60">        return sorted(by(property));</span>
+<span class="fc" id="L61">        return sorted(by(property));</span>
     }
 
 
 
     @Override
     public final List&lt;T&gt; sorted(Comparator&lt;? super T&gt; comparator) {
-<span class="fc" id="L67">        List&lt;T&gt; elements = collectIn(new ArrayList&lt;T&gt;());</span>
-<span class="fc" id="L68">        sort(elements, comparator);</span>
-<span class="fc" id="L69">        return unmodifiableList(elements);</span>
+<span class="fc" id="L68">        List&lt;T&gt; elements = collectIn(new ArrayList&lt;T&gt;());</span>
+<span class="fc" id="L69">        sort(elements, comparator);</span>
+<span class="fc" id="L70">        return unmodifiableList(elements);</span>
     }
 
 
     @Override
+    public void each(Do&lt;? super T&gt; sideEffect) {
+<span class="fc bfc" id="L76" title="All 2 branches covered.">        for (T element : this) sideEffect.$(element);</span>
+<span class="fc" id="L77">    }</span>
+
+
+    @Override
     public boolean isEmpty() {
-<span class="fc bfc" id="L75" title="All 2 branches covered.">        return !iterator().hasNext();</span>
+<span class="fc bfc" id="L82" title="All 2 branches covered.">        return !iterator().hasNext();</span>
     }
 
 
     @Override
     public boolean exists(Predicate&lt;? super T&gt; predicate) {
-<span class="fc bfc" id="L81" title="All 4 branches covered.">        for (T t : this) if (predicate.$(t)) return true;</span>
-<span class="fc" id="L82">        return false;</span>
+<span class="fc bfc" id="L88" title="All 4 branches covered.">        for (T t : this) if (predicate.$(t)) return true;</span>
+<span class="fc" id="L89">        return false;</span>
     }
 
 
     @Override
     public Optional&lt;T&gt; head() {
-<span class="fc bfc" id="L88" title="All 2 branches covered.">        return !isEmpty() ? optional(iterator().next()) : Singular.&lt;T&gt;none();</span>
+<span class="fc bfc" id="L95" title="All 2 branches covered.">        return !isEmpty() ? optional(iterator().next()) : Singular.&lt;T&gt;none();</span>
+    }
+
+
+    @Override
+    public Optional&lt;T&gt; last() {
+<span class="fc" id="L101">        T last = null;</span>
+<span class="fc bfc" id="L102" title="All 2 branches covered.">        for (T elem : this) last = elem;</span>
+<span class="fc" id="L103">        return optional(last);</span>
     }
 
 
     @Override
     public String join() {
-<span class="fc" id="L94">        return reduce(&quot;&quot;, concat);</span>
+<span class="fc" id="L109">        return reduce(&quot;&quot;, concat);</span>
     }
 
 
     @Override
     public String join(String separator) {
-<span class="fc bfc" id="L100" title="All 2 branches covered.">        if (isEmpty()) return &quot;&quot;;</span>
-<span class="fc" id="L101">        return head().map(toString).append(tail().map(Strings.prepend(separator))).reduce(&quot;&quot;, concat);</span>
+<span class="fc bfc" id="L115" title="All 2 branches covered.">        if (isEmpty()) return &quot;&quot;;</span>
+<span class="fc" id="L116">        return head().map(toString).append(tail().map(Strings.prepend(separator))).reduce(&quot;&quot;, concat);</span>
     }
 
 
@@ -109,7 +124,7 @@ import no.motif.types.Elements;
      */
     @Override
     public String toString() {
-<span class="fc" id="L112">        return collect().toString();</span>
+<span class="fc" id="L127">        return collect().toString();</span>
     }
 
 }
