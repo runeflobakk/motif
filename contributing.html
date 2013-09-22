@@ -8,7 +8,7 @@
 
 	<head>
 		<meta charset="UTF-8" />
-		<title>Motif - Optional<V></title>
+		<title>Motif - Contributing</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<meta name="description" content="" />
 		<meta http-equiv="content-language" content="en" />
@@ -46,7 +46,7 @@
 		</script>
 		</head>
 
-	<body class="page-optional project-motif" data-spy="scroll" data-offset="60" data-target="#toc-scroll-target">
+	<body class="page-contributing project-motif" data-spy="scroll" data-offset="60" data-target="#toc-scroll-target">
 
 		<div class="navbar navbar-fixed-top">
 			<div class="navbar-inner">
@@ -64,10 +64,10 @@
 								<ul class="dropdown-menu">
 									<li><a href="documentation.html" title="Overview">Overview </a></li>
 									<li><a href="getting-started.html" title="Getting Started">Getting Started </a></li>
-									<li class="active"><a href="" title="The Optional type">The Optional type </a></li>
+									<li><a href="optional.html" title="The Optional type">The Optional type </a></li>
 									<li><a href="libraries-compare.html" title="Motif compared to other libraries">Motif compared to other libraries </a></li>
 									<li><a href="apidocs/index.html" title="Javadocs">Javadocs </a></li>
-									<li><a href="contributing.html" title="Contributing">Contributing </a></li>
+									<li class="active"><a href="" title="Contributing">Contributing </a></li>
 									<li><a href="faq.html" title="FAQ">FAQ </a></li>
 								</ul>
 							</li>
@@ -117,20 +117,11 @@
 			<div class="navbar-inner">
 				<div id="toc-scroll-target" class="container">
 					<ul id="toc" class="nav">
-						<li class="toplevel"><a href="#optionalv" title="Optional<V>">Optional<V></a></li>
-						<li class="toplevel"><a href="#Basic_use" title="Basic use">Basic use</a></li>
-						<li class="toplevel"><a href="#Iterating_an_Optional" title="Iterating an Optional">Iterating an Optional</a></li>
-						<li class="dropdown">
-							<a href="#More_operations_on_OptionalV" title="More operations on Optional<V>" class="dropdown-toggle" role="button" data-toggle="dropdown" data-target="#">More operations on Optional<V> <b class="caret"></b></a>
-							<ul class="dropdown-menu" role="menu">
-								<!-- Repeat the item, otherwise it is not clickable as the dropdown root -->
-								<li><a href="#More_operations_on_OptionalV" title="More operations on Optional<V>">More operations on Optional<V></a></li>
-								<li class="divider"></li>
-								<li><a href="#Deciding_Some_or_None_based_on_predicate" title="Deciding Some or None based on predicate">Deciding Some or None based on predicate</a></li>
-								<li><a href="#Map_the_optional_value" title="Map the optional value">Map the optional value</a></li>
-
-							</ul>
-						</li>
+						<li class="toplevel"><a href="#contributing" title="Contributing">Contributing</a></li>
+						<li class="toplevel"><a href="#Registering_issues" title="Registering issues">Registering issues</a></li>
+						<li class="toplevel"><a href="#New_function_implementations" title="New function implementations">New function implementations</a></li>
+						<li class="toplevel"><a href="#New_ways_to_compose_functions" title="New ways to compose functions">New ways to compose functions</a></li>
+						<li class="toplevel"><a href="#Ask_questions" title="Ask questions">Ask questions</a></li>
 					</ul>
 				</div>
 			</div>
@@ -142,57 +133,24 @@
 		<div class="span12">
 			<div class="body-content">
 <div class="page-header">
- <h1 id="optionalv">Optional&lt;V&gt;</h1>
+ <h1 id="contributing">Contributing</h1>
 </div> 
-<p><a href="apidocs/no/motif/single/Optional.html" title="The Optional type"><tt>Optional</tt></a>, or variants of it, is a ubiquitous type typically present in functional or hybrid-functional languages. It is used for cases when it is valid for a procedure (function, method, etc) to terminate with no result. In Java, the idiomatic way to do this is to return the dreaded null-pointer, or <tt>return null</tt>. However, the possibility of a “no result”-result, or <tt>null</tt>, cannot be expressed by the type system, and is typically the source of numerous <tt>NullPointerExceptions</tt> where the caller of a method forgets to check if the returned value is, in fact, an instance before dereferencing it.</p> 
-<p>The Optional type explicitly expresses that a value may be something, or may be nothing, at the type level.</p> 
+<p>Here are a few examples of ways to help out with developing Motif.</p> 
 <div class="section"> 
- <h2 id="Basic_use">Basic use</h2> 
- <p>An Optional can be constructed using the <a href="apidocs/no/motif/Singular.html#optional28V29" title="Factory method for Optional"><tt>no.motif.Singular.optional(..)</tt></a> factory method. It should be statically imported and used like this:</p> 
- <div class="source"> 
-  <pre>String string = //get string or null from somewhere
-Optional&lt;String&gt; optString = optional(string);
-</pre> 
- </div> 
- <p>Now, <tt>optString</tt> is either an instance of <tt>Some&lt;String&gt;</tt> or the singleton <tt>None</tt>. It can be queried using <a href="apidocs/no/motif/single/Optional.html#isSome2829" title="Optional.isSome() method"><tt>optString.isSome()</tt></a> to determine if the string is indeed present or not, and if it is, it can be obtained with <a href="apidocs/no/motif/single/Optional.html#get2829" title="Optional.get() method"><tt>optString.get()</tt></a>.</p> 
- <p>The procedure described above looks more like a glorified old-fashioned <tt>null</tt> check, and not that much of any added value. The <tt>!= null</tt> has been replaced with a call to <tt>isSome()</tt>, and using the value requires a tedious call to <tt>get()</tt>. If anything, we have managed to somewhat force to check for the presence of the value, which can be argued to be a slight improvement, but it isn’t in any way spectacular.</p> 
+ <h2 id="Registering_issues">Registering issues</h2> 
+ <p>This is probably the easiest way to contribute. If you come up with something you think is missing, or encounter some bugs, <a class="externalLink" href="https://github.com/runeflobakk/motif/issues" title="Issue tracker on GitHub">register it as issues here</a>.</p> 
 </div> 
 <div class="section"> 
- <h2 id="Iterating_an_Optional">Iterating an Optional</h2> 
- <p>An Optional can be viewed as an <tt>Iterable</tt> which is either empty or has exactly one element (analogous to a list with either zero or one element). In fact, <tt>Optional</tt> implements the <tt>Iterable</tt> interface, which makes it applicable for use with a standard <tt>for</tt>-loop in Java. Now, it may seem strange to “iterate” one value, but what we are actually using the loop for is to say “if present, then assign and execute block”.</p> 
- <p>Using <tt>optString</tt> from the previous example, we can print the string if it exists:</p> 
- <div class="source"> 
-  <pre>for (String s : optString) System.out.println(s);
-</pre> 
- </div> 
- <p>We can even write it on one line, and it doesn’t look half-bad.</p> 
+ <h2 id="New_function_implementations">New function implementations</h2> 
+ <p>There is almost an infinite amount of potential implementations of the functional interfaces in Motif. The only formal requirement is that they should not have any other dependencies than the standard JDK classes. Transformations of strings and other basic value types of the JDK are especially welcome.</p> 
 </div> 
 <div class="section"> 
- <h2 id="More_operations_on_OptionalV">More operations on Optional&lt;V&gt;</h2> 
- <p>The Optional type supports the use of the various function interfaces in Motif to enable safe operations on the optional value.</p> 
- <div class="section"> 
-  <h3 id="Deciding_Some_or_None_based_on_predicate">Deciding <tt>Some</tt> or <tt>None</tt> based on predicate</h3> 
-  <p>By default, the <tt>optional(..)</tt> factory method treats <tt>null</tt> as nothing, and any instance as something. But it may be situations where you want to adapt how values are viewed. For instance, you may want to treat both null and empty strings as nothing. This can be achieved by using <a href="apidocs/no/motif/Singular.html#optional28no.motif.f.Predicate20V29" title="Factory method for Optional with Predicate"><tt>optional(Predicate, V)</tt></a>, where the predicate decides if the value should be treated as “present”.</p> 
-  <p>In the Strings class there is a predicate for precisely this purpose: <a href="apidocs/no/motif/Strings.html#blank"><tt>blank</tt></a>. We can negate the predicate with <a href="apidocs/no/motif/Base.html#not"><tt>not(blank)</tt></a> and use it with <tt>optional</tt> like this:</p> 
-  <div class="source"> 
-   <pre>for(String s : optional(not(blank), &quot;&quot;)) throw new RuntimeException();
-</pre> 
-  </div> 
-  <p>No exception will be thrown in the above code. If we did not include the predicate, <tt>String s</tt> would be assigned the empty string, and a <tt>RuntimeException</tt> would have been thrown.</p> 
- </div> 
- <div class="section"> 
-  <h3 id="Map_the_optional_value">Map the optional value</h3> 
-  <p><tt>Optional</tt> also supports mapping its value to something else. The mapping operation is safe; you can perfectly map a non-existing value. The key is that the <a href="apidocs/no/motif/single/Optional.html#map28no.motif.f.Fn29" title="Optional.map(..) method"><tt>map(..)</tt></a> method returns a new Optional of the result type of the mapping function (or <tt>None</tt> if the mapper function maps to <tt>null</tt> or any other undefined value as decided by an optional predicate). The mapping functions are implementations of the <a href="apidocs/no/motif/f/Fn.html"><tt>Fn&lt;I, O&gt;</tt></a> interface.</p> 
-  <p>Say we have a string that may or may not be numeric and we are only interested in it if indeed it is numeric. We need a predicate to decide if a string is numeric, and a way to convert the string to an <tt>int</tt>. Fortunately, Motif provides both these functions in the <a href="apidocs/no/motif/Strings.html" title="String functions">Strings</a> class: <tt>numeric</tt> and <tt>toInt</tt>, which can be statically imported and used like this:</p> 
-  <div class="source"> 
-   <pre>String mayBeNumber = //get the number
-for (int i : optional(numeric, mayBeNumber).map(toInt)) {
-    // do something with i
-}
-</pre> 
-  </div> 
-  <p>If <tt>mayBeNumber</tt> is numeric, the string is converted to an integer and assigned to <tt>int i</tt>, and the block is executed. If mayBeNumber is not numeric, the <tt>None</tt> singleton instance is returned from both <tt>optional(..)</tt>, and <tt>map(..)</tt>, and following no assignment is done to <tt>i</tt>.</p> 
- </div> 
+ <h2 id="New_ways_to_compose_functions">New ways to compose functions</h2> 
+ <p>This is a bit more involved than just creating an implementation of a functional interface for a specific purpose. As functions can be combined, chained, and other ways to compose functions into new ones, Motif needs to provide a library of such composition constructs. Probably the most used ones are the <tt>where</tt>-predicate, and the various ways to logically combine predicates, all found in the <a href="apidocs/no/motif/Base.html" title="Base functions"><tt>Base</tt></a> class. Writing new ones requires a bit of generic thinking, and knowledge about using co- and contravariant types. These compositions are important, because they are enabling reuse of functions. If there are a composition you feel is missing in Motif, do not hesitate to write it and send a pull-request.</p> 
+</div> 
+<div class="section"> 
+ <h2 id="Ask_questions">Ask questions</h2> 
+ <p>If there is something you are not sure about how you should solve, or anything else about Motif, just ask! You can post questions on the <a class="externalLink" href="https://github.com/runeflobakk/motif/issues" title="Issue tracker on GitHub">issue-tracker</a>. Any question may also potentially serve as an entry in the <a href="faq.html" title="Frequently asked questions">FAQ</a>.</p> 
 </div>
 			</div>
 		</div>
@@ -222,8 +180,8 @@ for (int i : optional(numeric, mayBeNumber).map(toInt)) {
 						<li>
 							<a href="getting-started.html" title="Getting Started">Getting Started </a>
 						</li>
-						<li class="active">
-							<a href="#" title="The Optional type">The Optional type </a>
+						<li>
+							<a href="optional.html" title="The Optional type">The Optional type </a>
 						</li>
 						<li>
 							<a href="libraries-compare.html" title="Motif compared to other libraries">Motif compared to other libraries </a>
@@ -231,8 +189,8 @@ for (int i : optional(numeric, mayBeNumber).map(toInt)) {
 						<li>
 							<a href="apidocs/index.html" title="Javadocs">Javadocs </a>
 						</li>
-						<li>
-							<a href="contributing.html" title="Contributing">Contributing </a>
+						<li class="active">
+							<a href="#" title="Contributing">Contributing </a>
 						</li>
 						<li>
 							<a href="faq.html" title="FAQ">FAQ </a>
