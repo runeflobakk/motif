@@ -152,15 +152,17 @@ public final class Iterate {
     }
 
 
-    private Iterate() {}
-
-
     /**
      * A bridge from functions yielding arrays, to functions yielding iterables.
      *
      * @param yieldsArray the array-yielding function.
      * @return an adapted function yielding an iterable of the array yielded from the original function.
      */
-    public static final <I, O> Fn<I, Iterable<O>> toIterable(final Fn<I, O[]> yieldsArray) {
+    public static <I, O> Fn<I, Iterable<O>> toIterable(final Fn<I, O[]> yieldsArray) {
         return new Fn<I, Iterable<O>>() { @Override public Iterable<O> $(I value) { return on(yieldsArray.$(value)); }}; }
+
+
+
+    private Iterate() {}
+
 }
