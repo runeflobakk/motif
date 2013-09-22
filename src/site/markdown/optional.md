@@ -28,7 +28,7 @@ using [`optString.isSome()`][isSome]
 to determine if the string is indeed present or not, and if it is, it can
 be obtained with [`optString.get()`][get].
 
-The procedure described above looks more like a glorified old-fashioned null check, and not that
+The procedure described above looks more like a glorified old-fashioned ```null``` check, and not that
 much of any added value. The `!= null` has been replaced with a call to `isSome()`, and using the
 value requires a tedious call to `get()`. If anything, we have managed to somewhat force to check
 for the presence of the value, which can be argued to be a slight improvement, but it isn't in any
@@ -88,7 +88,7 @@ been thrown.
 
 ### Map the optional value
 
-`Optional` also supports mapping (or transforming) its value to something else. The
+`Optional` also supports mapping its value to something else. The
 mapping operation is safe; you can perfectly map a non-existing value. The key is
 that the [`map(..)`][map]
 method returns a new Optional of the result type of the mapping
@@ -97,28 +97,11 @@ as decided by an optional predicate). The mapping functions are implementations 
 [`Fn<I, O>`](apidocs/no/motif/f/Fn.html) interface.
 
 Say we have a string that may or may not be numeric and we are only interested in it
-if indeed it is numeric. We need a predicate to decide if a string is numeric:
+if indeed it is numeric. We need a predicate to decide if a string is numeric, and
+a way to convert the string to an ```int```. Fortunately, Motif provides both these
+functions in the [Strings][Strings] class: ```numeric``` and ```toInt```, which can be
+statically imported and used like this:
 
-```java
-public final Predicate<String> numeric = new Predicate<String>() {
-    public boolean $(String string) {
-        return !StringUtils.isNumeric(string);
-    }
-};
-```
-
-
-We also need to parse the string as an `int` to be able to use it, so we define a transformer for that:
-
-```java
-public final Fn<String, Integer> toInt = new Fn<String, Integer>() {
-    public Integer $(String string) {
-        return Integer.parseInt(string);
-    }
-};
-```
-
-The two functions defined above can then be used with `optional` like this:
 
 ```java
 String mayBeNumber = //get the number
@@ -142,3 +125,4 @@ following no assignment is done to `i`.
 [isSome]: apidocs/no/motif/single/Optional.html#isSome%28%29 "Optional.isSome() method"
 [get]: apidocs/no/motif/single/Optional.html#get%28%29 "Optional.get() method"
 [map]: apidocs/no/motif/single/Optional.html#map%28no.motif.f.Fn%29 "Optional.map(..) method"
+[Strings]: apidocs/no/motif/Strings.html "String functions"
