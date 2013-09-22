@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import no.motif.f.Fn;
@@ -53,6 +54,11 @@ public final class Iterate {
     }
 
 
+    public static <K, V> Elements<Map.Entry<K, V>> on(Map<K, V> map) {
+        return on(map != null ? map.entrySet() : null);
+    }
+
+
     /**
      * Work with multiple elements.
      *
@@ -62,6 +68,10 @@ public final class Iterate {
     public static <T> Elements<T> on(Iterable<T> elements) {
         return elements instanceof Elements ? (Elements<T>) elements : newInstance(elements);
     }
+
+
+
+
 
 
     private static <T> Elements<T> newInstance(Iterable<T> elements) {

@@ -10,6 +10,10 @@ import static org.hamcrest.Matchers.emptyIterable;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import no.motif.f.Fn;
 
 import org.junit.Test;
@@ -40,6 +44,20 @@ public class IterateTest {
             }
         };
         assertThat(optional("").split(Iterate.toIterable(oneTwoThree)), contains(1, 2, 3));
+    }
+
+    @Test
+    public void iterateAMapAsKeyAndValueEntries() {
+        Map<Integer, String> map = new LinkedHashMap<>();
+        map.put(1, "a");
+        map.put(2, "b");
+        map.put(3, "c");
+        assertThat(on(map), contains(map.entrySet().toArray()));
+    }
+
+    @Test
+    public void iterateANullMapYieldsEmptyEntries() {
+        assertThat(on((Map<?, ?>) null), emptyIterable());
     }
 
 }
