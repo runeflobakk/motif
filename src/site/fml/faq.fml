@@ -85,6 +85,15 @@
                 concept in the Motif API.</p>
             </answer>
         </faq>
+        <faq id="contribute">
+            <question>I want to help out! How can I contribute?</question>
+            <answer>
+                That's awesome! I can sure use some help! Anything you think are missing in Motif, do not
+                hesitate to <a href="https://github.com/runeflobakk/motif/issues">register it as issues</a>.
+                Also, <a href="contributing.html">this document</a> gives some examples on specific tasks
+                you can help out with.
+            </answer>
+        </faq>
     </part>
 
 </faqs>
