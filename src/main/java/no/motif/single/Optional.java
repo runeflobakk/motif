@@ -7,7 +7,6 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
-import no.motif.Base;
 import no.motif.Iterate;
 import no.motif.Singular;
 import no.motif.f.Fn;
@@ -255,7 +254,7 @@ public abstract class Optional<V>
      * {@link Fn functions} yielding Iterables. If implementing an array-yielding
      * function is most appropriate for your case, and you wish to use the function to split
      * an optional value using this method, it is possible to adapt the function using
-     * {@link Base#toIterable(Fn)}
+     * {@link Iterate#toIterable(Fn)}
      * </p>
      *
      * @param splitter a function yielding an iterable.
