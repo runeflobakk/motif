@@ -37,7 +37,8 @@ public final class Reflect {
 
     /**
      * Create instances of classes using the no-arg constructor.
-     * Any exception will be rethrown as <code>RuntimeException</code>.
+     * Any checked {@link InstantiationException} or {@link IllegalAccessException}
+     * will be rethrown as <code>RuntimeException</code>.
      */
     public static <T> Fn<Class<? extends T>, T> newInstance() {
         return new Fn<Class<? extends T>, T>() {
