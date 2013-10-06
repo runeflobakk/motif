@@ -22,7 +22,7 @@
                 automatically. It requires less testing to cover all the branches, simply because
                 there are often only one branch of program flow.
                 The branches are internal to the various API methods,
-                and they are already thorougly testet. So if the semantics of the expressed code makes
+                and they are already thoroughly tested. So if the semantics of the expressed code makes
                 sense, and the compiler approves the function composition, then you can be very sure
                 that the code will work as intended, already the first time you run it.</p>
                 <p>If you write
@@ -48,7 +48,7 @@
                 the code already is done in a functional manner. The API of Motif is actually not that far from
                 the new
                 <a href="http://download.java.net/jdk8/docs/api/java/util/stream/Stream.html">Stream API</a>
-                of Java 8. And importantly, code you write today which accepts any of the functional
+                of Java 8. And importantly, in code you write today, methods which accepts any of the functional
                 interfaces of Motif, will be ready for use with Java 8 lambdas out-of-the-box. You can
                 pass lambdas to methods which accepts Motif's functional interfaces, and the Java 8 compiler
                 will translate the lambdas to actual implementations of <code>Predicate</code>,
@@ -59,7 +59,7 @@
             <question>Why should I use Motif instead of Guava/LambdaJ/other library?</question>
             <answer>
                 All these libraries are great ways to learn how to program in
-                a more functional manner. You can read an opinionated comparison between
+                a more functional manner. You can read an (admittedly opinionated) comparison between
                 Motif and some other librarys <a href="libraries-compare.html">here</a>.
             </answer>
         </faq>
