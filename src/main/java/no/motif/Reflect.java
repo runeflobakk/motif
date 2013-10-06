@@ -1,5 +1,7 @@
 package no.motif;
 
+import java.lang.reflect.Member;
+
 import no.motif.f.Fn;
 import no.motif.f.Predicate;
 
@@ -33,6 +35,15 @@ public final class Reflect {
     public static <T> Fn<T, Class<? extends T>> type() { return new Fn<T, Class<? extends T>>() {
         @SuppressWarnings("unchecked") @Override public Class<? extends T> $(T object) {
             return (Class<? extends T>) object.getClass(); }}; }
+
+
+    /**
+     * Get the name of a {@link java.lang.reflect.Member}, e.g.
+     * class name, method name, field name.
+     */
+    public static final Fn<Member, String> name = new Fn<Member, String>() {
+        @Override public String $(Member member) { return member.getName(); }};
+
 
 
     /**

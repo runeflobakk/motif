@@ -1,7 +1,10 @@
 package no.motif;
 
+import static no.motif.Base.is;
+import static no.motif.Base.not;
 import static no.motif.Iterate.on;
 import static no.motif.Reflect.getClass;
+import static no.motif.Reflect.name;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.isA;
@@ -28,7 +31,9 @@ public class ReflectTest {
 
     public static class A {}
 
-    public static class B extends A {}
+    public static class B extends A {
+        public int num1, num2;
+    }
 
     public static class ThrowsUp { public ThrowsUp() throws Exception { throw new Exception("threw up"); }}
 
@@ -54,4 +59,12 @@ public class ReflectTest {
         assertThat(onlyBs, hasSize(1));
         assertThat((B) onlyBs.get(0), isA(B.class));
     }
+
+
+    @Test
+    public void getNameOfFields() {
+        assertThat(on(B.class.getDeclaredFields()).map(name).filter(not(is("$jacocoData"))), contains("num1", "num2"));
+    }
+
+
 }
