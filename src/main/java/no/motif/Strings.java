@@ -155,6 +155,9 @@ public final class Strings {
 
 
 
+    /**
+     * Yields the given string with its characters in reversed order.
+     */
     public static final Fn<String, String> reversed = new PassThruIfNullOrElse<String, String>() {
         @Override protected String $nullsafe(String s) { return new StringBuilder(s).reverse().toString(); }};
 
