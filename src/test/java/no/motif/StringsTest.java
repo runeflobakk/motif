@@ -17,12 +17,14 @@ import static no.motif.Strings.lowerCased;
 import static no.motif.Strings.matches;
 import static no.motif.Strings.numeric;
 import static no.motif.Strings.prepend;
+import static no.motif.Strings.reversed;
 import static no.motif.Strings.startsWith;
 import static no.motif.Strings.toDouble;
 import static no.motif.Strings.toInt;
 import static no.motif.Strings.trimmed;
 import static no.motif.Strings.upperCased;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -212,6 +214,13 @@ public class StringsTest {
     @Test
     public void insertStringBetweenTwoStrings() {
         assertThat(on("a", "b").map(between("<td>", "</td>")).join(), is("<td>a</td><td>b</td>"));
+    }
+
+    @Test
+    public void reversedString() {
+        assertThat(reversed.$(null), nullValue());
+        assertThat(reversed.$("a"), is("a"));
+        assertThat(reversed.$("abc"), is("cba"));
     }
 
 

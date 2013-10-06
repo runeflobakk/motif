@@ -154,6 +154,12 @@ public final class Strings {
         @Override public String $(Object acc, Object c) { return emptyIfNull(acc) + emptyIfNull(c); }};
 
 
+
+    public static final Fn<String, String> reversed = new PassThruIfNullOrElse<String, String>() {
+        @Override protected String $nullsafe(String s) { return new StringBuilder(s).reverse().toString(); }};
+
+
+
     /**
      * Determines if a substring is present in a string. A string never contains <code>null</code>,
      * nor does <code>null</code> contain any substring.
