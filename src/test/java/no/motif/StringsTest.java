@@ -4,7 +4,7 @@ import static no.motif.Iterate.on;
 import static no.motif.Strings.alphabetic;
 import static no.motif.Strings.alphanumeric;
 import static no.motif.Strings.append;
-import static no.motif.Strings.between;
+import static no.motif.Strings.inBetween;
 import static no.motif.Strings.blank;
 import static no.motif.Strings.concat;
 import static no.motif.Strings.contains;
@@ -213,7 +213,7 @@ public class StringsTest {
 
     @Test
     public void insertStringBetweenTwoStrings() {
-        assertThat(on("a", "b").map(between("<td>", "</td>")).join(), is("<td>a</td><td>b</td>"));
+        assertThat(on("a", "b").map(inBetween("<td>", "</td>")).join(), is("<td>a</td><td>b</td>"));
     }
 
     @Test
