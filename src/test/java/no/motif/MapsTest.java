@@ -20,8 +20,8 @@ public class MapsTest {
         map.put(2, "b");
         map.put(3, "c");
         assertThat(on(map)
-                .filter(where(Maps.<Integer>mapkey(), equalOrGreaterThan(2)))
-                .map(Maps.<String>mapvalue()),
+                .filter(where(Maps.<Integer>key(), equalOrGreaterThan(2)))
+                .map(Maps.<String>value()),
                 contains("b", "c"));
     }
 }
