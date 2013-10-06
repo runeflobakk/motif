@@ -2,7 +2,9 @@ package no.motif;
 
 import static no.motif.Base.is;
 import static no.motif.Base.not;
+import static no.motif.Base.where;
 import static no.motif.Iterate.on;
+import static no.motif.Reflect.annotatedWith;
 import static no.motif.Reflect.getClass;
 import static no.motif.Reflect.name;
 import static org.hamcrest.Matchers.contains;
@@ -10,6 +12,8 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.isA;
 import static org.junit.Assert.assertThat;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.List;
 
 import org.junit.Test;
@@ -29,8 +33,11 @@ public class ReflectTest {
         assertThat(on("a", "b").map(Reflect.<String>type()), contains(stringtype, stringtype));
     }
 
+    @Retention(RetentionPolicy.RUNTIME) @interface Awesome {}
+
     public static class A {}
 
+    @Awesome
     public static class B extends A {
         public int num1, num2;
     }
@@ -64,6 +71,13 @@ public class ReflectTest {
     @Test
     public void getNameOfFields() {
         assertThat(on(B.class.getDeclaredFields()).map(name).filter(not(is("$jacocoData"))), contains("num1", "num2"));
+    }
+
+    @Test
+    public void getAnnotatedObjects() {
+        A a = new A();
+        B b = new B();
+        assertThat(on(a, b).filter(where(getClass, annotatedWith(Awesome.class))), contains((A) b));
     }
 
 

@@ -1,5 +1,7 @@
 package no.motif;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Member;
 
 import no.motif.f.Fn;
@@ -45,6 +47,16 @@ public final class Reflect {
         @Override public String $(Member member) { return member.getName(); }};
 
 
+    /**
+     * Check if an element (class, method, field, etc) is annotated with a given annotation.
+     *
+     * @param annotation the annotation to check for.
+     */
+    public static Predicate<AnnotatedElement> annotatedWith(final Class<? extends Annotation> annotation) {
+        return new Predicate<AnnotatedElement>() {
+            @Override public boolean $(AnnotatedElement element) { return element.isAnnotationPresent(annotation); }}; }
+
+
 
     /**
      * Create instances of classes using the no-arg constructor.
@@ -61,6 +73,7 @@ public final class Reflect {
                 }
             }};
     }
+
 
     private Reflect() {}
 }
