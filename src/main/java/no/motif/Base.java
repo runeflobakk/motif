@@ -207,13 +207,23 @@ public final class Base {
 
 
 
+    /**
+     * Yields <code>true</code> for <code>null</code> values.
+     */
     public static final Predicate<Object> isNull = new Predicate<Object>() {
         @Override public boolean $(Object value) { return value == null; }};
 
 
+    /**
+     * Yields <code>true</code> for all non-<code>null</code> values.
+     */
     public static final Predicate<Object> notNull = not(isNull);
 
 
+    /**
+     * Yields the {@link String#valueOf(Object) string representation} of
+     * any object.
+     */
     public static final Fn<Object, String> toString = new Fn<Object, String>() {
         @Override public String $(Object value) { return String.valueOf(value); }};
 
@@ -287,6 +297,5 @@ public final class Base {
 
 
     private Base() {}
-
 
 }
