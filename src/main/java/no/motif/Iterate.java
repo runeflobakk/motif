@@ -1,6 +1,7 @@
 package no.motif;
 
 import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
 import static no.motif.Singular.optional;
 
 import java.util.ArrayList;
@@ -25,6 +26,16 @@ import no.motif.types.Elements;
  */
 public final class Iterate {
 
+    private static final Elements<?> NONE = new PreparedIterable<>(emptyList());
+
+    /**
+     * @return An empty <code>Elements</code> container.
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> Elements<T> none() {
+        return (Elements<T>) NONE;
+    }
+
 
     /**
      * Manipulate CharSequences/Strings as if they were iterables of
@@ -34,7 +45,7 @@ public final class Iterate {
      * @return {@link Elements} characters
      */
     public static Elements<Character> on(CharSequence string) {
-        if (string == null) return PreparedIterable.empty();
+        if (string == null) return Iterate.none();
         List<Character> charList = new ArrayList<>(string.length());
         for (char c : string.toString().toCharArray()) charList.add(c);
         return newInstance(charList);
@@ -75,7 +86,7 @@ public final class Iterate {
 
 
     private static <T> Elements<T> newInstance(Iterable<T> elements) {
-        if (elements == null) return PreparedIterable.empty();
+        if (elements == null || !elements.iterator().hasNext()) return none();
         else return new PreparedIterable<T>(elements);
     }
 
