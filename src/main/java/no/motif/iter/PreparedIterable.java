@@ -99,6 +99,15 @@ public class PreparedIterable<T> extends CollectingIterable<T> implements Elemen
     }
 
 
+
+    @Override
+    public PreparedIterable<T> repeat(int times) {
+        if (times < 0) throw new IllegalArgumentException("Cannot repeat anything " + times + " times.");
+        return new PreparedIterable<>(new CyclingIterable<T>(times, elements));
+    }
+
+
+
     @Override
     public Iterator<T> iterator() {
         return elements.iterator();

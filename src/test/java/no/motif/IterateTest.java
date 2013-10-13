@@ -60,4 +60,9 @@ public class IterateTest {
         assertThat(on((Map<?, ?>) null), emptyIterable());
     }
 
+    @Test
+    public void repeatingNoElementsYieldsNoElements() {
+        assertThat(on().repeat(10), emptyIterable());
+    }
+
 }

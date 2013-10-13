@@ -10,6 +10,7 @@ import static no.motif.Chars.digit;
 import static no.motif.Chars.letter;
 import static no.motif.Chars.letterOrDigit;
 import static no.motif.Chars.whitespace;
+import static no.motif.Iterate.on;
 import static no.motif.f.Apply.argsReversed;
 import no.motif.f.Apply;
 import no.motif.f.Fn;
@@ -274,5 +275,9 @@ public final class Strings {
 
 
     private Strings() {}
+
+    public static Fn<String, String> repeat(final int times) {
+        return new Fn<String, String>() { @Override public String $(String s) { return on(s).repeat(times).join(); }};
+    }
 
 }

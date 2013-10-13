@@ -16,7 +16,7 @@ import no.motif.single.Optional;
  * @param <T> The type of the contained objects.
  */
 public interface Elements<T> extends
-    Mappable<T>, Filterable<T>, Appendable<T>, Prependable<T>, SideEffectable<T>,
+    Mappable<T>, Filterable<T>, Appendable<T>, Prependable<T>, SideEffectable<T>, Repeatable<T>,
     HeadAndTail<T>,
     YieldsJavaCollection<T>,
     Existance<T>,
@@ -103,7 +103,9 @@ public interface Elements<T> extends
     String join(String separator);
 
 
-    @Override public <O> Elements<O> map(Fn<? super T, O> function);
-    @Override public Elements<T> filter(Predicate<? super T> filter);
+    @Override <O> Elements<O> map(Fn<? super T, O> function);
+    @Override Elements<T> filter(Predicate<? super T> filter);
+    @Override Elements<T> repeat(int times);
+
 
 }

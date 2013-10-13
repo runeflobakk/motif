@@ -4,19 +4,20 @@ import static no.motif.Iterate.on;
 import static no.motif.Strings.alphabetic;
 import static no.motif.Strings.alphanumeric;
 import static no.motif.Strings.append;
-import static no.motif.Strings.inBetween;
 import static no.motif.Strings.blank;
 import static no.motif.Strings.concat;
 import static no.motif.Strings.contains;
 import static no.motif.Strings.endsWith;
 import static no.motif.Strings.first;
 import static no.motif.Strings.hasLength;
+import static no.motif.Strings.inBetween;
 import static no.motif.Strings.last;
 import static no.motif.Strings.length;
 import static no.motif.Strings.lowerCased;
 import static no.motif.Strings.matches;
 import static no.motif.Strings.numeric;
 import static no.motif.Strings.prepend;
+import static no.motif.Strings.repeat;
 import static no.motif.Strings.reversed;
 import static no.motif.Strings.startsWith;
 import static no.motif.Strings.toDouble;
@@ -221,6 +222,18 @@ public class StringsTest {
         assertThat(reversed.$(null), nullValue());
         assertThat(reversed.$("a"), is("a"));
         assertThat(reversed.$("abc"), is("cba"));
+    }
+
+    @Test
+    public void repeatedString() {
+        assertThat(repeat(0).$("something"), is(""));
+        assertThat(repeat(1).$("xx"), is("xx"));
+        assertThat(repeat(2).$("xx"), is("xxxx"));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void repeatingNegativeAmountIsNotValid() {
+        repeat(-1).$("");
     }
 
 
