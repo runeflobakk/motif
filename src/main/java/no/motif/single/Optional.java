@@ -12,7 +12,6 @@ import no.motif.Singular;
 import no.motif.f.Fn;
 import no.motif.f.Predicate;
 import no.motif.iter.EmptyIterator;
-import no.motif.iter.PreparedIterable;
 import no.motif.iter.SingularIterator;
 import no.motif.types.Appendable;
 import no.motif.types.Elements;
@@ -169,7 +168,7 @@ public abstract class Optional<V>
 
         @Override
         public <O> Elements<O> split(Fn<? super V, ? extends Iterable<O>> splitter) {
-            return PreparedIterable.empty();
+            return Iterate.none();
         }
 
         @Override

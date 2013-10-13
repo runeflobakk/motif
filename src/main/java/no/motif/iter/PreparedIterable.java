@@ -1,6 +1,5 @@
 package no.motif.iter;
 
-import static java.util.Collections.emptyList;
 import static no.motif.Base.not;
 import static no.motif.Singular.optional;
 
@@ -20,13 +19,6 @@ import no.motif.types.Elements;
  * @param <T> The type of the elements in the iterable.
  */
 public class PreparedIterable<T> extends CollectingIterable<T> implements Elements<T>, Serializable {
-
-    private static final PreparedIterable<?> EMPTY = new PreparedIterable<>(emptyList());
-
-    @SuppressWarnings("unchecked")
-    public static <T> PreparedIterable<T> empty() {
-        return (PreparedIterable<T>) EMPTY;
-    }
 
     private final Iterable<T> elements;
 
