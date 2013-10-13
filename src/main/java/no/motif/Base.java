@@ -14,6 +14,8 @@ import no.motif.f.combine.Fn2Chain;
 import no.motif.f.combine.FnChain;
 import no.motif.f.combine.RunnableChain;
 import no.motif.f.combine.Where;
+import no.motif.iter.ExtractingIterable;
+import no.motif.types.Elements;
 
 /**
  * Basic functions.
@@ -220,12 +222,30 @@ public final class Base {
     public static final Predicate<Object> notNull = not(isNull);
 
 
+
+    /**
+     * A function to extract/derive several values from one object. The result of the
+     * extraction is an {@link Elements}s container of the least common supertype of
+     * the extractor {@link Fn}s' return types.
+     *
+     * @param extractors the {@link Fn}s which will extract values from each object passed
+     *        to the function.
+     *
+     * @return the composed function which yields.
+     */
+    @SafeVarargs
+    public static <T, E> Fn<T, Elements<E>> extract(final Fn<? super T, ? extends E> ... extractors) {
+        return new Fn<T, Elements<E>>() { @Override public Elements<E> $(T value) {
+                return on(new ExtractingIterable<T, E>(value, on(extractors))); }}; }
+
+
     /**
      * Yields the {@link String#valueOf(Object) string representation} of
      * any object.
      */
     public static final Fn<Object, String> toString = new Fn<Object, String>() {
         @Override public String $(Object value) { return String.valueOf(value); }};
+
 
 
     /**

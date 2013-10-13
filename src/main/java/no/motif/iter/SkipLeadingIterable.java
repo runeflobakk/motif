@@ -5,7 +5,6 @@ import static no.motif.Singular.optional;
 
 import java.util.Iterator;
 
-import no.motif.Iterate;
 import no.motif.single.Optional;
 
 class SkipLeadingIterable<T> implements Iterable<T> {
@@ -28,7 +27,7 @@ class SkipLeadingIterable<T> implements Iterable<T> {
                 if (!iterator.hasNext()) {
                     return none();
                 } else if (skipped == toSkip) {
-                    return optional(Iterate.hasNext, iterator).map(Iterate.<T>next());
+                    return optional(iterator.next());
                 } else {
                     iterator.next();
                     skipped++;
