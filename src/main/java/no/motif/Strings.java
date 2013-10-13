@@ -1,5 +1,6 @@
 package no.motif;
 
+import static java.util.Arrays.asList;
 import static no.motif.Base.all;
 import static no.motif.Base.both;
 import static no.motif.Base.equalTo;
@@ -273,11 +274,10 @@ public final class Strings {
 
 
 
+    public static Fn<String, String> repeat(final int times) { return new Fn<String, String>() {
+        @Override public String $(String s) { return on(asList(s)).repeat(times).join(); }}; }
+
 
     private Strings() {}
-
-    public static Fn<String, String> repeat(final int times) {
-        return new Fn<String, String>() { @Override public String $(String s) { return on(s).repeat(times).join(); }};
-    }
 
 }

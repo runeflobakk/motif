@@ -19,11 +19,7 @@ public class CyclingIterable<T> implements Iterable<T> {
 
     @Override
     public Iterator<T> iterator() {
-        if (times == 0) return EmptyIterator.<T>instance();
-        Iterator<T> firstIterator = elements.iterator();
-        if (!firstIterator.hasNext()) return EmptyIterator.<T>instance();
-        else if (times == 1) return elements.iterator();
-        else return new SimpleIterator<T>() {
+        return new SimpleIterator<T>() {
             Iterator<T> iterator = elements.iterator();
             int cycle = 0;
 
