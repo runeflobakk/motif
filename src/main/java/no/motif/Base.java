@@ -316,6 +316,18 @@ public final class Base {
     }
 
 
+    /**
+     * Create a {@link Fn0} (no-arg function) which always yields the given value.
+     *
+     * @param value The value to yield from the <code>Fn0</code>.
+     *
+     * @return the <code>Fn0</code>
+     */
+    public static <V> Fn0<V> always(final V value) {
+        return new Fn0<V>() { @Override public V $() { return value; }};}
+
+
+
     private Base() {}
 
 }
