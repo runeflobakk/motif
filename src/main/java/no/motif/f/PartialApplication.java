@@ -1,6 +1,6 @@
 package no.motif.f;
 
-import static no.motif.Base.constant;
+import static no.motif.Base.always;
 
 /**
  * A <code>PartialApplication</code> is used to build more specialized
@@ -26,7 +26,7 @@ public abstract class PartialApplication<FN extends PartialApplicableTo<? super 
 
     @Override public final PARTIALFN $(V value) { return of(value); }
 
-    public final PARTIALFN of(V value) { return of(constant(value)); }
+    public final PARTIALFN of(V value) { return of(always(value)); }
 
     public final PARTIALFN of(Fn0<V> value) { return partiallyApply(fn, value); }
 

@@ -262,9 +262,6 @@ public final class Base {
         @Override public Throwable $(Throwable throwable) { return throwable.getCause(); }};
 
 
-    public static <V> Fn0<V> constant(final V value) { return new Fn0<V>() {
-        @Override public V $() { return value; }}; }
-
 
     /**
      * Compose a chain of several functions into one {@link Fn}, where the result of
