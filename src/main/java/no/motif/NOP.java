@@ -1,5 +1,6 @@
 package no.motif;
 
+import no.motif.f.Do;
 import no.motif.f.Fn;
 
 
@@ -21,11 +22,15 @@ public final class NOP {
     @SuppressWarnings("unchecked")
     public static <V> Fn<V, V> fn() { return (Fn<V, V>) fn; }
 
-
+    /**
+     * The NOP for {@link Do} does nothing.
+     */
+    public static final Do<Object> doNothing = new Do<Object>() { @Override public void $(Object value) { }};
 
 
     @SuppressWarnings("rawtypes")
     private static final Fn<?, ?> fn = new Fn() { @Override public Object $(Object value) { return value; }};
+
 
     private NOP() {}
 }

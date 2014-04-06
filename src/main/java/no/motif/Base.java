@@ -4,12 +4,14 @@ import static no.motif.Iterate.on;
 
 import java.util.Objects;
 
+import no.motif.f.Do;
 import no.motif.f.Fn;
 import no.motif.f.Fn0;
 import no.motif.f.Fn2;
 import no.motif.f.Predicate;
 import no.motif.f.combine.Conjunction;
 import no.motif.f.combine.Disjunction;
+import no.motif.f.combine.DoChain;
 import no.motif.f.combine.Fn2Chain;
 import no.motif.f.combine.FnChain;
 import no.motif.f.combine.RunnableChain;
@@ -310,6 +312,17 @@ public final class Base {
      */
     public static final RunnableChain first(Runnable runnable) {
         return new RunnableChain(runnable, NOP.runnable);
+    }
+
+
+    /**
+     * Chain several {@link Do}s to be executed in sequence.
+     *
+     * @param action The first {@link Do} to execute.
+     * @return The given <code>Do</code> as the first <code>Do</code> in a sequence.
+     */
+    public static <V> DoChain<V> first(Do<V> action) {
+        return new DoChain<>(action, NOP.doNothing);
     }
 
 
