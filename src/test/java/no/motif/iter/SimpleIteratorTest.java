@@ -1,10 +1,12 @@
 package no.motif.iter;
 
 import static no.motif.Singular.none;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -40,6 +42,20 @@ public class SimpleIteratorTest {
     }
 
 
+    @Test
+    public void iteratorMayThrowException() {
+        Iterator<Object> iterator = fails.iterator();
+        try {
+            iterator.next();
+        } catch (Exception e) {
+            assertThat(e, instanceOf(RuntimeException.class));
+            assertThat(e.getCause(), instanceOf(IOException.class));
+            return;
+        }
+        fail("Should throw exception");
+    }
+
+
 
 
     private final Iterable<String> oneElement = new Iterable<String>() {
@@ -65,6 +81,18 @@ public class SimpleIteratorTest {
                 @Override
                 protected Optional<Object> nextIfAvailable() {
                     return none();
+                }
+            };
+        }
+    };
+
+    private final Iterable<Object> fails = new Iterable<Object>() {
+        @Override
+        public Iterator<Object> iterator() {
+            return new SimpleIterator<Object>() {
+                @Override
+                protected Optional<? extends Object> nextIfAvailable() throws Exception {
+                    throw new IOException();
                 }
             };
         }
