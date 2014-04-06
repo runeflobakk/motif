@@ -1,6 +1,7 @@
 package no.motif;
 
 import static no.motif.Iterate.on;
+import static no.motif.Strings.after;
 import static no.motif.Strings.alphabetic;
 import static no.motif.Strings.alphanumeric;
 import static no.motif.Strings.append;
@@ -252,6 +253,19 @@ public class StringsTest {
         assertThat(bytes.$(null).length, is(0));
     }
 
+
+    @Test
+    public void extractSubstringAfterFirstOccurenceOfGivenString() {
+        assertThat(after("anything").$(null), nullValue());
+        assertThat(after("anything").$(""), is(""));
+        assertThat(after(null).$("anything"), is(""));
+        assertThat(after("").$("anything"), is("anything"));
+        assertThat(after("").$(null), nullValue());
+        assertThat(after("b").$("abc"), is("c"));
+        assertThat(after("c").$("abc"), is(""));
+        assertThat(after("d").$("abc"), is(""));
+        assertThat(after("cd").$("abcdcbabcdc"), is("cbabcdc"));
+    }
 
 
 }

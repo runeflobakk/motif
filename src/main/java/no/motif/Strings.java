@@ -304,6 +304,34 @@ public final class Strings {
             @Override public String $nullsafe(String s) { return on(asList(s)).repeat(times).join(separator); }}; }
 
 
+
+    /**
+     * Inside strings, searches for the first occurence of a substring, and yields the
+     * rest of the string <em>after</em> the substring occurence, not including the
+     * substring itself.
+     * <p>
+     * If the substring is not found (or it is <code>null</code>), the empty string is returned.
+     * </p><p>
+     * If the substring is the empty string, the original string is returned.
+     * </p>
+     *
+     * @param substring the substring to search for.
+     */
+    public static Fn<String,String> after(final String substring) {
+        if (substring == null) return passThruIfNullOrElseEmptyString;
+        if (substring.isEmpty()) return NOP.fn();
+        return new PassThruIfNullOrElse<String, String>() { @Override protected String $nullsafe(String s) {
+            int foundAt = s.indexOf(substring);
+            if (foundAt < 0 || foundAt == s.length() - 1) return "";
+            return s.substring(foundAt + substring.length());
+        }};
+    }
+
+
+    private static final Fn<String, String> passThruIfNullOrElseEmptyString = new PassThruIfNullOrElse<String, String>() {
+        @Override protected String $nullsafe(String s) { return ""; }};
+
     private Strings() {}
+
 
 }
