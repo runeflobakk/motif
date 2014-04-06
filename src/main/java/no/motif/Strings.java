@@ -284,9 +284,24 @@ public final class Strings {
         return Base.first(prepend(prefix)).then(append(suffix)); }
 
 
+    /**
+     * Repeats a string a given amount of times.
+     *
+     * @param times The amount of times to repeat the string.
+     */
+    public static Fn<String, String> repeat(final int times) { return new PassThruIfNullOrElse<String, String>() {
+        @Override public String $nullsafe(String s) { return on(asList(s)).repeat(times).join(); }}; }
 
-    public static Fn<String, String> repeat(final int times) { return new Fn<String, String>() {
-        @Override public String $(String s) { return on(asList(s)).repeat(times).join(); }}; }
+
+    /**
+     * Repeats a string, insterting given separator, a given amount of times.
+     *
+     * @param times The amount of times to repeat the string.
+     * @param separator The separator string to insert between the repeating strings.
+     */
+    public static Fn<String, String> repeat(final int times, final String separator) {
+        return new PassThruIfNullOrElse<String, String>() {
+            @Override public String $nullsafe(String s) { return on(asList(s)).repeat(times).join(separator); }}; }
 
 
     private Strings() {}

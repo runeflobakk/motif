@@ -230,6 +230,7 @@ public class StringsTest {
         assertThat(repeat(0).$("something"), is(""));
         assertThat(repeat(1).$("xx"), is("xx"));
         assertThat(repeat(2).$("xx"), is("xxxx"));
+        assertThat(repeat(2).$(null), nullValue());
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -238,10 +239,19 @@ public class StringsTest {
     }
 
     @Test
+    public void repeatedStringWithDelimiter() {
+        assertThat(repeat(0, ", ").$("something"), is(""));
+        assertThat(repeat(1, ", ").$("xx"), is("xx"));
+        assertThat(repeat(4, ".").$("0"), is("0.0.0.0"));
+        assertThat(repeat(4, ".").$(null), nullValue());
+    }
+
+    @Test
     public void bytesOfAString() {
         assertThat(bytes.$("abc"), is("abc".getBytes()));
         assertThat(bytes.$(null).length, is(0));
     }
+
 
 
 }
