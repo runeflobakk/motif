@@ -328,10 +328,41 @@ public final class Strings {
     }
 
 
+    /**
+     * Yields index position of first occurence of a <code>char</code>, or <code>null</code> if the
+     * <code>char</code> cannot be found.
+     *
+     * @see String#indexOf(int)
+     */
+    public static Fn<String, Integer> indexOf(final char c) { return new PassThruIfNullOrElse<String, Integer>() {
+        @Override protected Integer $nullsafe(String s) {
+            int index = s.indexOf(c);
+            return index >= 0 ? index : null;
+        }};
+    }
+
+
+    /**
+     * Yields index position of first occurence of a substring, or <code>null</code> if the substring cannot
+     * be found.
+     *
+     * @see String#indexOf(String)
+     */
+    public static Fn<String, Integer> indexOf(final String substring) { return new PassThruIfNullOrElse<String, Integer>() {
+        @Override protected Integer $nullsafe(String s) {
+            int index = s.indexOf(substring);
+            return index >= 0 ? index : null;
+        }};
+    }
+
+
+
+
     private static final Fn<String, String> passThruIfNullOrElseEmptyString = new PassThruIfNullOrElse<String, String>() {
         @Override protected String $nullsafe(String s) { return ""; }};
 
     private Strings() {}
+
 
 
 }

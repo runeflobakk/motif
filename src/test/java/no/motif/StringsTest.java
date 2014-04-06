@@ -13,6 +13,7 @@ import static no.motif.Strings.endsWith;
 import static no.motif.Strings.first;
 import static no.motif.Strings.hasLength;
 import static no.motif.Strings.inBetween;
+import static no.motif.Strings.indexOf;
 import static no.motif.Strings.last;
 import static no.motif.Strings.length;
 import static no.motif.Strings.lowerCased;
@@ -265,6 +266,18 @@ public class StringsTest {
         assertThat(after("c").$("abc"), is(""));
         assertThat(after("d").$("abc"), is(""));
         assertThat(after("cd").$("abcdcbabcdc"), is("cbabcdc"));
+    }
+
+    @Test
+    public void indexOfFirstOccurrenceOfCharacter() {
+        assertThat(indexOf('b').$("ab"), is(1));
+        assertThat(indexOf('c').$("ab"), nullValue());
+    }
+
+    @Test
+    public void indexOfFirstOccurrenceOfSubstring() {
+        assertThat(indexOf("bc").$("abcabc"), is(1));
+        assertThat(indexOf("bcd").$("abcabc"), nullValue());
     }
 
 
