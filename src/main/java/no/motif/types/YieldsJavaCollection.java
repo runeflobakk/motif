@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import no.motif.Iterate;
@@ -66,5 +67,30 @@ public interface YieldsJavaCollection<T> {
      * @return the elements of the iterable as a sorted list.
      */
     List<T> sorted(Comparator<? super T> comparator);
+
+
+    /**
+     * Get a {@link Map} where the keys are derived by applying the given
+     * {@link Fn} on all elements. Each key points to the list of elements
+     * which resolves to the key.
+     *
+     * @param property the function which resolves the key for each element.
+     * @return the map.
+     */
+    <P> Map<P, List<T>> groupBy(Fn<? super T, P> property);
+
+
+    /**
+     * Get a {@link Map} where all keys are derived by applying the given
+     * {@link Fn} on all elements. This is a special case of {@link #groupBy(Fn)}
+     * where the <code>Fn</code> will yield a unique key for each element.
+     * In the event of multiple elements resolves to the same key, this method
+     * <em>will fail with an exception</em>. If this uniqueness
+     * cannot be guarantied, consider using {@link #groupBy(Fn)} instead.
+     *
+     * @param property the function which
+     * @return the map.
+     */
+    <P> Map<P, T> mapBy(Fn<? super T, P> uniqueProperty);
 
 }

@@ -1,15 +1,20 @@
 package no.motif.iter;
 
+import static no.motif.Base.toString;
 import static no.motif.Iterate.byOrderingOf;
 import static no.motif.Iterate.on;
 import static no.motif.Singular.none;
 import static no.motif.Singular.optional;
+import static no.motif.Strings.length;
+import static no.motif.Strings.toInt;
 import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
 import java.util.List;
+import java.util.Map;
 import java.util.TreeSet;
 
 import no.motif.NOP;
@@ -58,7 +63,28 @@ public class CollectingIterableTest {
     @Test
     public void lastElementOfEmptyElementsIsNone() {
         assertThat(on().last(), is(none()));
+    }
 
+    @Test
+    public void groupingElements() {
+        Map<Integer, List<String>> stringsByLength = on("ab", "bc", "d").groupBy(length);
+        assertThat(stringsByLength, hasEntry(is(1), contains("d")));
+        assertThat(stringsByLength, hasEntry(is(2), contains("ab", "bc")));
+        assertThat(stringsByLength.size(), is(2));
+
+        assertThat(on().groupBy(toString).size(), is(0));
+    }
+
+    @Test
+    public void createMapWhereEachElementsCorrespondsToAUniqueKey() {
+        Map<Integer, String> map = on("1", "34").mapBy(toInt);
+        assertThat(map, hasEntry(1, "1"));
+        assertThat(map, hasEntry(34, "34"));
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void createMapWhereMultipleElementsResolvesToSameKeyIsAnError() {
+        on("1", "34", "1").mapBy(toInt);
     }
 
 }

@@ -11,7 +11,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import no.motif.Singular;
 import no.motif.Strings;
@@ -74,6 +76,40 @@ abstract class CollectingIterable<T> implements Elements<T>, Serializable {
     @Override
     public void each(Do<? super T> sideEffect) {
         for (T element : this) sideEffect.$(element);
+    }
+
+
+    @Override
+    public <P> Map<P, List<T>> groupBy(Fn<? super T, P> property) {
+        Map<P, List<T>> map = new LinkedHashMap<>();
+        for (T elem : this) {
+            P key = property.$(elem);
+            List<T> list;
+            if (!map.containsKey(key)) {
+                list = new ArrayList<>();
+                map.put(key, list);
+            } else {
+                list = map.get(key);
+            }
+            list.add(elem);
+        }
+        return map;
+    }
+
+
+    @Override
+    public <P> Map<P, T> mapBy(Fn<? super T, P> uniqueProperty) {
+        Map<P, T> map = new LinkedHashMap<>();
+        for (T elem : this) {
+            P key = uniqueProperty.$(elem);
+            if (!map.containsKey(key)) map.put(key, elem);
+            else throw new IllegalStateException(
+                    "Cannot create the map since both '" + map.get(key) + "' and '" + elem + "' yields " +
+                    "the same key: '" + key + "'. This is either due to an inconsistency in " +
+                    "your data, or you should use .groupBy(Fn) instead to allow multiple elements " +
+                    "being mapped by the same key.");
+        }
+        return map;
     }
 
 
