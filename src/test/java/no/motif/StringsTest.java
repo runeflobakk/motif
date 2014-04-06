@@ -5,6 +5,7 @@ import static no.motif.Strings.alphabetic;
 import static no.motif.Strings.alphanumeric;
 import static no.motif.Strings.append;
 import static no.motif.Strings.blank;
+import static no.motif.Strings.bytes;
 import static no.motif.Strings.concat;
 import static no.motif.Strings.contains;
 import static no.motif.Strings.endsWith;
@@ -234,6 +235,12 @@ public class StringsTest {
     @Test(expected = IllegalArgumentException.class)
     public void repeatingNegativeAmountIsNotValid() {
         repeat(-1).$("");
+    }
+
+    @Test
+    public void bytesOfAString() {
+        assertThat(bytes.$("abc"), is("abc".getBytes()));
+        assertThat(bytes.$(null).length, is(0));
     }
 
 

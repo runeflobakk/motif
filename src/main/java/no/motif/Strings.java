@@ -50,6 +50,16 @@ public final class Strings {
 
 
     /**
+     * Yields the bytes of a String.
+     * @see String#getBytes()
+     */
+    public static final Fn<String, byte[]> bytes = new Fn<String, byte[]>() {
+        @Override public byte[] $(String s) { return s != null ? s.getBytes() : new byte[0]; }};
+
+
+
+
+    /**
      * A blank string is either <code>null</code>, empty, or
      * all characters {@link Chars#whitespace are whitespace}.
      */
@@ -162,6 +172,7 @@ public final class Strings {
      */
     public static final Fn<String, String> reversed = new PassThruIfNullOrElse<String, String>() {
         @Override protected String $nullsafe(String s) { return new StringBuilder(s).reverse().toString(); }};
+
 
 
 
