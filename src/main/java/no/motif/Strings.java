@@ -2,7 +2,6 @@ package no.motif;
 
 import static java.util.Arrays.asList;
 import static no.motif.Base.all;
-import static no.motif.Base.always;
 import static no.motif.Base.both;
 import static no.motif.Base.equalTo;
 import static no.motif.Base.exists;
@@ -19,7 +18,6 @@ import no.motif.f.Fn;
 import no.motif.f.Fn2;
 import no.motif.f.Predicate;
 import no.motif.f.Predicate.Always;
-import no.motif.f.base.Constant;
 import no.motif.f.base.FalseIfNullOrElse;
 import no.motif.f.base.PassThruIfNullOrElse;
 
@@ -308,9 +306,12 @@ public final class Strings {
 
 
     /**
-     * Inside strings, searches for the first occurence of a substring, and yields the
+     * Inside strings, searches for the <em>first</em> occurence of a substring, and yields the
      * rest of the string <em>after</em> the substring occurence, not including the
      * substring itself.
+     * <p>
+     * Passing <code>null</code> to the {@link Fn} always yields <code>null</code>
+     * </p>
      * <p>
      * If the substring is not found (or it is <code>null</code>), the empty string is returned.
      * </p><p>
@@ -319,7 +320,7 @@ public final class Strings {
      *
      * @param substring the substring to search for.
      */
-    public static Fn<String,String> after(final String substring) {
+    public static Fn<String, String> after(final String substring) {
         if (substring == null) return passThruIfNullOrElseEmptyString;
         if (substring.isEmpty()) return NOP.fn();
         return new PassThruIfNullOrElse<String, String>() { @Override protected String $nullsafe(String s) {
@@ -330,10 +331,21 @@ public final class Strings {
     }
 
 
-
+    /**
+     * Inside strings, searches for the <em>last</em> occurence of a substring, and yields the
+     * rest of the string <em>after</em> the substring occurence, not including the
+     * substring itself.
+     * <p>
+     * Passing <code>null</code> to the {@link Fn} always yields <code>null</code>
+     * </p>
+     * <p>
+     * If the substring is not found, or if it is <code>null</code> or empty, the empty string is returned.
+     * </p>
+     *
+     * @param substring the substring to search for.
+     */
     public static Fn<String, String> afterLast(final String substring) {
-        if (substring == null) return passThruIfNullOrElseEmptyString;
-        if (substring.isEmpty()) return alwaysEmptyString;
+        if (substring == null || substring.isEmpty()) return passThruIfNullOrElseEmptyString;
         return new PassThruIfNullOrElse<String, String>() { @Override protected String $nullsafe(String s) {
             int foundAt = s.lastIndexOf(substring);
             if (foundAt < 0) return "";
@@ -342,6 +354,21 @@ public final class Strings {
     }
 
 
+    /**
+     * Inside strings, searches for the <em>first</em> occurence of a substring, and yields the
+     * the string <em>before</em> the substring occurence, not including the
+     * substring itself.
+     * <p>
+     * Passing <code>null</code> to the {@link Fn} always yields <code>null</code>
+     * </p>
+     * <p>
+     * If the substring is <code>null</code>, or it is not found, the original string is returned.
+     * </p><p>
+     * If the substring is the empty string, or found from the beginning of the string, the empty string is returned.
+     * </p>
+     *
+     * @param substring the substring to search for.
+     */
     public static Fn<String, String> before(final String substring) {
         if (substring == null) return NOP.fn();
         if (substring.isEmpty()) return passThruIfNullOrElseEmptyString;
@@ -388,8 +415,6 @@ public final class Strings {
 
     private static final Fn<String, String> passThruIfNullOrElseEmptyString = new PassThruIfNullOrElse<String, String>() {
         @Override protected String $nullsafe(String s) { return ""; }};
-
-    private static final Constant<String, String, ?> alwaysEmptyString = always("");
 
     private Strings() {}
 
