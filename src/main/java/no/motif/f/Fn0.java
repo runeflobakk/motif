@@ -10,7 +10,7 @@ import java.io.Serializable;
  *
  * @param <V> Type of value yielded from the function.
  */
-public interface Fn0<V> extends Serializable {
+public interface Fn0<V> extends FnType, Serializable {
 
     /**
      * Applies the function.

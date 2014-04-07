@@ -9,6 +9,7 @@ import no.motif.f.Fn;
 import no.motif.f.Fn0;
 import no.motif.f.Fn2;
 import no.motif.f.Predicate;
+import no.motif.f.base.Constant;
 import no.motif.f.combine.Conjunction;
 import no.motif.f.combine.Disjunction;
 import no.motif.f.combine.DoChain;
@@ -333,8 +334,7 @@ public final class Base {
      *
      * @return the <code>Fn0</code>
      */
-    public static <V> Fn0<V> always(final V value) {
-        return new Fn0<V>() { @Override public V $() { return value; }};}
+    public static <V, I1, I2> Constant<V, I1, I2> always(final V value) { return new Constant<>(value); }
 
 
 

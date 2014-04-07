@@ -23,7 +23,7 @@ import java.io.Serializable;
  * @param <I2> The second input parameter type.
  * @param <O>  The type of object the function returns.
  */
-public interface Fn2<I1, I2, O> extends PartialApplicableTo<Fn<I2, O>>, Serializable {
+public interface Fn2<I1, I2, O> extends FnType, Serializable {
 
     /**
      * Applies the function.

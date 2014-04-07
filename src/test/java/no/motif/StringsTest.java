@@ -2,9 +2,11 @@ package no.motif;
 
 import static no.motif.Iterate.on;
 import static no.motif.Strings.after;
+import static no.motif.Strings.afterLast;
 import static no.motif.Strings.alphabetic;
 import static no.motif.Strings.alphanumeric;
 import static no.motif.Strings.append;
+import static no.motif.Strings.before;
 import static no.motif.Strings.blank;
 import static no.motif.Strings.bytes;
 import static no.motif.Strings.concat;
@@ -266,6 +268,30 @@ public class StringsTest {
         assertThat(after("c").$("abc"), is(""));
         assertThat(after("d").$("abc"), is(""));
         assertThat(after("cd").$("abcdcbabcdc"), is("cbabcdc"));
+    }
+
+    @Test
+    public void extractSubstringBeforeFirstOccurrenceOfGivenString() {
+        assertThat(before("anything").$(null), nullValue());
+        assertThat(before("anything").$(""), is(""));
+        assertThat(before(null).$("anything"), is("anything"));
+        assertThat(before("").$("anything"), is(""));
+        assertThat(before("").$(null), nullValue());
+        assertThat(before("a").$("abc"), is(""));
+        assertThat(before("b").$("abc"), is("a"));
+        assertThat(before("c").$("abc"), is("ab"));
+        assertThat(before("d").$("abc"), is("abc"));
+        assertThat(before("cd").$("abcdcbabcdc"), is("ab"));
+    }
+
+    @Test
+    public void extractSubstringAfterLastOccurenceOfGivenString() {
+        assertThat(afterLast("cd").$("abcdcbabcdc"), is("c"));
+        assertThat(afterLast("c").$("abcdcbabcdc"), is(""));
+        assertThat(afterLast("x").$("abcdcbabcdc"), is(""));
+        assertThat(afterLast("").$("abcdcbabcdc"), is(""));
+        assertThat(afterLast(null).$("abcdcbabcdc"), is(""));
+        assertThat(afterLast("x").$(null), nullValue());
     }
 
     @Test

@@ -74,7 +74,7 @@ public interface YieldsJavaCollection<T> {
      * {@link Fn} on all elements. Each key points to the list of elements
      * which resolves to the key.
      *
-     * @param property the function which resolves the key for each element.
+     * @param property the function which resolves the key for elements.
      * @return the map.
      */
     <P> Map<P, List<T>> groupBy(Fn<? super T, P> property);
@@ -88,7 +88,7 @@ public interface YieldsJavaCollection<T> {
      * <em>will fail with an exception</em>. If this uniqueness
      * cannot be guarantied, consider using {@link #groupBy(Fn)} instead.
      *
-     * @param property the function which
+     * @param uniqueProperty the function which resolves the unique key for each element
      * @return the map.
      */
     <P> Map<P, T> mapBy(Fn<? super T, P> uniqueProperty);

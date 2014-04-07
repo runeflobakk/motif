@@ -26,7 +26,7 @@ import java.io.Serializable;
  * @param <I> the type of the function argument
  * @param <O> The type of object the function returns.
  */
-public interface Fn<I, O> extends PartialApplicableTo<Fn0<O>>, Serializable {
+public interface Fn<I, O> extends FnType, Serializable {
 
     /**
      * Applies the function.

@@ -2,6 +2,7 @@ package no.motif;
 
 import static java.util.Arrays.asList;
 import static no.motif.Base.all;
+import static no.motif.Base.always;
 import static no.motif.Base.both;
 import static no.motif.Base.equalTo;
 import static no.motif.Base.exists;
@@ -18,6 +19,7 @@ import no.motif.f.Fn;
 import no.motif.f.Fn2;
 import no.motif.f.Predicate;
 import no.motif.f.Predicate.Always;
+import no.motif.f.base.Constant;
 import no.motif.f.base.FalseIfNullOrElse;
 import no.motif.f.base.PassThruIfNullOrElse;
 
@@ -322,10 +324,36 @@ public final class Strings {
         if (substring.isEmpty()) return NOP.fn();
         return new PassThruIfNullOrElse<String, String>() { @Override protected String $nullsafe(String s) {
             int foundAt = s.indexOf(substring);
-            if (foundAt < 0 || foundAt == s.length() - 1) return "";
+            if (foundAt < 0) return "";
             return s.substring(foundAt + substring.length());
         }};
     }
+
+
+
+    public static Fn<String, String> afterLast(final String substring) {
+        if (substring == null) return passThruIfNullOrElseEmptyString;
+        if (substring.isEmpty()) return alwaysEmptyString;
+        return new PassThruIfNullOrElse<String, String>() { @Override protected String $nullsafe(String s) {
+            int foundAt = s.lastIndexOf(substring);
+            if (foundAt < 0) return "";
+            return s.substring(foundAt + substring.length());
+        }};
+    }
+
+
+    public static Fn<String, String> before(final String substring) {
+        if (substring == null) return NOP.fn();
+        if (substring.isEmpty()) return passThruIfNullOrElseEmptyString;
+        return new PassThruIfNullOrElse<String, String>() { @Override protected String $nullsafe(String s) {
+            int foundAt = s.indexOf(substring);
+            if (foundAt == -1) return s;
+            return s.substring(0, foundAt);
+        }};
+    }
+
+
+
 
 
     /**
@@ -361,7 +389,10 @@ public final class Strings {
     private static final Fn<String, String> passThruIfNullOrElseEmptyString = new PassThruIfNullOrElse<String, String>() {
         @Override protected String $nullsafe(String s) { return ""; }};
 
+    private static final Constant<String, String, ?> alwaysEmptyString = always("");
+
     private Strings() {}
+
 
 
 

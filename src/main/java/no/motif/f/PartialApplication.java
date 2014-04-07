@@ -18,7 +18,7 @@ import static no.motif.Base.always;
  * @param <FN> The function to partially apply.
  * @param <PARTIALFN> The resulting partially applied function.
  */
-public abstract class PartialApplication<FN extends PartialApplicableTo<? super PARTIALFN>, V, PARTIALFN> implements Fn<V, PARTIALFN> {
+public abstract class PartialApplication<FN extends FnType, V, PARTIALFN extends FnType> implements Fn<V, PARTIALFN> {
 
     private final FN fn;
 
