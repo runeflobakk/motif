@@ -380,7 +380,19 @@ public final class Strings {
     }
 
 
-
+    /**
+     * Inside strings, searches for the <em>last</em> occurence of a substring, and yields the
+     * the string <em>before</em> the substring occurence, not including the
+     * substring itself.
+     * <p>
+     * Passing <code>null</code> to the {@link Fn} always yields <code>null</code>
+     * </p><p>
+     * If the substring is <code>null</code> or empty, or substring is not found,
+     * the original string is returned.
+     * </p>
+     *
+     * @param substring the substring to search for.
+     */
     public static Fn<String, String> beforeLast(final String substring) {
         if (substring == null || substring.isEmpty()) return NOP.fn();
         return new PassThruIfNullOrElse<String, String>() {
