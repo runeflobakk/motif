@@ -1,5 +1,6 @@
 package no.motif;
 
+import static no.motif.Base.always;
 import static no.motif.Iterate.on;
 import static no.motif.Strings.after;
 import static no.motif.Strings.afterLast;
@@ -18,6 +19,7 @@ import static no.motif.Strings.hasLength;
 import static no.motif.Strings.inBetween;
 import static no.motif.Strings.indexOf;
 import static no.motif.Strings.last;
+import static no.motif.Strings.lastIndexOf;
 import static no.motif.Strings.length;
 import static no.motif.Strings.lowerCased;
 import static no.motif.Strings.matches;
@@ -275,7 +277,7 @@ public class StringsTest {
     public void extractSubstringBeforeFirstOccurrenceOfGivenString() {
         assertThat(before("anything").$(null), nullValue());
         assertThat(before("anything").$(""), is(""));
-        assertThat(before(null).$("anything"), is("anything"));
+        assertThat(before((String) null).$("anything"), is("anything"));
         assertThat(before("").$("anything"), is(""));
         assertThat(before("").$(null), nullValue());
         assertThat(before("a").$("abc"), is(""));
@@ -310,9 +312,26 @@ public class StringsTest {
     }
 
     @Test
+    public void extractSubstringBeforeIndexOutOfBoundsYieldsTheOriginalString() {
+        assertThat(before(always(99)).$("abc"), is("abc"));
+        assertThat(before(always(3)).$("abc"), is("abc"));
+    }
+
+    @Test(expected = StringIndexOutOfBoundsException.class)
+    public void extractSubstringBeforeNegativeIndexIsInvalid() {
+        before(always(-1)).$("x");
+    }
+
+    @Test
     public void indexOfFirstOccurrenceOfCharacter() {
         assertThat(indexOf('b').$("ab"), is(1));
         assertThat(indexOf('c').$("ab"), nullValue());
+    }
+
+    @Test
+    public void indexOfLastOccurrenceOfCharacter() {
+        assertThat(lastIndexOf('b').$("abb"), is(2));
+        assertThat(lastIndexOf('c').$("ab"), nullValue());
     }
 
     @Test

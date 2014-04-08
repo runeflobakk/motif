@@ -2,6 +2,7 @@ package no.motif;
 
 import static java.util.Arrays.asList;
 import static no.motif.Base.all;
+import static no.motif.Base.always;
 import static no.motif.Base.both;
 import static no.motif.Base.equalTo;
 import static no.motif.Base.exists;
@@ -370,13 +371,7 @@ public final class Strings {
      * @param substring the substring to search for.
      */
     public static Fn<String, String> before(final String substring) {
-        if (substring == null) return NOP.fn();
-        if (substring.isEmpty()) return passThruIfNullOrElseEmptyString;
-        return new PassThruIfNullOrElse<String, String>() { @Override protected String $nullsafe(String s) {
-            int foundAt = s.indexOf(substring);
-            if (foundAt == -1) return s;
-            return s.substring(0, foundAt);
-        }};
+        return before(indexOf(substring));
     }
 
 
@@ -394,17 +389,29 @@ public final class Strings {
      * @param substring the substring to search for.
      */
     public static Fn<String, String> beforeLast(final String substring) {
-        if (substring == null || substring.isEmpty()) return NOP.fn();
-        return new PassThruIfNullOrElse<String, String>() {
-            @Override
-            protected String $nullsafe(String s) {
-                int foundAt = s.lastIndexOf(substring);
-                if (foundAt == -1) return s;
-                return s.substring(0, foundAt);
-            }};
+        return before(lastIndexOf(substring));
     }
 
 
+    /**
+     * Yields substrings <em>before</em> a position index. If the given index
+     * {@link Fn} yields <code>null</code>, or a positive index out of bounds
+     * with the length of the string, the original string is returned.
+     *
+     * <p>A negative index is invalid and will throw an {@link StringIndexOutOfBoundsException}.</p>
+     * <p>Passing the <code>null</code>-String always yields <code>null</code>.</p>
+     *
+     * @param index The {@link Fn} to resolve the index.
+     */
+    public static Fn<String, String> before(final Fn<? super String, Integer> index) {
+        return new PassThruIfNullOrElse<String, String>() {
+            @Override
+            protected String $nullsafe(String s) {
+                Integer idx = index.$(s);
+                if (idx == null || idx >= s.length()) return s;
+                return s.substring(0, idx);
+            }};
+    }
 
 
 
@@ -415,9 +422,24 @@ public final class Strings {
      *
      * @see String#indexOf(int)
      */
-    public static Fn<String, Integer> indexOf(final char c) { return new PassThruIfNullOrElse<String, Integer>() {
+    public static Fn<String, Integer> indexOf(final char c) {
+        return new PassThruIfNullOrElse<String, Integer>() {
+            @Override protected Integer $nullsafe(String s) {
+                int index = s.indexOf(c);
+                return index >= 0 ? index : null;
+            }};
+    }
+
+
+    /**
+     * Yields index position of last occurence of a <code>char</code>, or <code>null</code> if the
+     * <code>char</code> cannot be found.
+     *
+     * @see String#indexOf(int)
+     */
+    public static Fn<String, Integer> lastIndexOf(final char c) { return new PassThruIfNullOrElse<String, Integer>() {
         @Override protected Integer $nullsafe(String s) {
-            int index = s.indexOf(c);
+            int index = s.lastIndexOf(c);
             return index >= 0 ? index : null;
         }};
     }
@@ -429,14 +451,31 @@ public final class Strings {
      *
      * @see String#indexOf(String)
      */
-    public static Fn<String, Integer> indexOf(final String substring) { return new PassThruIfNullOrElse<String, Integer>() {
-        @Override protected Integer $nullsafe(String s) {
-            int index = s.indexOf(substring);
-            return index >= 0 ? index : null;
-        }};
+    public static Fn<String, Integer> indexOf(final String substring) {
+        if (substring == null) return always(null);
+        return new PassThruIfNullOrElse<String, Integer>() {
+            @Override protected Integer $nullsafe(String s) {
+                int index = s.indexOf(substring);
+                return index >= 0 ? index : null;
+            }};
     }
 
 
+
+    /**
+     * Yields index position of last occurence of a substring, or <code>null</code> if the substring cannot
+     * be found.
+     *
+     * @see String#indexOf(String)
+     */
+    public static Fn<String, Integer> lastIndexOf(final String substring) {
+        if (substring == null) return always(null);
+        return new PassThruIfNullOrElse<String, Integer>() {
+            @Override protected Integer $nullsafe(String s) {
+                int index = s.lastIndexOf(substring);
+                return index >= 0 ? index : null;
+            }};
+    }
 
 
     private static final Fn<String, String> passThruIfNullOrElseEmptyString = new PassThruIfNullOrElse<String, String>() {
