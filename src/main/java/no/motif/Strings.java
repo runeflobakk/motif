@@ -381,6 +381,20 @@ public final class Strings {
 
 
 
+    public static Fn<String, String> beforeLast(final String substring) {
+        if (substring == null || substring.isEmpty()) return NOP.fn();
+        return new PassThruIfNullOrElse<String, String>() {
+            @Override
+            protected String $nullsafe(String s) {
+                int foundAt = s.lastIndexOf(substring);
+                if (foundAt == -1) return s;
+                return s.substring(0, foundAt);
+            }};
+    }
+
+
+
+
 
 
     /**

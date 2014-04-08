@@ -7,6 +7,7 @@ import static no.motif.Strings.alphabetic;
 import static no.motif.Strings.alphanumeric;
 import static no.motif.Strings.append;
 import static no.motif.Strings.before;
+import static no.motif.Strings.beforeLast;
 import static no.motif.Strings.blank;
 import static no.motif.Strings.bytes;
 import static no.motif.Strings.concat;
@@ -292,6 +293,20 @@ public class StringsTest {
         assertThat(afterLast("").$("abcdcbabcdc"), is(""));
         assertThat(afterLast(null).$("abcdcbabcdc"), is(""));
         assertThat(afterLast("x").$(null), nullValue());
+    }
+
+    @Test
+    public void extractSubstringBeforeLastOccurrenceOfGivenString() {
+        assertThat(beforeLast("anything").$(null), nullValue());
+        assertThat(beforeLast("").$(null), nullValue());
+        assertThat(beforeLast("").$("anything"), is("anything"));
+        assertThat(beforeLast("anything").$(""), is(""));
+        assertThat(beforeLast(null).$("anything"), is("anything"));
+        assertThat(beforeLast("a").$("abc"), is(""));
+        assertThat(beforeLast("b").$("abc"), is("a"));
+        assertThat(beforeLast("c").$("abc"), is("ab"));
+        assertThat(beforeLast("d").$("abc"), is("abc"));
+        assertThat(beforeLast("cd").$("abcdcda"), is("abcd"));
     }
 
     @Test
