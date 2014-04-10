@@ -30,6 +30,7 @@ import static no.motif.Strings.reversed;
 import static no.motif.Strings.startsWith;
 import static no.motif.Strings.toDouble;
 import static no.motif.Strings.toInt;
+import static no.motif.Strings.toLong;
 import static no.motif.Strings.trimmed;
 import static no.motif.Strings.upperCased;
 import static org.hamcrest.Matchers.is;
@@ -88,6 +89,13 @@ public class StringsTest {
         assertThat(toInt.$("42"), is(42));
         assertThat(toInt.$("-42"), is(-42));
         assertThat(toInt.$(null), is(0));
+    }
+
+    @Test
+    public void convertToLong() {
+        assertThat(toLong.$("42"), is(42L));
+        assertThat(toLong.$("-42"), is(-42L));
+        assertThat(toLong.$(null), is(0L));
     }
 
     @Test

@@ -36,6 +36,14 @@ public final class Strings {
 
 
     /**
+     * Converts a string to a <code>long</code> value using {@link Long#valueOf(String)}.
+     * If the string is <code>null</code>, 0 is yielded.
+     */
+    public static final Fn<String, Long> toLong = new Fn<String, Long>() {
+        @Override public Long $(String numeric) { return numeric != null ? Long.valueOf(numeric) : 0; }};
+
+
+    /**
      * Converts a string to a <code>double</code> value using {@link Double#valueOf(String)}.
      * If the string is <code>null</code>, 0 is yielded.
      */
