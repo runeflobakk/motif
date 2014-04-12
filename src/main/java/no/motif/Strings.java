@@ -422,6 +422,32 @@ public final class Strings {
     }
 
 
+    /**
+     * Yield the string _between_ two substrings. The substrings will be the first possible
+     * matches, which means <code>between("x", "y")</code> applied to the string
+     * <code>"xxyy"</code> will yield <code>"x"</code>.
+     *
+     * @param openSubstring
+     * @param closeSubstring
+     */
+    public static Fn<String,String> between(String openSubstring, String closeSubstring) {
+        if (openSubstring == null || closeSubstring == null) return always(null);
+        return Base.first(after(openSubstring)).then(before(closeSubstring));
+    }
+
+
+    /**
+     * Yield the string _between_ two outermost substrings. This means
+     * <code>betweenOuter("x", "y")</code> applied to the string
+     * <code>"xxyy"</code> will yield <code>"xy"</code>.
+     *
+     * @param openSubstring
+     * @param closeSubstring
+     */
+    public static Fn<String,String> betweenOuter(String openSubstring, String closeSubstring) {
+        if (openSubstring == null || closeSubstring == null) return always(null);
+        return Base.first(after(openSubstring)).then(beforeLast(closeSubstring));
+    }
 
 
     /**
@@ -490,6 +516,7 @@ public final class Strings {
         @Override protected String $nullsafe(String s) { return ""; }};
 
     private Strings() {}
+
 
 
 

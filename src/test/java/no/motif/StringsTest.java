@@ -9,6 +9,8 @@ import static no.motif.Strings.alphanumeric;
 import static no.motif.Strings.append;
 import static no.motif.Strings.before;
 import static no.motif.Strings.beforeLast;
+import static no.motif.Strings.between;
+import static no.motif.Strings.betweenOuter;
 import static no.motif.Strings.blank;
 import static no.motif.Strings.bytes;
 import static no.motif.Strings.concat;
@@ -330,6 +332,29 @@ public class StringsTest {
         before(always(-1)).$("x");
     }
 
+
+    @Test
+    public void extractStringBetweenTwoStrings() {
+        assertThat(between("a", "b").$("ab"), is(""));
+        assertThat(between("a", "b").$("abb"), is(""));
+        assertThat(between("a", "b").$("aabb"), is("a"));
+        assertThat(between("b", "d").$("abcde"), is("c"));
+        assertThat(between("a", "b").$(null), nullValue());
+        assertThat(between(null, "b").$("ab"), nullValue());
+        assertThat(between("a", null).$("ab"), nullValue());
+    }
+
+    @Test
+    public void extractStringBetweenTwoOutermostStrings() {
+        assertThat(betweenOuter("a", "b").$("ab"), is(""));
+        assertThat(betweenOuter("a", "b").$("abb"), is("b"));
+        assertThat(betweenOuter("a", "b").$("aabb"), is("ab"));
+        assertThat(betweenOuter("b", "d").$("abcdde"), is("cd"));
+        assertThat(betweenOuter("a", "b").$(null), nullValue());
+        assertThat(betweenOuter(null, "b").$("ab"), nullValue());
+        assertThat(betweenOuter("a", null).$("ab"), nullValue());
+    }
+
     @Test
     public void indexOfFirstOccurrenceOfCharacter() {
         assertThat(indexOf('b').$("ab"), is(1));
@@ -347,6 +372,4 @@ public class StringsTest {
         assertThat(indexOf("bc").$("abcabc"), is(1));
         assertThat(indexOf("bcd").$("abcabc"), nullValue());
     }
-
-
 }
