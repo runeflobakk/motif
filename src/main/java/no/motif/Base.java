@@ -6,10 +6,10 @@ import java.util.Objects;
 
 import no.motif.f.Do;
 import no.motif.f.Fn;
-import no.motif.f.Fn0;
 import no.motif.f.Fn2;
 import no.motif.f.Predicate;
 import no.motif.f.base.Constant;
+import no.motif.f.base.Throw;
 import no.motif.f.combine.Conjunction;
 import no.motif.f.combine.Disjunction;
 import no.motif.f.combine.DoChain;
@@ -328,13 +328,22 @@ public final class Base {
 
 
     /**
-     * Create a {@link Fn0} (no-arg function) which always yields the given value.
+     * Create a function which always yields the given value.
      *
-     * @param value The value to yield from the <code>Fn0</code>.
-     *
-     * @return the <code>Fn0</code>
+     * @param value The value to yield.
      */
-    public static <V, I1, I2> Constant<V, I1, I2> always(final V value) { return new Constant<>(value); }
+    public static <V, I1, I2> Constant<V, I1, I2> always(V value) { return new Constant<>(value); }
+
+
+
+    /**
+     * Create a function which always throw the given exception. If the
+     * exception is not a {@link RuntimeException} it will be wrapped as such.
+     *
+     * @param value The exception to throw.
+     */
+    public static <I1, I2, O> Throw<I1, I2, O> alwaysThrow(Exception e) { return new Throw<>(e); }
+
 
 
 
