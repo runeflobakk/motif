@@ -10,6 +10,7 @@ import static no.motif.Iterate.on;
 import static no.motif.f.Apply.partially;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 import org.hamcrest.Matcher;
@@ -42,7 +43,7 @@ public class IntsTest {
 
 	@Test
 	public void intValueIsNullsafe() {
-	    assertThat(Ints.intValue.$(null), is(0));
+	    assertThat(Ints.intValue.$(null), nullValue());
     }
 
 

@@ -12,6 +12,7 @@ import static no.motif.Chars.digit;
 import static no.motif.Chars.letter;
 import static no.motif.Chars.letterOrDigit;
 import static no.motif.Chars.whitespace;
+import static no.motif.Ints.add;
 import static no.motif.Iterate.on;
 import static no.motif.f.Apply.argsReversed;
 import no.motif.f.Apply;
@@ -20,7 +21,7 @@ import no.motif.f.Fn2;
 import no.motif.f.Predicate;
 import no.motif.f.Predicate.Always;
 import no.motif.f.base.FalseIfNullOrElse;
-import no.motif.f.base.PassThruIfNullOrElse;
+import no.motif.f.base.NullIfArgIsNullOrElse;
 
 /**
  * Functions operating on {@link String strings}.
@@ -123,21 +124,21 @@ public final class Strings {
     /**
      * Trims a string, removing all leading and trailing whitespace.
      */
-    public static final Fn<String, String> trimmed = new PassThruIfNullOrElse<String, String>() {
+    public static final Fn<String, String> trimmed = new NullIfArgIsNullOrElse<String, String>() {
         @Override protected String $nullsafe(String s) { return s.trim(); }};
 
 
     /**
      * Convert a string to {@link String#toLowerCase() lower case}.
      */
-    public static final Fn<String, String> lowerCased = new PassThruIfNullOrElse<String, String>() {
+    public static final Fn<String, String> lowerCased = new NullIfArgIsNullOrElse<String, String>() {
         @Override protected String $nullsafe(String s) { return s.toLowerCase(); }};
 
 
     /**
      * Convert a string to {@link String#toUpperCase() upper case}
      */
-    public static final Fn<String, String> upperCased = new PassThruIfNullOrElse<String, String>() {
+    public static final Fn<String, String> upperCased = new NullIfArgIsNullOrElse<String, String>() {
         @Override protected String $nullsafe(String s) { return s.toUpperCase(); }};
 
 
@@ -179,7 +180,7 @@ public final class Strings {
     /**
      * Yields the given string with its characters in reversed order.
      */
-    public static final Fn<String, String> reversed = new PassThruIfNullOrElse<String, String>() {
+    public static final Fn<String, String> reversed = new NullIfArgIsNullOrElse<String, String>() {
         @Override protected String $nullsafe(String s) { return new StringBuilder(s).reverse().toString(); }};
 
 
@@ -298,7 +299,7 @@ public final class Strings {
      *
      * @param times The amount of times to repeat the string.
      */
-    public static Fn<String, String> repeat(final int times) { return new PassThruIfNullOrElse<String, String>() {
+    public static Fn<String, String> repeat(final int times) { return new NullIfArgIsNullOrElse<String, String>() {
         @Override public String $nullsafe(String s) { return on(asList(s)).repeat(times).join(); }}; }
 
 
@@ -309,7 +310,7 @@ public final class Strings {
      * @param separator The separator string to insert between the repeating strings.
      */
     public static Fn<String, String> repeat(final int times, final String separator) {
-        return new PassThruIfNullOrElse<String, String>() {
+        return new NullIfArgIsNullOrElse<String, String>() {
             @Override public String $nullsafe(String s) { return on(asList(s)).repeat(times).join(separator); }}; }
 
 
@@ -332,11 +333,7 @@ public final class Strings {
     public static Fn<String, String> after(final String substring) {
         if (substring == null) return passThruIfNullOrElseEmptyString;
         if (substring.isEmpty()) return NOP.fn();
-        return new PassThruIfNullOrElse<String, String>() { @Override protected String $nullsafe(String s) {
-            int foundAt = s.indexOf(substring);
-            if (foundAt < 0) return "";
-            return s.substring(foundAt + substring.length());
-        }};
+        return after(Base.first(indexOf(substring)).then(add(substring.length() - 1)));
     }
 
 
@@ -355,11 +352,29 @@ public final class Strings {
      */
     public static Fn<String, String> afterLast(final String substring) {
         if (substring == null || substring.isEmpty()) return passThruIfNullOrElseEmptyString;
-        return new PassThruIfNullOrElse<String, String>() { @Override protected String $nullsafe(String s) {
-            int foundAt = s.lastIndexOf(substring);
-            if (foundAt < 0) return "";
-            return s.substring(foundAt + substring.length());
-        }};
+        return after(Base.first(lastIndexOf(substring)).then(add(substring.length() - 1)));
+    }
+
+
+    /**
+     * Yields substrings <em>after</em> a position index. If the given index
+     * {@link Fn} yields <code>null</code>, or a positive index out of bounds
+     * with the length of the string, the empty string is returned.
+     *
+     * <p>An index value of -2 or less is invalid and will throw an {@link StringIndexOutOfBoundsException}.
+     * (index -1 will return the original string)</p>
+     * <p>Passing the <code>null</code>-String always yields <code>null</code>.</p>
+     *
+     * @param index The {@link Fn} to resolve the index.
+     */
+    public static Fn<String, String> after(final Fn<? super String, Integer> index) {
+        return new NullIfArgIsNullOrElse<String, String>() {
+            @Override
+            protected String $nullsafe(String s) {
+                Integer idx = index.$(s);
+                if (idx == null || idx >= s.length()) return "";
+                return s.substring(idx + 1);
+            }};
     }
 
 
@@ -412,7 +427,7 @@ public final class Strings {
      * @param index The {@link Fn} to resolve the index.
      */
     public static Fn<String, String> before(final Fn<? super String, Integer> index) {
-        return new PassThruIfNullOrElse<String, String>() {
+        return new NullIfArgIsNullOrElse<String, String>() {
             @Override
             protected String $nullsafe(String s) {
                 Integer idx = index.$(s);
@@ -457,7 +472,7 @@ public final class Strings {
      * @see String#indexOf(int)
      */
     public static Fn<String, Integer> indexOf(final char c) {
-        return new PassThruIfNullOrElse<String, Integer>() {
+        return new NullIfArgIsNullOrElse<String, Integer>() {
             @Override protected Integer $nullsafe(String s) {
                 int index = s.indexOf(c);
                 return index >= 0 ? index : null;
@@ -471,7 +486,7 @@ public final class Strings {
      *
      * @see String#indexOf(int)
      */
-    public static Fn<String, Integer> lastIndexOf(final char c) { return new PassThruIfNullOrElse<String, Integer>() {
+    public static Fn<String, Integer> lastIndexOf(final char c) { return new NullIfArgIsNullOrElse<String, Integer>() {
         @Override protected Integer $nullsafe(String s) {
             int index = s.lastIndexOf(c);
             return index >= 0 ? index : null;
@@ -487,7 +502,7 @@ public final class Strings {
      */
     public static Fn<String, Integer> indexOf(final String substring) {
         if (substring == null) return always(null);
-        return new PassThruIfNullOrElse<String, Integer>() {
+        return new NullIfArgIsNullOrElse<String, Integer>() {
             @Override protected Integer $nullsafe(String s) {
                 int index = s.indexOf(substring);
                 return index >= 0 ? index : null;
@@ -504,7 +519,7 @@ public final class Strings {
      */
     public static Fn<String, Integer> lastIndexOf(final String substring) {
         if (substring == null) return always(null);
-        return new PassThruIfNullOrElse<String, Integer>() {
+        return new NullIfArgIsNullOrElse<String, Integer>() {
             @Override protected Integer $nullsafe(String s) {
                 int index = s.lastIndexOf(substring);
                 return index >= 0 ? index : null;
@@ -512,7 +527,7 @@ public final class Strings {
     }
 
 
-    private static final Fn<String, String> passThruIfNullOrElseEmptyString = new PassThruIfNullOrElse<String, String>() {
+    private static final Fn<String, String> passThruIfNullOrElseEmptyString = new NullIfArgIsNullOrElse<String, String>() {
         @Override protected String $nullsafe(String s) { return ""; }};
 
     private Strings() {}

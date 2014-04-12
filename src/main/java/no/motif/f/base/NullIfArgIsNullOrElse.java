@@ -14,7 +14,7 @@ import no.motif.f.Fn;
  *
  * @see Fn
  */
-public abstract class PassThruIfNullOrElse<I, O> implements Fn<I, O> {
+public abstract class NullIfArgIsNullOrElse<I, O> implements Fn<I, O> {
 
     @Override
     public O $(I value) { return value != null ? $nullsafe(value) : null; }

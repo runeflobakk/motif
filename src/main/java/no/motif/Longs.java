@@ -4,21 +4,27 @@ import static no.motif.f.Apply.argsReversed;
 import no.motif.f.Apply;
 import no.motif.f.Fn;
 import no.motif.f.Fn2;
+import no.motif.f.base.NullIfArgIsNullOrElse;
+import no.motif.f.base.NullIfEitherArgIsNullOrElse;
 
 public final class Longs {
 
-    public static final Fn<Number, Long> longValue = new Fn<Number, Long>() {
-        @Override public Long $(Number value) { return value != null ? value.longValue() : 0; }};
+    /**
+     * Yields the {@link Number#longValue() long value} of any number.
+     */
+    public static final Fn<Number, Long> longValue = new NullIfArgIsNullOrElse<Number, Long>() {
+        @Override public Long $nullsafe(Number value) { return value.longValue(); }};
 
 
-    public static final Fn2<Number, Number, Long> sum = new Fn2<Number, Number, Long>() {
-        @Override public Long $(Number first, Number second) {
+    public static final Fn2<Number, Number, Long> sum = new NullIfEitherArgIsNullOrElse<Number, Number, Long>() {
+        @Override public Long $nullsafe(Number first, Number second) {
             return first.longValue() + second.longValue(); }};
 
 
-    public static final Fn2<Number, Number, Long> multiply = new Fn2<Number, Number, Long>() {
-        @Override public Long $(Number factor1, Number factor2) {
+    public static final Fn2<Number, Number, Long> multiply = new NullIfEitherArgIsNullOrElse<Number, Number, Long>() {
+        @Override public Long $nullsafe(Number factor1, Number factor2) {
             return factor1.longValue() * factor2.longValue(); }};
+
 
     public static final Fn2<Number, Number, Long> divide = new Fn2<Number, Number, Long>() {
         @Override public Long $(Number factor1, Number factor2) {
@@ -28,12 +34,12 @@ public final class Longs {
     public static final Fn<Number, Long> doubled = Apply.partially(multiply).of(2);
 
 
-    public static final Fn<Number, Long> rounded = new Fn<Number, Long>() {
-        @Override public Long $(Number decimal) { return Math.round(decimal.doubleValue()); }};
+    public static final Fn<Number, Long> rounded = new NullIfArgIsNullOrElse<Number, Long>() {
+        @Override public Long $nullsafe(Number decimal) { return Math.round(decimal.doubleValue()); }};
 
 
-    public static final Fn<Number, Long> increment = new Fn<Number, Long>() {
-        @Override public Long $(Number n) { return n.longValue() + 1; }};
+    public static final Fn<Number, Long> increment = new NullIfArgIsNullOrElse<Number, Long>() {
+        @Override public Long $nullsafe(Number n) { return n.longValue() + 1; }};
 
     public static final Fn<Number, Long> add(long value) { return Apply.partially(sum).of(value); }
 

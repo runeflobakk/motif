@@ -8,6 +8,7 @@ import static no.motif.Longs.rounded;
 import static no.motif.Longs.subtract;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
@@ -15,7 +16,7 @@ import org.junit.Test;
 public class LongsTest {
 
     @Test public void longValueIsNullsafe() {
-        assertThat(longValue.$(null), is(0L));
+        assertThat(longValue.$(null), nullValue());
     }
 
     @Test public void longValue() {

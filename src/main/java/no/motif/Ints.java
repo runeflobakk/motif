@@ -5,6 +5,7 @@ import static no.motif.f.Apply.argsReversed;
 import no.motif.f.Apply;
 import no.motif.f.Fn;
 import no.motif.f.Fn2;
+import no.motif.f.base.NullIfArgIsNullOrElse;
 
 /**
  * Integer operations. Most of these operations will not fail on numbers to
@@ -17,8 +18,8 @@ public final class Ints {
     /**
      * Yields the {@link Number#intValue() integer value} of any number.
      */
-    public static final Fn<Number, Integer> intValue = new Fn<Number, Integer>() {
-        @Override public Integer $(Number value) { return value != null ? value.intValue() : 0; }};
+    public static final Fn<Number, Integer> intValue = new NullIfArgIsNullOrElse<Number, Integer>() {
+        @Override public Integer $nullsafe(Number value) { return value.intValue(); }};
 
     public static final Fn2<Number, Number, Integer> sum = first(Longs.sum).then(intValue);
 

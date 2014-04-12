@@ -274,7 +274,7 @@ public class StringsTest {
     public void extractSubstringAfterFirstOccurenceOfGivenString() {
         assertThat(after("anything").$(null), nullValue());
         assertThat(after("anything").$(""), is(""));
-        assertThat(after(null).$("anything"), is(""));
+        assertThat(after((String) null).$("anything"), is(""));
         assertThat(after("").$("anything"), is("anything"));
         assertThat(after("").$(null), nullValue());
         assertThat(after("b").$("abc"), is("c"));
@@ -327,9 +327,26 @@ public class StringsTest {
         assertThat(before(always(3)).$("abc"), is("abc"));
     }
 
+    @Test
+    public void extractSubstringAfterIndexOutOfBoundsYieldsTheEmptyString() {
+        assertThat(after(always(99)).$("abc"), is(""));
+        assertThat(after(always(3)).$("abc"), is(""));
+    }
+
     @Test(expected = StringIndexOutOfBoundsException.class)
     public void extractSubstringBeforeNegativeIndexIsInvalid() {
         before(always(-1)).$("x");
+        after(always(-1)).$("x");
+    }
+
+    @Test(expected = StringIndexOutOfBoundsException.class)
+    public void extractSubstringAfterIndexValueOfMinus2OrLessIsInvalid() {
+        after(always(-2)).$("x");
+    }
+
+    @Test
+    public void extractSubstringAfterIndexValueOfMinus1YieldsOriginalString() {
+        assertThat(after(always(-1)).$("xyz"), is("xyz"));
     }
 
 
