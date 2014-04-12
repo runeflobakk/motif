@@ -14,7 +14,11 @@ import static no.motif.Chars.letterOrDigit;
 import static no.motif.Chars.whitespace;
 import static no.motif.Ints.add;
 import static no.motif.Iterate.on;
+import static no.motif.Singular.optional;
 import static no.motif.f.Apply.argsReversed;
+
+import java.util.Collections;
+
 import no.motif.f.Apply;
 import no.motif.f.Fn;
 import no.motif.f.Fn2;
@@ -22,6 +26,7 @@ import no.motif.f.Predicate;
 import no.motif.f.Predicate.Always;
 import no.motif.f.base.FalseIfNullOrElse;
 import no.motif.f.base.NullIfArgIsNullOrElse;
+import no.motif.single.Optional;
 
 /**
  * Functions operating on {@link String strings}.
@@ -323,7 +328,7 @@ public final class Strings {
      * Passing <code>null</code> to the {@link Fn} always yields <code>null</code>
      * </p>
      * <p>
-     * If the substring is not found (or it is <code>null</code>), the empty string is returned.
+     * If the substring is not found (or it is <code>null</code>), then <code>null</code> is returned.
      * </p><p>
      * If the substring is the empty string, the original string is returned.
      * </p>
@@ -331,8 +336,7 @@ public final class Strings {
      * @param substring the substring to search for.
      */
     public static Fn<String, String> after(final String substring) {
-        if (substring == null) return passThruIfNullOrElseEmptyString;
-        if (substring.isEmpty()) return NOP.fn();
+        if (substring == null || substring.isEmpty()) return NOP.fn();
         return after(Base.first(indexOf(substring)).then(add(substring.length() - 1)));
     }
 
@@ -345,7 +349,8 @@ public final class Strings {
      * Passing <code>null</code> to the {@link Fn} always yields <code>null</code>
      * </p>
      * <p>
-     * If the substring is not found, or if it is <code>null</code> or empty, the empty string is returned.
+     * If the substring is not found, or if it is <code>null</code>, then <code>null</code> is returned.
+     * If the substring is empty, the empty string is returned.
      * </p>
      *
      * @param substring the substring to search for.
@@ -358,8 +363,9 @@ public final class Strings {
 
     /**
      * Yields substrings <em>after</em> a position index. If the given index
-     * {@link Fn} yields <code>null</code>, or a positive index out of bounds
-     * with the length of the string, the empty string is returned.
+     * {@link Fn} yields <code>null</code>, then <code>null</code> is returned.
+     * If a positive index out of bounds with the length of the string
+     * is yielded, the empty string is returned.
      *
      * <p>An index value of -2 or less is invalid and will throw an {@link StringIndexOutOfBoundsException}.
      * (index -1 will return the original string)</p>
@@ -372,7 +378,8 @@ public final class Strings {
             @Override
             protected String $nullsafe(String s) {
                 Integer idx = index.$(s);
-                if (idx == null || idx >= s.length()) return "";
+                if (idx == null) return null;
+                if (idx >= s.length()) return "";
                 return s.substring(idx + 1);
             }};
     }
@@ -386,7 +393,8 @@ public final class Strings {
      * Passing <code>null</code> to the {@link Fn} always yields <code>null</code>
      * </p>
      * <p>
-     * If the substring is <code>null</code>, or it is not found, the original string is returned.
+     * If the substring is <code>null</code>, the original string is returned.
+     * If the substring is not found, <code>null</code> is returned.
      * </p><p>
      * If the substring is the empty string, or found from the beginning of the string, the empty string is returned.
      * </p>
@@ -394,7 +402,7 @@ public final class Strings {
      * @param substring the substring to search for.
      */
     public static Fn<String, String> before(final String substring) {
-        return before(indexOf(substring));
+        return substring == null ? NOP.<String>fn() : before(indexOf(substring));
     }
 
 
@@ -405,14 +413,14 @@ public final class Strings {
      * <p>
      * Passing <code>null</code> to the {@link Fn} always yields <code>null</code>
      * </p><p>
-     * If the substring is <code>null</code> or empty, or substring is not found,
-     * the original string is returned.
+     * If the substring is <code>null</code> or empty, the original string is returned.
+     * If the substring is not found, <code>null</code> is returned.
      * </p>
      *
      * @param substring the substring to search for.
      */
     public static Fn<String, String> beforeLast(final String substring) {
-        return before(lastIndexOf(substring));
+        return substring != null ? before(lastIndexOf(substring)) : NOP.<String>fn();
     }
 
 
@@ -431,7 +439,8 @@ public final class Strings {
             @Override
             protected String $nullsafe(String s) {
                 Integer idx = index.$(s);
-                if (idx == null || idx >= s.length()) return s;
+                if (idx == null) return null;
+                if (idx >= s.length()) return s;
                 return s.substring(0, idx);
             }};
     }
@@ -463,6 +472,30 @@ public final class Strings {
         if (openSubstring == null || closeSubstring == null) return always(null);
         return Base.first(after(openSubstring)).then(beforeLast(closeSubstring));
     }
+
+
+    /**
+     * Yield all strings occurring _between_ two substrings.
+     *
+     * @param openSubstring
+     * @param closeSubstring
+     */
+    public static Fn<String, Iterable<String>> allBetween(final String openSubstring, final String closeSubstring) {
+        if (openSubstring == null || closeSubstring == null) return always((Iterable<String>) Collections.<String>emptySet());
+        if ("".equals(openSubstring) && "".equals(closeSubstring)) throw new IllegalArgumentException(
+                "Extracting all strings between two empty strings would yield an infinite amount of empty strings!");
+        return new NullIfArgIsNullOrElse<String, Iterable<String>>() {
+            final Fn<String, String> firstSubstring = between(openSubstring, closeSubstring);
+            @Override
+            protected Iterable<String> $nullsafe(String s) {
+                Optional<String> original = optional(s);
+                Optional<String> first = original.map(firstSubstring);
+                if (!first.isSome()) return Collections.emptySet();
+                Optional<String> rest = original.map(nonblank, after(first.map(inBetween(openSubstring, closeSubstring)).getOrElse(null)));
+                return first.append(this.$(rest.getOrElse("")));
+            }};
+    }
+
 
 
     /**
@@ -531,9 +564,4 @@ public final class Strings {
         @Override protected String $nullsafe(String s) { return ""; }};
 
     private Strings() {}
-
-
-
-
-
 }

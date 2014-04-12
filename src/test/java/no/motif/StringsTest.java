@@ -4,6 +4,7 @@ import static no.motif.Base.always;
 import static no.motif.Iterate.on;
 import static no.motif.Strings.after;
 import static no.motif.Strings.afterLast;
+import static no.motif.Strings.allBetween;
 import static no.motif.Strings.alphabetic;
 import static no.motif.Strings.alphanumeric;
 import static no.motif.Strings.append;
@@ -35,6 +36,8 @@ import static no.motif.Strings.toInt;
 import static no.motif.Strings.toLong;
 import static no.motif.Strings.trimmed;
 import static no.motif.Strings.upperCased;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.emptyIterable;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertFalse;
@@ -109,7 +112,7 @@ public class StringsTest {
 
     @Test
     public void containsSequenceOfChars() {
-        assertThat(contains(null).$(null), is(false));
+        assertThat(Strings.contains(null).$(null), is(false));
         assertThat(contains("").$(null), is(false));
         assertThat(contains("").$(""), is(true));
         assertThat(contains("").$("a"), is(true));
@@ -273,27 +276,27 @@ public class StringsTest {
     @Test
     public void extractSubstringAfterFirstOccurenceOfGivenString() {
         assertThat(after("anything").$(null), nullValue());
-        assertThat(after("anything").$(""), is(""));
-        assertThat(after((String) null).$("anything"), is(""));
+        assertThat(after("anything").$(""), nullValue());
+        assertThat(after((String) null).$("anything"), is("anything"));
         assertThat(after("").$("anything"), is("anything"));
         assertThat(after("").$(null), nullValue());
         assertThat(after("b").$("abc"), is("c"));
         assertThat(after("c").$("abc"), is(""));
-        assertThat(after("d").$("abc"), is(""));
+        assertThat(after("d").$("abc"), nullValue());
         assertThat(after("cd").$("abcdcbabcdc"), is("cbabcdc"));
     }
 
     @Test
     public void extractSubstringBeforeFirstOccurrenceOfGivenString() {
         assertThat(before("anything").$(null), nullValue());
-        assertThat(before("anything").$(""), is(""));
+        assertThat(before("x").$(""), nullValue());
         assertThat(before((String) null).$("anything"), is("anything"));
         assertThat(before("").$("anything"), is(""));
         assertThat(before("").$(null), nullValue());
         assertThat(before("a").$("abc"), is(""));
         assertThat(before("b").$("abc"), is("a"));
         assertThat(before("c").$("abc"), is("ab"));
-        assertThat(before("d").$("abc"), is("abc"));
+        assertThat(before("d").$("abc"), nullValue());
         assertThat(before("cd").$("abcdcbabcdc"), is("ab"));
     }
 
@@ -301,7 +304,7 @@ public class StringsTest {
     public void extractSubstringAfterLastOccurenceOfGivenString() {
         assertThat(afterLast("cd").$("abcdcbabcdc"), is("c"));
         assertThat(afterLast("c").$("abcdcbabcdc"), is(""));
-        assertThat(afterLast("x").$("abcdcbabcdc"), is(""));
+        assertThat(afterLast("x").$("abcdcbabcdc"), nullValue());
         assertThat(afterLast("").$("abcdcbabcdc"), is(""));
         assertThat(afterLast(null).$("abcdcbabcdc"), is(""));
         assertThat(afterLast("x").$(null), nullValue());
@@ -312,12 +315,12 @@ public class StringsTest {
         assertThat(beforeLast("anything").$(null), nullValue());
         assertThat(beforeLast("").$(null), nullValue());
         assertThat(beforeLast("").$("anything"), is("anything"));
-        assertThat(beforeLast("anything").$(""), is(""));
+        assertThat(beforeLast("anything").$(""), nullValue());
         assertThat(beforeLast(null).$("anything"), is("anything"));
         assertThat(beforeLast("a").$("abc"), is(""));
         assertThat(beforeLast("b").$("abc"), is("a"));
         assertThat(beforeLast("c").$("abc"), is("ab"));
-        assertThat(beforeLast("d").$("abc"), is("abc"));
+        assertThat(beforeLast("d").$("abc"), nullValue());
         assertThat(beforeLast("cd").$("abcdcda"), is("abcd"));
     }
 
@@ -359,6 +362,15 @@ public class StringsTest {
         assertThat(between("a", "b").$(null), nullValue());
         assertThat(between(null, "b").$("ab"), nullValue());
         assertThat(between("a", null).$("ab"), nullValue());
+        assertThat(between("c", "b").$("abcdcba"), is("dc"));
+        assertThat(between("a", "").$("ab"), is(""));
+        assertThat(between("", "b").$("ab"), is("a"));
+        assertThat(between("", "").$(""), is(""));
+        assertThat(between("", "").$("abc"), is(""));
+        assertThat(between("", "x").$(""), nullValue());
+        assertThat(between("", "x").$("a"), nullValue());
+        assertThat(between("a", "x").$("a"), nullValue());
+        assertThat(between("a", "").$("a"), is(""));
     }
 
     @Test
@@ -373,15 +385,35 @@ public class StringsTest {
     }
 
     @Test
+    public void extractAllStringsOccurringBetweenGivenStrings() {
+        assertThat(allBetween(null, null).$("<td>1</td> <td>2</td> <td>3</td>"), emptyIterable());
+        assertThat(allBetween(null, ")").$("(1) (2) (3)"), emptyIterable());
+        assertThat(allBetween("(", null).$("(1) (2) (3)"), emptyIterable());
+        assertThat(allBetween("<td>", "</td>").$("<td>1</td> <td>2</td> <td>3</td>"), contains("1", "2", "3"));
+        assertThat(allBetween("(", ")").$("(1) (2) (3)"), contains("1", "2", "3"));
+        assertThat(allBetween("(", ") ").$("(1) (2) (3)"), contains("1", "2"));
+        assertThat(allBetween("(", "]").$("(1) (2)"), emptyIterable());
+        assertThat(allBetween("", ")").$("(1) (2)"), contains("(1", " (2"));
+        assertThat(allBetween("(", "").$("(1) (2)"), contains("", ""));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void extractAllBetweenTwoEmptyStringsIsAnError() {
+        allBetween("", "");
+    }
+
+    @Test
     public void indexOfFirstOccurrenceOfCharacter() {
         assertThat(indexOf('b').$("ab"), is(1));
         assertThat(indexOf('c').$("ab"), nullValue());
+        assertThat(indexOf(null).$("anything"), nullValue());
     }
 
     @Test
     public void indexOfLastOccurrenceOfCharacter() {
         assertThat(lastIndexOf('b').$("abb"), is(2));
         assertThat(lastIndexOf('c').$("ab"), nullValue());
+        assertThat(lastIndexOf(null).$("anything"), nullValue());
     }
 
     @Test
