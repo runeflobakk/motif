@@ -3,6 +3,7 @@ package no.motif;
 import static java.util.Arrays.asList;
 import static no.motif.Base.all;
 import static no.motif.Base.always;
+import static no.motif.Base.alwaysThrow;
 import static no.motif.Base.both;
 import static no.motif.Base.equalTo;
 import static no.motif.Base.exists;
@@ -260,7 +261,14 @@ public final class Strings {
      * @param endIndex The index to end the extraction.
      */
     public static Fn<String, String> substring(final int beginIndex, final int endIndex) {
-        return new Fn<String, String>() { @Override public String $(String s) { return s.substring(beginIndex, endIndex); }}; }
+        if (beginIndex < 0 || endIndex < 0)
+            return alwaysThrow(new StringIndexOutOfBoundsException(
+                    "Cannot extract substring using negative index. " +
+                    "beginIndex: " + beginIndex + ", endIndex: " + endIndex));
+        return new NullIfArgIsNullOrElse<String, String>() { @Override public String $nullsafe(String s) {
+            return optional(s).map(before(always(endIndex))).map(after(always(beginIndex - 1))).getOrElse(null);
+        }};
+    }
 
 
     /**
@@ -482,8 +490,8 @@ public final class Strings {
      */
     public static Fn<String, Iterable<String>> allBetween(final String openSubstring, final String closeSubstring) {
         if (openSubstring == null || closeSubstring == null) return always((Iterable<String>) Collections.<String>emptySet());
-        if ("".equals(openSubstring) && "".equals(closeSubstring)) throw new IllegalArgumentException(
-                "Extracting all strings between two empty strings would yield an infinite amount of empty strings!");
+        if ("".equals(openSubstring) && "".equals(closeSubstring)) return alwaysThrow(new IllegalArgumentException(
+                "Extracting all strings between two empty strings would yield an infinite amount of empty strings!"));
         return new NullIfArgIsNullOrElse<String, Iterable<String>>() {
             final Fn<String, String> firstSubstring = between(openSubstring, closeSubstring);
             @Override

@@ -31,6 +31,7 @@ import static no.motif.Strings.prepend;
 import static no.motif.Strings.repeat;
 import static no.motif.Strings.reversed;
 import static no.motif.Strings.startsWith;
+import static no.motif.Strings.substring;
 import static no.motif.Strings.toDouble;
 import static no.motif.Strings.toInt;
 import static no.motif.Strings.toLong;
@@ -199,8 +200,24 @@ public class StringsTest {
     }
 
     @Test
-    public void substring() {
-        assertThat(Strings.substring(1, 3).$("abcd"), is("bc"));
+    public void substringByStartAndEndIndex() {
+        assertThat(substring(1, 3).$("abcd"), is("bc"));
+        assertThat(substring(1, 3).$(null), nullValue());
+        assertThat(substring(4, 12).$(""), is(""));
+        assertThat(substring(4, 12).$("abcde"), is("e"));
+        assertThat(substring(0, 1).$("ab"), is("a"));
+        assertThat(substring(4, 1).$("ab"), is(""));
+        assertThat(substring(1, 1).$("ab"), is(""));
+    }
+
+    @Test(expected = StringIndexOutOfBoundsException.class)
+    public void substringWithNegativeStartIndexIsAnError() {
+        substring(-1, 1).$("ab");
+    }
+
+    @Test(expected = StringIndexOutOfBoundsException.class)
+    public void substringWithNegativeEndIndexIsAnError() {
+        substring(0, -1).$("ab");
     }
 
     @Test
@@ -399,7 +416,7 @@ public class StringsTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void extractAllBetweenTwoEmptyStringsIsAnError() {
-        allBetween("", "");
+        allBetween("", "").$("x");
     }
 
     @Test
