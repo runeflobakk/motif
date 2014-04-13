@@ -18,6 +18,7 @@ import static no.motif.Strings.concat;
 import static no.motif.Strings.contains;
 import static no.motif.Strings.endsWith;
 import static no.motif.Strings.first;
+import static no.motif.Strings.from;
 import static no.motif.Strings.hasLength;
 import static no.motif.Strings.inBetween;
 import static no.motif.Strings.indexOf;
@@ -349,24 +350,23 @@ public class StringsTest {
 
     @Test
     public void extractSubstringAfterIndexOutOfBoundsYieldsTheEmptyString() {
-        assertThat(after(always(99)).$("abc"), is(""));
-        assertThat(after(always(3)).$("abc"), is(""));
+        assertThat(from(always(99)).$("abc"), is(""));
+        assertThat(from(always(3)).$("abc"), is(""));
     }
 
     @Test(expected = StringIndexOutOfBoundsException.class)
     public void extractSubstringBeforeNegativeIndexIsInvalid() {
         before(always(-1)).$("x");
-        after(always(-1)).$("x");
     }
 
     @Test(expected = StringIndexOutOfBoundsException.class)
     public void extractSubstringAfterIndexValueOfMinus2OrLessIsInvalid() {
-        after(always(-2)).$("x");
+        from(always(-1)).$("x");
     }
 
     @Test
     public void extractSubstringAfterIndexValueOfMinus1YieldsOriginalString() {
-        assertThat(after(always(-1)).$("xyz"), is("xyz"));
+        assertThat(from(always(0)).$("xyz"), is("xyz"));
     }
 
 

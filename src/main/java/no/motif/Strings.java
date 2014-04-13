@@ -265,8 +265,12 @@ public final class Strings {
             return alwaysThrow(new StringIndexOutOfBoundsException(
                     "Cannot extract substring using negative index. " +
                     "beginIndex: " + beginIndex + ", endIndex: " + endIndex));
+        return substring(always(beginIndex), always(endIndex));
+    }
+
+    public static Fn<String, String> substring(final Fn<? super String, Integer> beginIndex, final Fn<? super String, Integer> endIndex) {
         return new NullIfArgIsNullOrElse<String, String>() { @Override public String $nullsafe(String s) {
-            return optional(s).map(before(always(endIndex))).map(after(always(beginIndex - 1))).getOrElse(null);
+            return optional(s).map(before(endIndex)).map(from(beginIndex)).getOrElse(null);
         }};
     }
 
@@ -345,7 +349,7 @@ public final class Strings {
      */
     public static Fn<String, String> after(final String substring) {
         if (substring == null || substring.isEmpty()) return NOP.fn();
-        return after(Base.first(indexOf(substring)).then(add(substring.length() - 1)));
+        return from(Base.first(indexOf(substring)).then(add(substring.length())));
     }
 
 
@@ -365,32 +369,35 @@ public final class Strings {
      */
     public static Fn<String, String> afterLast(final String substring) {
         if (substring == null || substring.isEmpty()) return passThruIfNullOrElseEmptyString;
-        return after(Base.first(lastIndexOf(substring)).then(add(substring.length() - 1)));
+        return from(Base.first(lastIndexOf(substring)).then(add(substring.length())));
     }
 
 
+
     /**
-     * Yields substrings <em>after</em> a position index. If the given index
+     * Yields substrings <em>from</em> a position index. If the given index
      * {@link Fn} yields <code>null</code>, then <code>null</code> is returned.
      * If a positive index out of bounds with the length of the string
      * is yielded, the empty string is returned.
      *
-     * <p>An index value of -2 or less is invalid and will throw an {@link StringIndexOutOfBoundsException}.
-     * (index -1 will return the original string)</p>
+     * <p>A negative index value is invalid and will throw an {@link StringIndexOutOfBoundsException}.</p>
      * <p>Passing the <code>null</code>-String always yields <code>null</code>.</p>
      *
      * @param index The {@link Fn} to resolve the index.
      */
-    public static Fn<String, String> after(final Fn<? super String, Integer> index) {
+    public static Fn<String, String> from(final Fn<? super String, Integer> index) {
         return new NullIfArgIsNullOrElse<String, String>() {
             @Override
             protected String $nullsafe(String s) {
                 Integer idx = index.$(s);
                 if (idx == null) return null;
                 if (idx >= s.length()) return "";
-                return s.substring(idx + 1);
+                return s.substring(idx);
             }};
     }
+
+
+
 
 
     /**
