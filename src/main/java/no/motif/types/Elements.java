@@ -108,4 +108,17 @@ public interface Elements<T> extends
     @Override Elements<T> repeat(int times);
 
 
+    /**
+     * Force-evaluate the current elements, applying all composed functions
+     * on each element. This is useful when needing to iterate elements
+     * several times, especially if the composed functions are expensive to evaluate
+     * and/or not referentially transparent.
+     *
+     * This is an escape-hatch from the lazy design of {@link Elements}.
+     *
+     * @return samet type of elements, with all elements evaluated.
+     */
+    Elements<T> eval();
+
+
 }

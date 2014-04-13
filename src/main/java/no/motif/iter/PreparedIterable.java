@@ -2,6 +2,7 @@ package no.motif.iter;
 
 import static no.motif.Base.not;
 import static no.motif.Iterate.none;
+import static no.motif.Iterate.on;
 import static no.motif.Singular.optional;
 
 import java.io.Serializable;
@@ -110,10 +111,16 @@ public class PreparedIterable<T> extends CollectingIterable<T> implements Elemen
     }
 
 
+    @Override
+    public Elements<T> eval() {
+        return on(collect());
+    }
 
     @Override
     public Iterator<T> iterator() {
         return elements.iterator();
     }
+
+
 
 }
