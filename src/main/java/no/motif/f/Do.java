@@ -11,6 +11,6 @@ import java.io.Serializable;
  */
 public interface Do<T> extends Serializable {
 
-    void $(T value);
+    void with(T value);
 
 }

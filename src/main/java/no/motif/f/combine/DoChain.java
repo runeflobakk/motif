@@ -17,9 +17,9 @@ public class DoChain<T> implements Do<T> {
     }
 
     @Override
-    public void $(T value) {
-        firstAction.$(value);
-        secondAction.$(value);
+    public void with(T value) {
+        firstAction.with(value);
+        secondAction.with(value);
     }
 
 }

@@ -17,7 +17,7 @@ public final class IO {
      * @return The <code>println</code> {@link Do} operation.
      */
     public static final <T> Do<T> println(final PrintStream out) {
-        return new Do<T>() { @Override public void $(T value) { out.println(value); }}; }
+        return new Do<T>() { @Override public void with(T value) { out.println(value); }}; }
 
 
     /**
@@ -27,7 +27,7 @@ public final class IO {
      * @return The <code>print</code> {@link Do} operation.
      */
     public static final <T> Do<T> print(final PrintStream out) {
-        return new Do<T>() { @Override public void $(T value) { out.print(value); }}; }
+        return new Do<T>() { @Override public void with(T value) { out.print(value); }}; }
 
 
     private IO() {}

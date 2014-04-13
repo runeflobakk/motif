@@ -25,7 +25,7 @@ public final class NOP {
     /**
      * The NOP for {@link Do} does nothing.
      */
-    public static final Do<Object> doNothing = new Do<Object>() { @Override public void $(Object value) { }};
+    public static final Do<Object> doNothing = new Do<Object>() { @Override public void with(Object value) { }};
 
 
     @SuppressWarnings("rawtypes")

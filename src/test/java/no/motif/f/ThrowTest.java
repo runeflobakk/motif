@@ -25,4 +25,9 @@ public class ThrowTest {
     public void throwsExceptionForFn0() {
         chokes.$();
     }
+
+    @Test(expected = StringIndexOutOfBoundsException.class)
+    public void throwsExceptionForDo() {
+        chokes.with("anything");
+    }
 }

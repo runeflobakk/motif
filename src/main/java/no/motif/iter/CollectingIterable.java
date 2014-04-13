@@ -75,7 +75,7 @@ abstract class CollectingIterable<T> implements Elements<T>, Serializable {
 
     @Override
     public void each(Do<? super T> sideEffect) {
-        for (T element : this) sideEffect.$(element);
+        for (T element : this) sideEffect.with(element);
     }
 
 
