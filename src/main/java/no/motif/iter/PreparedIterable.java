@@ -47,8 +47,13 @@ public class PreparedIterable<T> extends CollectingIterable<T> implements Elemen
 
 
     @Override
-    public <O> PreparedIterable<O> map(Fn<? super T, O> function) {
-        return new PreparedIterable<>(new MappingIterable<>(elements, function));
+    public <O> PreparedIterable<O> map(Fn<? super T, O> fn) {
+        return new PreparedIterable<>(new MappingIterable<>(elements, fn));
+    }
+
+    @Override
+    public <O> Elements<O> flatMap(Fn<? super T, ? extends Iterable<O>> fn) {
+        return new PreparedIterable<>(new FlatMappingIterable<>(elements, fn));
     }
 
 
