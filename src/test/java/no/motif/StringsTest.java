@@ -1,6 +1,5 @@
 package no.motif;
 
-import static no.motif.Base.always;
 import static no.motif.Iterate.on;
 import static no.motif.Strings.after;
 import static no.motif.Strings.afterLast;
@@ -344,29 +343,29 @@ public class StringsTest {
 
     @Test
     public void extractSubstringBeforeIndexOutOfBoundsYieldsTheOriginalString() {
-        assertThat(before(always(99)).$("abc"), is("abc"));
-        assertThat(before(always(3)).$("abc"), is("abc"));
+        assertThat(before(99).$("abc"), is("abc"));
+        assertThat(before(3).$("abc"), is("abc"));
     }
 
     @Test
     public void extractSubstringAfterIndexOutOfBoundsYieldsTheEmptyString() {
-        assertThat(from(always(99)).$("abc"), is(""));
-        assertThat(from(always(3)).$("abc"), is(""));
+        assertThat(from(99).$("abc"), is(""));
+        assertThat(from(3).$("abc"), is(""));
     }
 
     @Test(expected = StringIndexOutOfBoundsException.class)
     public void extractSubstringBeforeNegativeIndexIsInvalid() {
-        before(always(-1)).$("x");
+        before(-1).$("x");
     }
 
     @Test(expected = StringIndexOutOfBoundsException.class)
     public void extractSubstringAfterIndexValueOfMinus2OrLessIsInvalid() {
-        from(always(-1)).$("x");
+        from(-1).$("x");
     }
 
     @Test
     public void extractSubstringAfterIndexValueOfMinus1YieldsOriginalString() {
-        assertThat(from(always(0)).$("xyz"), is("xyz"));
+        assertThat(from(0).$("xyz"), is("xyz"));
     }
 
 

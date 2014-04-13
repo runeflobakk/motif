@@ -375,6 +375,14 @@ public final class Strings {
 
 
     /**
+     * Yields substrings <em>from</em> a position index.
+     * @see #from(Fn)
+     */
+    public static Fn<String, String> from(int index) { return from(always(index)); }
+
+
+
+    /**
      * Yields substrings <em>from</em> a position index. If the given index
      * {@link Fn} yields <code>null</code>, then <code>null</code> is returned.
      * If a positive index out of bounds with the length of the string
@@ -437,6 +445,13 @@ public final class Strings {
     public static Fn<String, String> beforeLast(final String substring) {
         return substring != null ? before(lastIndexOf(substring)) : NOP.<String>fn();
     }
+
+
+    /**
+     * Yields substrings <em>before</em> a position index.
+     * @see #before(Fn)
+     */
+    public static Fn<String, String> before(int index) { return before(always(index)); }
 
 
     /**
