@@ -13,11 +13,13 @@ import static no.motif.Chars.digit;
 import static no.motif.Chars.letter;
 import static no.motif.Chars.letterOrDigit;
 import static no.motif.Chars.whitespace;
+import static no.motif.Exceptions.asRuntimeException;
 import static no.motif.Ints.add;
 import static no.motif.Iterate.on;
 import static no.motif.Singular.optional;
 import static no.motif.f.Apply.argsReversed;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Collections;
 
 import no.motif.f.Apply;
@@ -25,6 +27,7 @@ import no.motif.f.Fn;
 import no.motif.f.Fn2;
 import no.motif.f.Predicate;
 import no.motif.f.Predicate.Always;
+import no.motif.f.base.DefaultIfArgIsNullOrElse;
 import no.motif.f.base.FalseIfNullOrElse;
 import no.motif.f.base.NullIfArgIsNullOrElse;
 import no.motif.single.Optional;
@@ -69,8 +72,15 @@ public final class Strings {
      * Yields the bytes of a String.
      * @see String#getBytes()
      */
-    public static final Fn<String, byte[]> bytes = new Fn<String, byte[]>() {
-        @Override public byte[] $(String s) { return s != null ? s.getBytes() : new byte[0]; }};
+    public static final Fn<String, byte[]> bytes = new DefaultIfArgIsNullOrElse<String, byte[]>(new byte[0]) {
+        @Override public byte[] $nullsafe(String s) {
+            try {
+                return s.getBytes(Implicits.getEncoding());
+            } catch (UnsupportedEncodingException e) {
+                throw asRuntimeException(e);
+            }
+        }
+    };
 
 
 
@@ -138,14 +148,14 @@ public final class Strings {
      * Convert a string to {@link String#toLowerCase() lower case}.
      */
     public static final Fn<String, String> lowerCased = new NullIfArgIsNullOrElse<String, String>() {
-        @Override protected String $nullsafe(String s) { return s.toLowerCase(); }};
+        @Override protected String $nullsafe(String s) { return s.toLowerCase(Implicits.getLocale()); }};
 
 
     /**
      * Convert a string to {@link String#toUpperCase() upper case}
      */
     public static final Fn<String, String> upperCased = new NullIfArgIsNullOrElse<String, String>() {
-        @Override protected String $nullsafe(String s) { return s.toUpperCase(); }};
+        @Override protected String $nullsafe(String s) { return s.toUpperCase(Implicits.getLocale()); }};
 
 
     /**

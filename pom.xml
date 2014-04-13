@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    
+
     <parent>
         <groupId>org.sonatype.oss</groupId>
         <artifactId>oss-parent</artifactId>
@@ -18,7 +18,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    
+
     <issueManagement>
         <system>GitHub</system>
         <url>https://github.com/runeflobakk/motif/issues</url>
@@ -78,7 +78,7 @@
             <artifactId>equalsverifier</artifactId>
             <version>1.4</version>
             <scope>test</scope>
-        </dependency>     
+        </dependency>
     </dependencies>
 
     <build>
@@ -116,7 +116,7 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>            
+            </plugin>
             <plugin>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <configuration>
@@ -179,10 +179,6 @@
                 <plugin>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>2.16</version>
-                    <configuration>
-                  		<threadCount>4</threadCount>
-                        <parallel>classesAndMethods</parallel>
-                    </configuration>
                 </plugin>
                 <plugin>
                     <artifactId>maven-scm-publish-plugin</artifactId>
@@ -190,16 +186,16 @@
                     <configuration>
                         <scmBranch>gh-pages</scmBranch>
                     </configuration>
-                    <executions> 
-                        <execution> 
-                            <id>publish-to-gh-pages</id> 
-                            <phase>site-deploy</phase> 
+                    <executions>
+                        <execution>
+                            <id>publish-to-gh-pages</id>
+                            <phase>site-deploy</phase>
                             <goals>
-                                <goal>publish-scm</goal> 
-                            </goals> 
+                                <goal>publish-scm</goal>
+                            </goals>
                         </execution>
                     </executions>
-                </plugin>   
+                </plugin>
                 <plugin>
                     <artifactId>maven-site-plugin</artifactId>
                     <version>3.3</version>
@@ -235,7 +231,7 @@
                             <version>1.7</version>
                         </dependency>
                     </dependencies>
-                </plugin>             
+                </plugin>
                 <plugin>
                     <artifactId>maven-dependency-plugin</artifactId>
                     <version>2.8</version>
@@ -339,14 +335,14 @@
             </plugin>
         </plugins>
     </reporting>
-    
+
     <scm>
         <connection>scm:git:https://github.com/runeflobakk/motif.git</connection>
         <developerConnection>scm:git:https://github.com/runeflobakk/motif.git</developerConnection>
         <url>https://github.com/runeflobakk/motif</url>
       <tag>HEAD</tag>
   </scm>
-    
+
     <licenses>
         <license>
             <name>Apache License 2.0</name>
@@ -354,7 +350,7 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
-    
+
     <developers>
         <developer>
             <id>runeflobakk</id>
@@ -372,7 +368,7 @@
             </properties>
         </developer>
     </developers>
-    
+
     <distributionManagement>
         <site>
             <id>gh-pages</id>
@@ -380,8 +376,8 @@
             <url>scm:git:https://github.com/runeflobakk/motif.git</url>
         </site>
     </distributionManagement>
-    
-    
+
+
     <profiles>
         <profile>
             <id>gpg-sign-for-release</id>
@@ -413,7 +409,7 @@
             </build>
         </profile>
     </profiles>
-    
+
     <prerequisites>
         <maven>2.2.1</maven>
     </prerequisites>
