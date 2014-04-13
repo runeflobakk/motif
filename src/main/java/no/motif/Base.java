@@ -340,9 +340,9 @@ public final class Base {
      * Create a function which always throw the given exception. If the
      * exception is not a {@link RuntimeException} it will be wrapped as such.
      *
-     * @param value The exception to throw.
+     * @param ex The exception to throw.
      */
-    public static <I1, I2, O> Throw<I1, I2, O> alwaysThrow(Exception e) { return new Throw<>(e); }
+    public static <I1, I2, O> Throw<I1, I2, O> alwaysThrow(Exception ex) { return new Throw<>(ex); }
 
 
 
