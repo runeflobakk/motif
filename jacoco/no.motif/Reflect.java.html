@@ -1,4 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Reflect.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Motif</a> &gt; <a href="index.html" class="el_package">no.motif</a> &gt; <span class="el_source">Reflect.java</span></div><h1>Reflect.java</h1><pre class="source lang-java linenums">package no.motif;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Reflect.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Motif</a> &gt; <a href="index.source.html" class="el_package">no.motif</a> &gt; <span class="el_source">Reflect.java</span></div><h1>Reflect.java</h1><pre class="source lang-java linenums">package no.motif;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Member;
 
 import no.motif.f.Fn;
 import no.motif.f.Predicate;
@@ -14,8 +18,8 @@ public final class Reflect {
      *
      * @param type The type that will satisfy the predicate.
      */
-<span class="fc" id="L17">    public static Predicate&lt;Object&gt; isA(final Class&lt;?&gt; type) { return new Predicate&lt;Object&gt;() {</span>
-<span class="fc" id="L18">        @Override public boolean $(Object object) { return type.isInstance(object); }}; }</span>
+<span class="fc" id="L21">    public static Predicate&lt;Object&gt; isA(final Class&lt;?&gt; type) { return new Predicate&lt;Object&gt;() {</span>
+<span class="fc" id="L22">        @Override public boolean $(Object object) { return type.isInstance(object); }}; }</span>
 
 
     /**
@@ -23,16 +27,35 @@ public final class Reflect {
      * the {@link Object#getClass()} method, which returns an untyped
      * {@link Class Class&amp;lt;?&amp;gt;}.
      */
-<span class="fc" id="L26">    public static final Fn&lt;Object, Class&lt;?&gt;&gt; getClass = type();</span>
+<span class="fc" id="L30">    public static final Fn&lt;Object, Class&lt;?&gt;&gt; getClass = type();</span>
 
 
     /**
      * This is the same as {@link #getClass}, with the additional
      * possible typing of the yielded {@link Class}es.
      */
-<span class="fc" id="L33">    public static &lt;T&gt; Fn&lt;T, Class&lt;? extends T&gt;&gt; type() { return new Fn&lt;T, Class&lt;? extends T&gt;&gt;() {</span>
+<span class="fc" id="L37">    public static &lt;T&gt; Fn&lt;T, Class&lt;? extends T&gt;&gt; type() { return new Fn&lt;T, Class&lt;? extends T&gt;&gt;() {</span>
         @SuppressWarnings(&quot;unchecked&quot;) @Override public Class&lt;? extends T&gt; $(T object) {
-<span class="fc" id="L35">            return (Class&lt;? extends T&gt;) object.getClass(); }}; }</span>
+<span class="fc" id="L39">            return (Class&lt;? extends T&gt;) object.getClass(); }}; }</span>
+
+
+    /**
+     * Get the name of a {@link java.lang.reflect.Member}, e.g.
+     * class name, method name, field name.
+     */
+<span class="fc" id="L46">    public static final Fn&lt;Member, String&gt; name = new Fn&lt;Member, String&gt;() {</span>
+<span class="fc" id="L47">        @Override public String $(Member member) { return member.getName(); }};</span>
+
+
+    /**
+     * Check if an element (class, method, field, etc) is annotated with a given annotation.
+     *
+     * @param annotation the annotation to check for.
+     */
+    public static Predicate&lt;AnnotatedElement&gt; annotatedWith(final Class&lt;? extends Annotation&gt; annotation) {
+<span class="fc" id="L56">        return new Predicate&lt;AnnotatedElement&gt;() {</span>
+<span class="fc" id="L57">            @Override public boolean $(AnnotatedElement element) { return element.isAnnotationPresent(annotation); }}; }</span>
+
 
 
     /**
@@ -41,16 +64,17 @@ public final class Reflect {
      * will be rethrown as &lt;code&gt;RuntimeException&lt;/code&gt;.
      */
     public static &lt;T&gt; Fn&lt;Class&lt;? extends T&gt;, T&gt; newInstance() {
-<span class="fc" id="L44">        return new Fn&lt;Class&lt;? extends T&gt;, T&gt;() {</span>
+<span class="fc" id="L67">        return new Fn&lt;Class&lt;? extends T&gt;, T&gt;() {</span>
             @Override public T $(Class&lt;? extends T&gt; clazz) {
-<span class="fc" id="L46">                try { return clazz.newInstance(); }</span>
-<span class="fc" id="L47">                catch (InstantiationException | IllegalAccessException e) {</span>
-<span class="fc" id="L48">                    throw new RuntimeException(&quot;Not able to instantiate &quot; + clazz.getName() +</span>
+<span class="fc" id="L69">                try { return clazz.newInstance(); }</span>
+<span class="fc" id="L70">                catch (InstantiationException | IllegalAccessException e) {</span>
+<span class="fc" id="L71">                    throw new RuntimeException(&quot;Not able to instantiate &quot; + clazz.getName() +</span>
                             &quot; because of &quot; + e.getClass().getSimpleName() + &quot;: &quot; + e.getMessage(), e);
                 }
             }};
     }
 
-<span class="fc" id="L54">    private Reflect() {}</span>
+
+<span class="fc" id="L78">    private Reflect() {}</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.3.201306030806</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.0.201403182114</span></div></body></html>
