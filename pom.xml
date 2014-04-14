@@ -9,7 +9,7 @@
 
     <groupId>com.github.runeflobakk</groupId>
     <artifactId>motif</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.5</version>
 
     <name>Motif</name>
     <description>A library helping you to compose behavior from smaller parts.</description>
@@ -360,7 +360,7 @@
         <connection>scm:git:https://github.com/runeflobakk/motif.git</connection>
         <developerConnection>scm:git:https://github.com/runeflobakk/motif.git</developerConnection>
         <url>https://github.com/runeflobakk/motif</url>
-        <tag>HEAD</tag>
+        <tag>motif-0.5</tag>
     </scm>
 
     <licenses>
