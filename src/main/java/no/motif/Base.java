@@ -8,8 +8,6 @@ import no.motif.f.Do;
 import no.motif.f.Fn;
 import no.motif.f.Fn2;
 import no.motif.f.Predicate;
-import no.motif.f.base.Constant;
-import no.motif.f.base.Throw;
 import no.motif.f.combine.Conjunction;
 import no.motif.f.combine.Disjunction;
 import no.motif.f.combine.DoChain;
@@ -17,6 +15,8 @@ import no.motif.f.combine.Fn2Chain;
 import no.motif.f.combine.FnChain;
 import no.motif.f.combine.RunnableChain;
 import no.motif.f.combine.Where;
+import no.motif.f.impl.Constant;
+import no.motif.f.impl.Throw;
 import no.motif.iter.ExtractingIterable;
 import no.motif.types.Elements;
 

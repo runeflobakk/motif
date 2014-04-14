@@ -4,17 +4,17 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
-import no.motif.f.base.NullIfArgIsNullOrElse;
+import no.motif.f.base.NullIfArgIsNull;
 
 import org.junit.Test;
 
-public class PassThruIfNullOrElseTest {
+public class NullIfArgIsNullTest {
 
     @Test
     public void doesNotInvokeImplementorOnNull() {
-        Fn<String, String> fn = new NullIfArgIsNullOrElse<String, String>() {
+        Fn<String, String> fn = new NullIfArgIsNull<String, String>() {
             @Override
-            protected String $nullsafe(String value) {
+            protected String orElse(String value) {
                 fail("should not invoke this method");
                 return "";
             }
@@ -24,9 +24,9 @@ public class PassThruIfNullOrElseTest {
 
     @Test
     public void passesFunctionArgToImplemtor() {
-        Fn<String, Integer> fn = new NullIfArgIsNullOrElse<String, Integer>() {
+        Fn<String, Integer> fn = new NullIfArgIsNull<String, Integer>() {
             @Override
-            protected Integer $nullsafe(String value) {
+            protected Integer orElse(String value) {
                 return value.length();
             }
         };

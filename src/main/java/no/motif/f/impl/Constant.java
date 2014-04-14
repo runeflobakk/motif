@@ -1,4 +1,4 @@
-package no.motif.f.base;
+package no.motif.f.impl;
 
 import no.motif.f.Fn;
 import no.motif.f.Fn0;

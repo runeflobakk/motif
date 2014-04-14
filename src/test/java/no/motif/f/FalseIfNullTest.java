@@ -2,11 +2,11 @@ package no.motif.f;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import no.motif.f.base.FalseIfNullOrElse;
+import no.motif.f.base.FalseIfNull;
 
 import org.junit.Test;
 
-public class FalseIfNullOrElseTest extends FalseIfNullOrElse<String> {
+public class FalseIfNullTest extends FalseIfNull<String> {
 
     @Test
     public void doesNotCallNullsafeMethodIfValueIsNull() {
@@ -19,7 +19,7 @@ public class FalseIfNullOrElseTest extends FalseIfNullOrElse<String> {
     }
 
     @Override
-    protected boolean $nullsafe(String value) {
+    protected boolean orElse(String value) {
         return true;
     }
 
