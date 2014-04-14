@@ -5,6 +5,7 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 import no.motif.f.base.NullIfArgIsNull;
+import no.motif.f.base.NullIfEitherArgIsNull;
 
 import org.junit.Test;
 
@@ -32,6 +33,18 @@ public class NullIfArgIsNullTest {
         };
 
         assertThat(fn.$("xy"), is(2));
+    }
 
+    @Test
+    public void doesNotInvokeFn2ImplementorOnNullArgs() {
+        Fn2<Object, Object, Integer> fn2 = new NullIfEitherArgIsNull<Object, Object, Integer>() {
+            @Override protected Integer orElse(Object first, Object second) {
+                fail("should not be called");
+                return null;
+            }};
+
+        assertThat(fn2.$(null, "a"), nullValue());
+        assertThat(fn2.$("a", null), nullValue());
+        assertThat(fn2.$(null, null), nullValue());
     }
 }
