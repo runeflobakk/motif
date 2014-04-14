@@ -5,21 +5,27 @@ import static no.motif.Base.always;
 import static no.motif.Base.cause;
 import static no.motif.Base.exists;
 import static no.motif.Base.extract;
+import static no.motif.Base.first;
 import static no.motif.Base.isNull;
 import static no.motif.Base.message;
+import static no.motif.Base.notNull;
+import static no.motif.Base.when;
 import static no.motif.BaseTest.Phonenum.areaCode;
 import static no.motif.BaseTest.Phonenum.number;
 import static no.motif.Iterate.on;
 import static no.motif.Singular.none;
 import static no.motif.Singular.optional;
 import static no.motif.Strings.blank;
+import static no.motif.Strings.lowerCased;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import no.motif.f.Fn;
 import no.motif.f.Predicate.Always;
+import no.motif.f.combine.When;
 
 import org.junit.Test;
 
@@ -70,5 +76,18 @@ public class BaseTest {
     public void joinStringsFromTwoFns() {
         assertThat(optional(new Phonenum()).split(extract(areaCode, number)).join("-"), is("555-12345"));
     }
+
+    @Test
+    public void guardFnWithPredicate() {
+        When<Object, String> throwWhenNull = when(isNull, Base.<Object, Object, String>alwaysThrow(new RuntimeException()));
+        assertThat(throwWhenNull.$("blocked"), nullValue());
+        assertThat(throwWhenNull.orElse("passed").$("blocked"), is("passed"));
+        assertThat(when(notNull, lowerCased).$("A"), is("a"));
+        assertThat(
+                first((Fn<Object, Object>)always(null))
+                .then(when(notNull, always("not expected")).orElse("expected")).$("anything"),
+            is("expected"));
+    }
+
 
 }

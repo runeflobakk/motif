@@ -4,7 +4,7 @@ import no.motif.f.Fn;
 import no.motif.f.Fn0;
 import no.motif.f.Fn2;
 
-public class Constant<V, I1, I2> implements Fn0<V>, Fn<I1, V>, Fn2<I1, I2, V> {
+public class Constant<I1, I2, V> implements Fn0<V>, Fn<I1, V>, Fn2<I1, I2, V> {
 
     private V value;
 

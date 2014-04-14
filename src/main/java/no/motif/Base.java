@@ -14,6 +14,7 @@ import no.motif.f.combine.DoChain;
 import no.motif.f.combine.Fn2Chain;
 import no.motif.f.combine.FnChain;
 import no.motif.f.combine.RunnableChain;
+import no.motif.f.combine.When;
 import no.motif.f.combine.Where;
 import no.motif.f.impl.Constant;
 import no.motif.f.impl.Throw;
@@ -265,6 +266,22 @@ public final class Base {
         @Override public Throwable $(Throwable throwable) { return throwable.getCause(); }};
 
 
+    /**
+     * Creates a "guarded" {@link Fn} using a {@link Predicate} to evaluate if the
+     * argument should be passed to the wrapped <code>Fn</code>. The function created
+     * by this method is essentially this ternary expression:
+     * <pre> condition(v) ? f(v) : null;</pre>
+     * To fall back to another value than <code>null</code>, call either {@link When#orElse(Fn) .orElse(Fn)}
+     * or {@link When#orElse(Object) .orElse(other)} on the returned object.
+     *
+     * @param condition Only when this evaluates to <code>true</code> will the function argument
+     *                  be applied to the given {@link Fn}.
+     * @param fn        The {@link Fn} to apply if <code>condition</code> evaluates to <code>true</code>
+     */
+    public static <I, O> When<I, O> when(Predicate<? super I> condition, Fn<I, O> fn) {
+        return new When<>(condition, fn);
+    }
+
 
     /**
      * Compose a chain of several functions into one {@link Fn}, where the result of
@@ -332,7 +349,7 @@ public final class Base {
      *
      * @param value The value to yield.
      */
-    public static <V, I1, I2> Constant<V, I1, I2> always(V value) { return new Constant<>(value); }
+    public static <I1, I2, V> Constant<I1, I2, V> always(V value) { return new Constant<>(value); }
 
 
 
