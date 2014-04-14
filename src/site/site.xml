@@ -10,9 +10,9 @@
     <skin>
         <groupId>lt.velykis.maven.skins</groupId>
         <artifactId>reflow-maven-skin</artifactId>
-        <version>1.0.0</version>
+        <version>1.1.0</version>
     </skin>
-    
+
     <publishDate position="bottom" format="yyyy-MM-dd" />
     <version position="bottom" />
 
@@ -37,8 +37,8 @@
     <custom>
         <reflowSkin>
             <smoothScroll>true</smoothScroll>
-<!--             <theme>bootswatch-slate</theme> -->
-            <theme>default</theme>        
+            <theme>bootswatch-flatly</theme>
+<!--             <theme>default</theme> -->
             <highlightJs>true</highlightJs>
             <brand>
                 <name>Motif</name>
