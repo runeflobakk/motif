@@ -1,5 +1,6 @@
 package no.motif;
 
+import static no.motif.Base.always;
 import static no.motif.Iterate.on;
 import static no.motif.Strings.after;
 import static no.motif.Strings.afterLast;
@@ -39,11 +40,16 @@ import static no.motif.Strings.trimmed;
 import static no.motif.Strings.upperCased;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.emptyIterable;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.io.UnsupportedEncodingException;
+import java.util.Locale;
 
 import org.junit.Test;
 
@@ -57,6 +63,14 @@ public class StringsTest {
     @Test
     public void toLowerCase() {
         assertThat(lowerCased.$("ABC"), is("abc"));
+    }
+
+    @Test
+    public void toLowerCaseWithLocale() {
+        Implicits.setLocale(always(new Locale("tr", "TR")));
+        assertThat("unicode lowercase dotless 'i'", lowerCased.$("I"), is("\u0131"));
+        Implicits.setDefaultLocale();
+        assertThat(lowerCased.$("I"), is("i"));
     }
 
     @Test
@@ -287,6 +301,20 @@ public class StringsTest {
     public void bytesOfAString() {
         assertThat(bytes.$("abc"), is("abc".getBytes()));
         assertThat(bytes.$(null).length, is(0));
+    }
+
+    @Test
+    public void bytesOfAStringWithInvalidCharsetThrowsException() {
+        Implicits.setEncoding(always("way off"));
+        try {
+            bytes.$("x");
+        } catch (RuntimeException e) {
+            assertThat(e.getCause(), instanceOf(UnsupportedEncodingException.class));
+            Implicits.setDefaultEncoding();
+            return;
+        }
+        Implicits.setDefaultEncoding();
+        fail("Should throw exception");
     }
 
 

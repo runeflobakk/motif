@@ -158,7 +158,7 @@ public final class Iterate {
     public static <T> Fn<T, T> last(final Fn<? super T, ? extends T> next) {
         return new Fn<T, T>() {
         @Override public T $(T value) {
-            return optional(next.$(value)).map(this).getOrElse(value);
+            return optional(next.$(value)).map(this).orElse(value);
         }};
     }
 

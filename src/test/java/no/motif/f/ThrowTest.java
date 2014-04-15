@@ -1,7 +1,7 @@
 package no.motif.f;
 
 import static no.motif.Base.alwaysThrow;
-import no.motif.f.base.Throw;
+import no.motif.f.impl.Throw;
 
 import org.junit.Test;
 

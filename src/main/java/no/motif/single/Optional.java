@@ -73,8 +73,18 @@ public abstract class Optional<V>
         }
 
         @Override
-        public final V getOrElse(V fallback) {
+        public final V orElse(V fallback) {
             return get();
+        }
+
+        @Override
+        public V orNull() {
+            return value;
+        }
+
+        @Override
+        public Optional<V> or(Optional<V> otherOptional) {
+            return this;
         }
 
         @Override
@@ -117,6 +127,7 @@ public abstract class Optional<V>
         public String toString() {
             return "Some(" + value + ")";
         }
+
     }
 
     /**
@@ -147,8 +158,18 @@ public abstract class Optional<V>
         }
 
         @Override
-        public final V getOrElse(V fallback) {
+        public final V orElse(V fallback) {
             return fallback;
+        }
+
+        @Override
+        public V orNull() {
+            return null;
+        }
+
+        @Override
+        public Optional<V> or(Optional<V> otherOptional) {
+            return otherOptional;
         }
 
         @Override
@@ -186,7 +207,7 @@ public abstract class Optional<V>
      * <code>Optional</code> does in fact hold a value.
      *
      * To obtain the wrapped value, it is in general preferable to favor
-     * <em>iterating</em> or using {@link #getOrElse(Object)}, which will never
+     * <em>iterating</em> or using {@link #orElse(Object)}, which will never
      * throw an exception.
      *
      * @throws NoSuchElementException if this method is called on an
@@ -241,7 +262,20 @@ public abstract class Optional<V>
      * @param fallback A value to return if called on a {@link None}.
      * @return The wrapped value, or the fallback value if it is undefined.
      */
-    public abstract V getOrElse(V fallback);
+    public abstract V orElse(V fallback);
+
+
+    /**
+     * Shortcut for {@link #orElse(Object) .orElse(null)}
+     * @return The wrapped value, or <code>null</code> if it is undefined.
+     */
+    public abstract V orNull();
+
+    /**
+     * @return If this <code>Optional</code> is not defined, the given <code>otherOptional</code>
+     *         is returned, otherwise the original <code>Optional</code> is returned as-is.
+     */
+    public abstract Optional<V> or(Optional<V> otherOptional);
 
 
     /**

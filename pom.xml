@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    
+
     <parent>
         <groupId>org.sonatype.oss</groupId>
         <artifactId>oss-parent</artifactId>
@@ -17,8 +17,10 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.7</maven.compiler.source>
+        <maven.compiler.target>1.7</maven.compiler.target>
     </properties>
-    
+
     <issueManagement>
         <system>GitHub</system>
         <url>https://github.com/runeflobakk/motif/issues</url>
@@ -58,27 +60,27 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.7.5</version>
+            <version>1.7.7</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>1.0.13</version>
+            <version>1.1.2</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy</artifactId>
-            <version>2.2.1</version>
+            <version>2.3.0-beta-2</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>nl.jqno.equalsverifier</groupId>
             <artifactId>equalsverifier</artifactId>
-            <version>1.4</version>
+            <version>1.4.1</version>
             <scope>test</scope>
-        </dependency>     
+        </dependency>
     </dependencies>
 
     <build>
@@ -86,7 +88,7 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.6.4.201312101107</version>
+                <version>0.7.0.201403182114</version>
                 <executions>
                     <execution>
                         <goals>
@@ -94,6 +96,26 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>de.thetaphi</groupId>
+                <artifactId>forbiddenapis</artifactId>
+                <version>1.4.1</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <internalRuntimeForbidden>true</internalRuntimeForbidden>
+                    <bundledSignatures>
+                        <bundledSignature>jdk-unsafe</bundledSignature>
+                        <bundledSignature>jdk-deprecated</bundledSignature>
+                        <bundledSignature>jdk-system-out</bundledSignature>
+                    </bundledSignatures>
+                </configuration>
             </plugin>
             <plugin>
                 <artifactId>maven-source-plugin</artifactId>
@@ -116,7 +138,7 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>            
+            </plugin>
             <plugin>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <configuration>
@@ -170,19 +192,13 @@
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>3.1</version>
                     <configuration>
-                        <source>1.7</source>
-                        <target>1.7</target>
                         <fork>true</fork>
                         <showDeprecation>true</showDeprecation>
                     </configuration>
                 </plugin>
                 <plugin>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>2.16</version>
-                    <configuration>
-                  		<threadCount>4</threadCount>
-                        <parallel>classesAndMethods</parallel>
-                    </configuration>
+                    <version>2.17</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-scm-publish-plugin</artifactId>
@@ -190,16 +206,16 @@
                     <configuration>
                         <scmBranch>gh-pages</scmBranch>
                     </configuration>
-                    <executions> 
-                        <execution> 
-                            <id>publish-to-gh-pages</id> 
-                            <phase>site-deploy</phase> 
+                    <executions>
+                        <execution>
+                            <id>publish-to-gh-pages</id>
+                            <phase>site-deploy</phase>
                             <goals>
-                                <goal>publish-scm</goal> 
-                            </goals> 
+                                <goal>publish-scm</goal>
+                            </goals>
                         </execution>
                     </executions>
-                </plugin>   
+                </plugin>
                 <plugin>
                     <artifactId>maven-site-plugin</artifactId>
                     <version>3.3</version>
@@ -227,7 +243,7 @@
                         <dependency>
                             <groupId>lt.velykis.maven.skins</groupId>
                             <artifactId>reflow-velocity-tools</artifactId>
-                            <version>1.0.0</version>
+                            <version>1.1.0</version>
                         </dependency>
                         <dependency>
                             <groupId>org.apache.velocity</groupId>
@@ -235,18 +251,18 @@
                             <version>1.7</version>
                         </dependency>
                     </dependencies>
-                </plugin>             
+                </plugin>
                 <plugin>
                     <artifactId>maven-dependency-plugin</artifactId>
                     <version>2.8</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-gpg-plugin</artifactId>
-                    <version>1.4</version>
+                    <version>1.5</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-release-plugin</artifactId>
-                    <version>2.4.2</version>
+                    <version>2.5</version>
                     <configuration>
                         <goals>clean deploy</goals>
                     </configuration>
@@ -305,7 +321,7 @@
             </plugin>
             <plugin>
                 <artifactId>maven-surefire-report-plugin</artifactId>
-                <version>2.16</version>
+                <version>2.17</version>
                 <reportSets>
                     <reportSet>
                         <reports>
@@ -322,7 +338,7 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.6.4.201312101107</version>
+                <version>0.7.0.201403182114</version>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
@@ -339,14 +355,14 @@
             </plugin>
         </plugins>
     </reporting>
-    
+
     <scm>
         <connection>scm:git:https://github.com/runeflobakk/motif.git</connection>
         <developerConnection>scm:git:https://github.com/runeflobakk/motif.git</developerConnection>
         <url>https://github.com/runeflobakk/motif</url>
-      <tag>HEAD</tag>
-  </scm>
-    
+        <tag>HEAD</tag>
+    </scm>
+
     <licenses>
         <license>
             <name>Apache License 2.0</name>
@@ -354,7 +370,7 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
-    
+
     <developers>
         <developer>
             <id>runeflobakk</id>
@@ -372,7 +388,7 @@
             </properties>
         </developer>
     </developers>
-    
+
     <distributionManagement>
         <site>
             <id>gh-pages</id>
@@ -380,8 +396,8 @@
             <url>scm:git:https://github.com/runeflobakk/motif.git</url>
         </site>
     </distributionManagement>
-    
-    
+
+
     <profiles>
         <profile>
             <id>gpg-sign-for-release</id>
@@ -413,7 +429,7 @@
             </build>
         </profile>
     </profiles>
-    
+
     <prerequisites>
         <maven>2.2.1</maven>
     </prerequisites>

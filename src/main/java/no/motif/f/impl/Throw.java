@@ -1,4 +1,4 @@
-package no.motif.f.base;
+package no.motif.f.impl;
 
 import static no.motif.Exceptions.asRuntimeException;
 import no.motif.f.Do;
