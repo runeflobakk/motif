@@ -280,7 +280,7 @@ public final class Strings {
 
     public static Fn<String, String> substring(final Fn<? super String, Integer> beginIndex, final Fn<? super String, Integer> endIndex) {
         return new NullIfArgIsNull<String, String>() { @Override public String orElse(String s) {
-            return optional(s).map(before(endIndex)).map(from(beginIndex)).getOrElse(null);
+            return optional(s).map(before(endIndex)).map(from(beginIndex)).orElse(null);
         }};
     }
 
@@ -531,8 +531,8 @@ public final class Strings {
                 Optional<String> original = optional(s);
                 Optional<String> first = original.map(firstSubstring);
                 if (!first.isSome()) return Collections.emptySet();
-                Optional<String> rest = original.map(nonblank, after(first.map(inBetween(openSubstring, closeSubstring)).getOrElse(null)));
-                return first.append(this.$(rest.getOrElse("")));
+                Optional<String> rest = original.map(nonblank, after(first.map(inBetween(openSubstring, closeSubstring)).orElse(null)));
+                return first.append(this.$(rest.orElse("")));
             }};
     }
 

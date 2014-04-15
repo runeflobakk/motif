@@ -7,12 +7,14 @@ import static no.motif.Singular.none;
 import static no.motif.Singular.optional;
 import static no.motif.Strings.blank;
 import static no.motif.Strings.lowerCased;
+import static no.motif.Strings.nonblank;
 import static no.motif.Strings.toChars;
 import static no.motif.Strings.trimmed;
 import static no.motif.Strings.upperCased;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.emptyIterable;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.Matchers.sameInstance;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
@@ -83,7 +85,7 @@ public class OptionalTest {
 
     @Test
     public void severalMappingOfNone() {
-        assertThat(optional((String) null).map(lowerCased).map(trimmed).getOrElse("y"), is("y"));
+        assertThat(optional((String) null).map(lowerCased).map(trimmed).orElse("y"), is("y"));
     }
 
     @Test
@@ -114,13 +116,33 @@ public class OptionalTest {
     }
 
     @Test
-    public void getOrElseOnNoneReturnsElse() {
-        assertThat(optional((String) null).getOrElse("else"), is("else"));
+    public void orElseOnNoneReturnsElse() {
+        assertThat(optional((String) null).orElse("else"), is("else"));
     }
 
     @Test
-    public void getOrElseOnSomeReturnsTheOptionalValue() {
-        assertThat(optional("some").getOrElse("else"), is("some"));
+    public void orElseOnSomeReturnsTheOptionalValue() {
+        assertThat(optional("some").orElse("else"), is("some"));
+    }
+
+    @Test
+    public void orNullOnNoneIsNull() {
+        assertThat(optional(null).orNull(), nullValue());
+    }
+
+    @Test
+    public void orNullOnSomeIsTheWrappedValue() {
+        assertThat(optional("x").orNull(), is("x"));
+    }
+
+    @Test
+    public void noneOrOtherOptional() {
+        assertThat(optional(nonblank, "").or(optional("fallback")), contains("fallback"));
+    }
+
+    @Test
+    public void someOrOtherOptional() {
+        assertThat(optional("a").or(optional("anything")), contains("a"));
     }
 
     @Test(expected = UnsupportedOperationException.class)
