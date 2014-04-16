@@ -1,11 +1,12 @@
 package no.motif;
 
 import static no.motif.Base.first;
+import static no.motif.Base.notNull;
+import static no.motif.Base.when;
 import static no.motif.f.Apply.argsReversed;
 import no.motif.f.Apply;
 import no.motif.f.Fn;
 import no.motif.f.Fn2;
-import no.motif.f.base.NullIfArgIsNull;
 
 /**
  * Integer operations. Most of these operations will not fail on numbers to
@@ -18,8 +19,8 @@ public final class Ints {
     /**
      * Yields the {@link Number#intValue() integer value} of any number.
      */
-    public static final Fn<Number, Integer> intValue = new NullIfArgIsNull<Number, Integer>() {
-        @Override public Integer orElse(Number value) { return value.intValue(); }};
+    public static final Fn<Number, Integer> intValue = when(notNull, new Fn<Number, Integer>() {
+        @Override public Integer $(Number value) { return value.intValue(); }});
 
     public static final Fn2<Number, Number, Integer> sum = first(Longs.sum).then(intValue);
 
@@ -33,13 +34,13 @@ public final class Ints {
 
     public static final Fn<Number, Integer> increment = first(Longs.increment).then(intValue);
 
-    public static final Fn<Number, Integer> add(int value) { return Apply.partially(sum).of(value); }
+    public static final Fn<Number, Integer> add(int value) { return when(notNull, Apply.partially(sum).of(value)); }
 
     public static final Fn<Number, Integer> subtract(int value) { return add(value * -1); }
 
-    public static final Fn<Number, Integer> multipliedBy(int value) { return Apply.partially(multiply).of(value); }
+    public static final Fn<Number, Integer> multipliedBy(int value) { return when(notNull, Apply.partially(multiply).of(value)); }
 
-    public static final Fn<Number, Integer> dividedBy(int value) { return Apply.partially(argsReversed(divide)).of(value); }
+    public static final Fn<Number, Integer> dividedBy(int value) { return when(notNull, Apply.partially(argsReversed(divide)).of(value)); }
 
 
     private Ints() {}

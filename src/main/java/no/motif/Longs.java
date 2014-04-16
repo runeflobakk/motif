@@ -1,10 +1,11 @@
 package no.motif;
 
+import static no.motif.Base.notNull;
+import static no.motif.Base.when;
 import static no.motif.f.Apply.argsReversed;
 import no.motif.f.Apply;
 import no.motif.f.Fn;
 import no.motif.f.Fn2;
-import no.motif.f.base.NullIfArgIsNull;
 import no.motif.f.base.NullIfEitherArgIsNull;
 
 public final class Longs {
@@ -12,8 +13,8 @@ public final class Longs {
     /**
      * Yields the {@link Number#longValue() long value} of any number.
      */
-    public static final Fn<Number, Long> longValue = new NullIfArgIsNull<Number, Long>() {
-        @Override public Long orElse(Number value) { return value.longValue(); }};
+    public static final Fn<Number, Long> longValue = when(notNull, new Fn<Number, Long>() {
+        @Override public Long $(Number value) { return value.longValue(); }});
 
 
     public static final Fn2<Number, Number, Long> sum = new NullIfEitherArgIsNull<Number, Number, Long>() {
@@ -31,23 +32,23 @@ public final class Longs {
             return factor1.longValue() / factor2.longValue(); }};
 
 
-    public static final Fn<Number, Long> doubled = Apply.partially(multiply).of(2);
+    public static final Fn<Number, Long> doubled = multipliedBy(2);
 
 
-    public static final Fn<Number, Long> rounded = new NullIfArgIsNull<Number, Long>() {
-        @Override public Long orElse(Number decimal) { return Math.round(decimal.doubleValue()); }};
+    public static final Fn<Number, Long> rounded = when(notNull, new Fn<Number, Long>() {
+        @Override public Long $(Number decimal) { return Math.round(decimal.doubleValue()); }});
 
 
-    public static final Fn<Number, Long> increment = new NullIfArgIsNull<Number, Long>() {
-        @Override public Long orElse(Number n) { return n.longValue() + 1; }};
+    public static final Fn<Number, Long> increment = when(notNull, new Fn<Number, Long>() {
+        @Override public Long $(Number n) { return n.longValue() + 1; }});
 
-    public static final Fn<Number, Long> add(long value) { return Apply.partially(sum).of(value); }
+    public static final Fn<Number, Long> add(long value) { return when(notNull, Apply.partially(sum).of(value)); }
 
     public static final Fn<Number, Long> subtract(long value) { return add(value * -1); }
 
-    public static final Fn<Number, Long> multipliedBy(long value) { return Apply.partially(multiply).of(value); }
+    public static final Fn<Number, Long> multipliedBy(long value) { return when(notNull, Apply.partially(multiply).of(value)); }
 
-    public static final Fn<Number, Long> dividedBy(long value) { return Apply.partially(argsReversed(divide)).of(value); }
+    public static final Fn<Number, Long> dividedBy(long value) { return when(notNull, Apply.partially(argsReversed(divide)).of(value)); }
 
 
     private Longs() {}

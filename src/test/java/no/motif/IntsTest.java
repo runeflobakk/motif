@@ -60,6 +60,9 @@ public class IntsTest {
 	@Test
     public void multiplyValue() {
 	    assertThat(on(4, 3).map(multipliedBy(3)), contains(12, 9));
+	    assertThat(multiply.$(null, null), nullValue());
+	    assertThat(multiply.$(2, null), nullValue());
+	    assertThat(multiply.$(null, 2), nullValue());
     }
 
 	@Test

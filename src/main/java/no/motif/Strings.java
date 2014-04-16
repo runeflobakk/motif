@@ -1,6 +1,5 @@
 package no.motif;
 
-import static java.util.Arrays.asList;
 import static no.motif.Base.all;
 import static no.motif.Base.always;
 import static no.motif.Base.alwaysThrow;
@@ -8,6 +7,8 @@ import static no.motif.Base.both;
 import static no.motif.Base.equalTo;
 import static no.motif.Base.exists;
 import static no.motif.Base.not;
+import static no.motif.Base.notNull;
+import static no.motif.Base.when;
 import static no.motif.Base.where;
 import static no.motif.Chars.digit;
 import static no.motif.Chars.letter;
@@ -27,9 +28,7 @@ import no.motif.f.Fn;
 import no.motif.f.Fn2;
 import no.motif.f.Predicate;
 import no.motif.f.Predicate.Always;
-import no.motif.f.base.DefaultIfArgIsNull;
 import no.motif.f.base.FalseIfNull;
-import no.motif.f.base.NullIfArgIsNull;
 import no.motif.single.Optional;
 
 /**
@@ -72,15 +71,15 @@ public final class Strings {
      * Yields the bytes of a String.
      * @see String#getBytes()
      */
-    public static final Fn<String, byte[]> bytes = new DefaultIfArgIsNull<String, byte[]>(new byte[0]) {
-        @Override public byte[] orElse(String s) {
+    public static final Fn<String, byte[]> bytes = when(notNull, new Fn<String, byte[]>() {
+        @Override public byte[] $(String s) {
             try {
                 return s.getBytes(Implicits.getEncoding());
             } catch (UnsupportedEncodingException e) {
                 throw asRuntimeException(e);
             }
         }
-    };
+    }).orElse(new byte[0]);
 
 
 
@@ -140,30 +139,30 @@ public final class Strings {
     /**
      * Trims a string, removing all leading and trailing whitespace.
      */
-    public static final Fn<String, String> trimmed = new NullIfArgIsNull<String, String>() {
-        @Override protected String orElse(String s) { return s.trim(); }};
+    public static final Fn<String, String> trimmed = when(notNull, new Fn<String, String>() {
+        @Override public String $(String s) { return s.trim(); }});
 
 
     /**
      * Convert a string to {@link String#toLowerCase() lower case}.
      */
-    public static final Fn<String, String> lowerCased = new NullIfArgIsNull<String, String>() {
-        @Override protected String orElse(String s) { return s.toLowerCase(Implicits.getLocale()); }};
+    public static final Fn<String, String> lowerCased = when(notNull, new Fn<String, String>() {
+        @Override public String $(String s) { return s.toLowerCase(Implicits.getLocale()); }});
 
 
     /**
      * Convert a string to {@link String#toUpperCase() upper case}
      */
-    public static final Fn<String, String> upperCased = new NullIfArgIsNull<String, String>() {
-        @Override protected String orElse(String s) { return s.toUpperCase(Implicits.getLocale()); }};
+    public static final Fn<String, String> upperCased = when(notNull, new Fn<String, String>() {
+        @Override public String $(String s) { return s.toUpperCase(Implicits.getLocale()); }});
 
 
     /**
      * Gives the length of a string, i.e. the amount of characters. <code>null</code>
      * yields length 0.
      */
-    public static final Fn<String, Integer> length = new Fn<String, Integer>() {
-        @Override public Integer $(String s) { return s != null ? s.length() : 0; }};
+    public static final Fn<String, Integer> length = when(notNull, new Fn<String, Integer>() {
+        @Override public Integer $(String s) { return s.length(); }}).orElse(0);
 
 
     /**
@@ -196,8 +195,8 @@ public final class Strings {
     /**
      * Yields the given string with its characters in reversed order.
      */
-    public static final Fn<String, String> reversed = new NullIfArgIsNull<String, String>() {
-        @Override protected String orElse(String s) { return new StringBuilder(s).reverse().toString(); }};
+    public static final Fn<String, String> reversed = when(notNull, new Fn<String, String>() {
+        @Override public String $(String s) { return new StringBuilder(s).reverse().toString(); }});
 
 
 
@@ -279,9 +278,9 @@ public final class Strings {
     }
 
     public static Fn<String, String> substring(final Fn<? super String, Integer> beginIndex, final Fn<? super String, Integer> endIndex) {
-        return new NullIfArgIsNull<String, String>() { @Override public String orElse(String s) {
-            return optional(s).map(before(endIndex)).map(from(beginIndex)).orElse(null);
-        }};
+        return when(notNull, new Fn<String, String>() { @Override public String $(String s) {
+            return optional(s).map(before(endIndex)).map(from(beginIndex)).orNull();
+        }});
     }
 
 
@@ -290,11 +289,9 @@ public final class Strings {
      * If the string is shorter than the amount, the original string is returned.
      */
     public static Fn<String, String> first(final int charAmount) {
-        return new Fn<String, String>() {
-            @Override public String $(String s) {
-                if (s == null) return "";
-                return (charAmount > s.length()) ? s : s.substring(0, charAmount);
-            }};
+        return when(notNull, new Fn<String, String>() { @Override public String $(String s) {
+                    return (charAmount > s.length()) ? s : s.substring(0, charAmount);
+                }}).orElse("");
     }
 
 
@@ -303,11 +300,9 @@ public final class Strings {
      * If the string is shorter than the amount, the original string is returned.
      */
     public static Fn<String, String> last(final int charAmount) {
-        return new Fn<String, String>() {
-            @Override public String $(String s) {
-                if (s == null) return "";
-                return (charAmount > s.length()) ? s : s.substring(s.length() - charAmount, s.length());
-            }};
+        return when(notNull, new Fn<String, String>() { @Override public String $(String s) {
+                    return (charAmount > s.length()) ? s : s.substring(s.length() - charAmount, s.length());
+                }}).orElse("");
     }
 
 
@@ -326,8 +321,8 @@ public final class Strings {
      *
      * @param times The amount of times to repeat the string.
      */
-    public static Fn<String, String> repeat(final int times) { return new NullIfArgIsNull<String, String>() {
-        @Override public String orElse(String s) { return on(asList(s)).repeat(times).join(); }}; }
+    public static Fn<String, String> repeat(final int times) { return when(notNull, new Fn<String, String>() {
+        @Override public String $(String s) { return on((Object) s).repeat(times).join(); }}); }
 
 
     /**
@@ -337,8 +332,8 @@ public final class Strings {
      * @param separator The separator string to insert between the repeating strings.
      */
     public static Fn<String, String> repeat(final int times, final String separator) {
-        return new NullIfArgIsNull<String, String>() {
-            @Override public String orElse(String s) { return on(asList(s)).repeat(times).join(separator); }}; }
+        return when(notNull, new Fn<String, String>() {
+            @Override public String $(String s) { return on((Object) s).repeat(times).join(separator); }}); }
 
 
 
@@ -378,7 +373,7 @@ public final class Strings {
      * @param substring the substring to search for.
      */
     public static Fn<String, String> afterLast(final String substring) {
-        if (substring == null || substring.isEmpty()) return passThruIfNullOrElseEmptyString;
+        if (substring == null || substring.isEmpty()) return when(notNull, Base.<String, String, String>always(""));
         return from(Base.first(lastIndexOf(substring)).then(add(substring.length())));
     }
 
@@ -404,14 +399,14 @@ public final class Strings {
      * @param index The {@link Fn} to resolve the index.
      */
     public static Fn<String, String> from(final Fn<? super String, Integer> index) {
-        return new NullIfArgIsNull<String, String>() {
+        return when(notNull, new Fn<String, String>() {
             @Override
-            protected String orElse(String s) {
+            public String $(String s) {
                 Integer idx = index.$(s);
                 if (idx == null) return null;
                 if (idx >= s.length()) return "";
                 return s.substring(idx);
-            }};
+            }});
     }
 
 
@@ -475,14 +470,14 @@ public final class Strings {
      * @param index The {@link Fn} to resolve the index.
      */
     public static Fn<String, String> before(final Fn<? super String, Integer> index) {
-        return new NullIfArgIsNull<String, String>() {
+        return when(notNull, new Fn<String, String>() {
             @Override
-            protected String orElse(String s) {
+            public String $(String s) {
                 Integer idx = index.$(s);
                 if (idx == null) return null;
                 if (idx >= s.length()) return s;
                 return s.substring(0, idx);
-            }};
+            }});
     }
 
 
@@ -524,16 +519,16 @@ public final class Strings {
         if (openSubstring == null || closeSubstring == null) return always((Iterable<String>) Collections.<String>emptySet());
         if ("".equals(openSubstring) && "".equals(closeSubstring)) return alwaysThrow(new IllegalArgumentException(
                 "Extracting all strings between two empty strings would yield an infinite amount of empty strings!"));
-        return new NullIfArgIsNull<String, Iterable<String>>() {
+        return when(notNull, new Fn<String, Iterable<String>>() {
             final Fn<String, String> firstSubstring = between(openSubstring, closeSubstring);
             @Override
-            protected Iterable<String> orElse(String s) {
+            public Iterable<String> $(String s) {
                 Optional<String> original = optional(s);
                 Optional<String> first = original.map(firstSubstring);
                 if (!first.isSome()) return Collections.emptySet();
                 Optional<String> rest = original.map(nonblank, after(first.map(inBetween(openSubstring, closeSubstring)).orElse(null)));
                 return first.append(this.$(rest.orElse("")));
-            }};
+            }});
     }
 
 
@@ -545,11 +540,11 @@ public final class Strings {
      * @see String#indexOf(int)
      */
     public static Fn<String, Integer> indexOf(final char c) {
-        return new NullIfArgIsNull<String, Integer>() {
-            @Override protected Integer orElse(String s) {
+        return when(notNull, new Fn<String, Integer>() {
+            @Override public Integer $(String s) {
                 int index = s.indexOf(c);
                 return index >= 0 ? index : null;
-            }};
+            }});
     }
 
 
@@ -559,11 +554,11 @@ public final class Strings {
      *
      * @see String#indexOf(int)
      */
-    public static Fn<String, Integer> lastIndexOf(final char c) { return new NullIfArgIsNull<String, Integer>() {
-        @Override protected Integer orElse(String s) {
+    public static Fn<String, Integer> lastIndexOf(final char c) { return when(notNull, new Fn<String, Integer>() {
+        @Override public Integer $(String s) {
             int index = s.lastIndexOf(c);
             return index >= 0 ? index : null;
-        }};
+        }});
     }
 
 
@@ -575,11 +570,11 @@ public final class Strings {
      */
     public static Fn<String, Integer> indexOf(final String substring) {
         if (substring == null) return always(null);
-        return new NullIfArgIsNull<String, Integer>() {
-            @Override protected Integer orElse(String s) {
+        return when(notNull, new Fn<String, Integer>() {
+            @Override public Integer $(String s) {
                 int index = s.indexOf(substring);
                 return index >= 0 ? index : null;
-            }};
+            }});
     }
 
 
@@ -592,16 +587,13 @@ public final class Strings {
      */
     public static Fn<String, Integer> lastIndexOf(final String substring) {
         if (substring == null) return always(null);
-        return new NullIfArgIsNull<String, Integer>() {
-            @Override protected Integer orElse(String s) {
+        return when(notNull, new Fn<String, Integer>() {
+            @Override public Integer $(String s) {
                 int index = s.lastIndexOf(substring);
                 return index >= 0 ? index : null;
-            }};
+            }});
     }
 
-
-    private static final Fn<String, String> passThruIfNullOrElseEmptyString = new NullIfArgIsNull<String, String>() {
-        @Override protected String orElse(String s) { return ""; }};
 
     private Strings() {}
 }
