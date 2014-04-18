@@ -59,6 +59,12 @@ public class OptionalTest {
     @SuppressWarnings("unused")
     public void doesNotIterateOverNone() {
         for (Object value : none()) fail("should not iterate over None");
+        try {
+            none().iterator().next();
+        } catch (NoSuchElementException e) {
+            return;
+        }
+        fail("Should throw " + NoSuchElementException.class.getSimpleName());
     }
 
     @Test(expected = NoSuchElementException.class)

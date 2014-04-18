@@ -2,6 +2,7 @@ package no.motif;
 
 import static no.motif.Base.notNull;
 import no.motif.f.Predicate;
+import no.motif.single.A;
 import no.motif.single.Optional;
 import no.motif.single.Optional.None;
 import no.motif.single.Optional.Some;
@@ -49,6 +50,21 @@ public final class Singular {
      */
     public static <V> Optional<V> optional(Predicate<? super V> isPresent, V value) {
         return Optional.resolve(isPresent, value); }
+
+
+
+    /**
+     * This will create {@link A A&lt;V&gt;}, for a value which is <em>not optional</em>,
+     * but you want to access the API for doing operations as with an {@link Optional}.
+     * Use this instead of an awkward call to {@link #optional(Object)} when the value is
+     * not in fact optional.
+     *
+     * @param value The value, may be anything or <code>null</code>. No
+     * @return The value wrapped in an {@link A}.
+     */
+    public static <V> A<V> the(V value) {
+        return Optional.some(value);
+    }
 
 
     /**

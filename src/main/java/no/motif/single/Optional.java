@@ -41,10 +41,19 @@ public abstract class Optional<V>
      */
     public static <V> Optional<V> resolve(Predicate<? super V> isPresent, V value) {
         if (isPresent.$(value)) {
-            return new Some<V>(value);
+            return some(value);
         } else {
             return None.getInstance();
         }
+    }
+
+    /**
+     * <h1>*** Not part of the public API! ***</h1>
+     *
+     * @see Singular#the(Object)
+     */
+    public static <V> Some<V> some(V value) {
+        return new Some<>(value);
     }
 
 
@@ -54,12 +63,17 @@ public abstract class Optional<V>
      *
      * @param <V> The type of the wrapped object.
      */
-    public static final class Some<V> extends Optional<V> {
+    public static final class Some<V> extends Optional<V> implements A<V> {
 
         private final V value;
 
         private Some(V value) {
             this.value = value;
+        }
+
+        @Override
+        public V get() {
+            return value;
         }
 
         @Override
@@ -148,6 +162,11 @@ public abstract class Optional<V>
         private None() {}
 
         @Override
+        public V get() {
+            throw new NoSuchElementException("Called get() on " + this);
+        }
+
+        @Override
         public final Iterator<V> iterator() {
             return EmptyIterator.instance();
         }
@@ -215,9 +234,7 @@ public abstract class Optional<V>
      *
      * @see #isSome()
      */
-    public final V get() {
-        return iterator().next();
-    }
+    public abstract V get();
 
 
 
