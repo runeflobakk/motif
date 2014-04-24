@@ -41,10 +41,24 @@ public final class Reflect {
 
     /**
      * Get the name of a {@link java.lang.reflect.Member}, e.g.
-     * class name, method name, field name.
+     * method or field name.
      */
     public static final Fn<Member, String> name = new Fn<Member, String>() {
         @Override public String $(Member member) { return member.getName(); }};
+
+
+    /**
+     * Get the {@link Class#getName() name} of a <code>Class</code>.
+     */
+    public static final Fn<Class<?>, String> className = new Fn<Class<?>, String>() {
+        @Override public String $(Class<?> cls) { return cls.getName(); }};
+
+
+    /**
+     * Get the {@link Class#getSimpleName() simple name} of a <code>Class</code>.
+     */
+    public static final Fn<Class<?>, String> simpleName = new Fn<Class<?>, String>() {
+        @Override public String $(Class<?> cls) { return cls.getSimpleName(); }};
 
 
     /**

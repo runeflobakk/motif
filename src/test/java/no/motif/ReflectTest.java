@@ -5,13 +5,16 @@ import static no.motif.Base.not;
 import static no.motif.Base.where;
 import static no.motif.Iterate.on;
 import static no.motif.Reflect.annotatedWith;
+import static no.motif.Reflect.className;
 import static no.motif.Reflect.getClass;
 import static no.motif.Reflect.name;
+import static no.motif.Reflect.simpleName;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.isA;
 import static org.junit.Assert.assertThat;
 
+import java.io.Serializable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.List;
@@ -78,6 +81,12 @@ public class ReflectTest {
         A a = new A();
         B b = new B();
         assertThat(on(a, b).filter(where(getClass, annotatedWith(Awesome.class))), contains((A) b));
+    }
+
+    @Test
+    public void getNameOfClasses() {
+        assertThat(on(String.class, Serializable.class).map(className), contains("java.lang.String", "java.io.Serializable"));
+        assertThat(on(String.class, Serializable.class).map(simpleName), contains("String", "Serializable"));
     }
 
 
