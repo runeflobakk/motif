@@ -1,14 +1,23 @@
 package no.motif;
 
+import static no.motif.Base.not;
 import static no.motif.Base.notNull;
 import static no.motif.Base.when;
 import static no.motif.f.Apply.argsReversed;
 import no.motif.f.Apply;
 import no.motif.f.Fn;
 import no.motif.f.Fn2;
+import no.motif.f.Predicate;
+import no.motif.f.base.FalseIfNull;
 import no.motif.f.base.NullIfEitherArgIsNull;
 
 public final class Longs {
+
+    public static final Predicate<Long> even = new FalseIfNull<Long>() {
+        @Override public boolean orElse(Long i) { return i % 2 == 0; }};
+
+    public static final Predicate<Long> odd = not(even);
+
 
     /**
      * Yields the {@link Number#longValue() long value} of any number.

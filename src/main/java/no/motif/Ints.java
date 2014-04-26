@@ -1,12 +1,15 @@
 package no.motif;
 
 import static no.motif.Base.first;
+import static no.motif.Base.not;
 import static no.motif.Base.notNull;
 import static no.motif.Base.when;
 import static no.motif.f.Apply.argsReversed;
 import no.motif.f.Apply;
 import no.motif.f.Fn;
 import no.motif.f.Fn2;
+import no.motif.f.Predicate;
+import no.motif.f.base.FalseIfNull;
 
 /**
  * Integer operations. Most of these operations will not fail on numbers to
@@ -15,6 +18,11 @@ import no.motif.f.Fn2;
  * from the {@link Longs} class.
  */
 public final class Ints {
+
+    public static final Predicate<Integer> even = new FalseIfNull<Integer>() {
+        @Override public boolean orElse(Integer i) { return i % 2 == 0; }};
+
+    public static final Predicate<Integer> odd = not(even);
 
     /**
      * Yields the {@link Number#intValue() integer value} of any number.

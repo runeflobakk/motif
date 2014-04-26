@@ -14,6 +14,9 @@ import java.util.Set;
 import no.motif.f.Fn;
 import no.motif.f.Predicate;
 import no.motif.iter.PreparedIterable;
+import no.motif.iter.ordering.ByPropertyComparator;
+import no.motif.iter.ordering.EnhancedComparator;
+import no.motif.iter.ordering.EnhancedComparatorImpl;
 import no.motif.types.Elements;
 
 
@@ -100,9 +103,9 @@ public final class Iterate {
      *
      * @return a {@link Comparator} using the value yielded from the given {@link Fn}.
      */
-    public static <T, P extends Comparable<P>> Comparator<T> by(final Fn<T, P> property) {
-        return new Comparator<T>() { @Override public int compare(T first, T second) {
-            return property.$(first).compareTo(property.$(second)); }}; }
+    public static <T, P extends Comparable<P>> EnhancedComparator<T> by(final Fn<T, P> property) {
+        return new EnhancedComparatorImpl<>(new ByPropertyComparator<>(property));
+    }
 
 
     /**
@@ -116,7 +119,7 @@ public final class Iterate {
      * @param comparableType The {@link Comparable} type to create a {@link Comparator} from.
      * @return the <code>Comparator</code>
      */
-    public static <T extends Comparable<T>> Comparator<T> byOrderingOf(Class<T> comparableType) {
+    public static <T extends Comparable<T>> EnhancedComparator<T> byOrderingOf(Class<T> comparableType) {
         return by(NOP.<T>fn()); }
 
 
