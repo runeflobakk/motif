@@ -117,7 +117,7 @@ public interface Elements<T> extends
      *
      * This is an escape-hatch from the lazy design of {@link Elements}.
      *
-     * @return samet type of elements, with all elements evaluated.
+     * @return same type of elements, with all elements evaluated.
      */
     Elements<T> eval();
 
