@@ -114,6 +114,11 @@ public abstract class Optional<V>
         }
 
         @Override
+        public <O> Optional<O> flatMap(Fn<? super V, Optional<O>> mapper) {
+            return mapper.$(value);
+        }
+
+        @Override
         public Optional<V> filter(Predicate<? super V> accepted) {
             return resolve(accepted, value);
         }
@@ -202,6 +207,11 @@ public abstract class Optional<V>
         }
 
         @Override
+        public <O> Optional<O> flatMap(Fn<? super V, Optional<O>> mapper) {
+            return None.getInstance();
+        }
+
+        @Override
         public Optional<V> filter(Predicate<? super V> filter) {
             return None.getInstance();
         }
@@ -259,7 +269,10 @@ public abstract class Optional<V>
      * @see #map(Fn)
      * @see #resolve(Predicate, Object)
      */
-    public abstract <O> Optional<O> map(Predicate<? super O> isPresent, Fn<? super V, O> transformer);
+    public abstract <O> Optional<O> map(Predicate<? super O> isPresent, Fn<? super V, O> mapper);
+
+
+    public abstract <O> Optional<O> flatMap(Fn<? super V, Optional<O>> mapper);
 
 
     @Override

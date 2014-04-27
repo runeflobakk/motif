@@ -107,6 +107,7 @@ public interface Elements<T> extends
     @Override Elements<T> filter(Predicate<? super T> filter);
     @Override Elements<T> repeat(int times);
 
+    <O> Elements<O> flatMap(Fn<? super T, ? extends Iterable<O>> fn);
 
     /**
      * Force-evaluate the current elements, applying all composed functions

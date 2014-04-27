@@ -1,5 +1,6 @@
 package no.motif.single;
 
+import static no.motif.Base.always;
 import static no.motif.Base.not;
 import static no.motif.Base.notNull;
 import static no.motif.Iterate.on;
@@ -223,6 +224,19 @@ public class OptionalTest {
     public void hasNiceToString() {
         assertThat(optional(null).toString(), is("None"));
         assertThat(optional("value").toString(), is("Some(value)"));
+    }
+
+    @Test
+    public void flatMapOnNoneAlwaysYieldsNone() {
+        Fn<Object, Optional<String>> toX = always(optional("x"));
+        assertThat(none().flatMap(toX), sameInstance(Singular.<String>none()));
+    }
+
+    @Test
+    public void flatMapToAnotherOptional() {
+        Fn<Object, Optional<String>> toY = always(optional("y"));
+        assertThat(optional("x").flatMap(toY), contains("y"));
+        assertThat(optional("x").flatMap(always(none())), is(none()));
     }
 
 }

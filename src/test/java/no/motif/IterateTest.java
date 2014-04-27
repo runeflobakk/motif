@@ -2,12 +2,14 @@ package no.motif;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
+import static no.motif.Base.always;
 import static no.motif.Base.first;
 import static no.motif.Base.toString;
 import static no.motif.Iterate.empty;
 import static no.motif.Iterate.on;
 import static no.motif.Singular.optional;
 import static no.motif.Strings.before;
+import static no.motif.Strings.toChars;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.emptyIterable;
 import static org.junit.Assert.assertFalse;
@@ -85,6 +87,12 @@ public class IterateTest {
         verifyNoMoreInteractions(register);
         assertThat(elements.map(before(1)), contains("1", "2"));
         verifyNoMoreInteractions(register);
+    }
+
+    @Test
+    public void flatMap() {
+        assertThat(on("ab", "cd").flatMap(toChars), contains('a', 'b', 'c', 'd'));
+        assertThat(on(1, 2).flatMap(always(emptyList())), emptyIterable());
     }
 
 }
