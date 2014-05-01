@@ -1,8 +1,9 @@
 package no.motif.iter;
 
-import static no.motif.Iterate.on;
 import static no.motif.Ints.multiply;
 import static no.motif.Ints.sum;
+import static no.motif.Iterate.none;
+import static no.motif.Iterate.on;
 import static no.motif.Strings.concat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -33,7 +34,7 @@ public class ReduceTest {
 
     @Test
     public void concatenatingNoElementsYieldsTheUnitValue() {
-        assertThat(on().reduce("", concat), is(""));
+        assertThat(none().reduce("", concat), is(""));
     }
 
 }

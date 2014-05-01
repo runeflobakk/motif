@@ -71,15 +71,15 @@ public final class Strings {
      * Yields the bytes of a String.
      * @see String#getBytes()
      */
-    public static final Fn<String, byte[]> bytes = when(notNull, new Fn<String, byte[]>() {
-        @Override public byte[] $(String s) {
+    public static final Fn<String, Iterable<Byte>> bytes = when(notNull, new Fn<String, Iterable<Byte>>() {
+        @Override public Iterable<Byte> $(String s) {
             try {
-                return s.getBytes(Implicits.getEncoding());
+                return Iterate.on(s.getBytes(Implicits.getEncoding()));
             } catch (UnsupportedEncodingException e) {
                 throw asRuntimeException(e);
             }
         }
-    }).orElse(new byte[0]);
+    }).orElse(Iterate.<Byte>none());
 
 
 

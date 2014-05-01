@@ -1,17 +1,19 @@
 package no.motif.iter;
 
 import static no.motif.Base.toString;
+import static no.motif.Iterate.none;
 import static no.motif.Iterate.on;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.emptyIterable;
 import static org.junit.Assert.assertThat;
+
 import org.junit.Test;
 
 public class MappedIterableTest {
 
     @Test
     public void mapAnEmptyIterable() {
-        assertThat(on().map(toString), emptyIterable());
+        assertThat(none().map(toString), emptyIterable());
     }
 
     @Test

@@ -4,7 +4,6 @@ import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static no.motif.Singular.optional;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
@@ -13,7 +12,9 @@ import java.util.Set;
 
 import no.motif.f.Fn;
 import no.motif.f.Predicate;
+import no.motif.iter.PreIndexedContentIterator;
 import no.motif.iter.PreparedIterable;
+import no.motif.iter.boxing.BytesIterable;
 import no.motif.iter.ordering.ByPropertyComparator;
 import no.motif.iter.ordering.EnhancedComparator;
 import no.motif.iter.ordering.EnhancedComparatorImpl;
@@ -47,11 +48,18 @@ public final class Iterate {
      * @param string The string
      * @return {@link Elements} characters
      */
-    public static Elements<Character> on(CharSequence string) {
+    public static Elements<Character> on(final CharSequence string) {
         if (string == null) return Iterate.none();
-        List<Character> charList = new ArrayList<>(string.length());
-        for (char c : string.toString().toCharArray()) charList.add(c);
-        return newInstance(charList);
+        Iterable<Character> chars = new Iterable<Character>() {
+            @Override public Iterator<Character> iterator() {
+                return new PreIndexedContentIterator<Character>(string.length()) {
+                    @Override protected Character elementAt(int index) {
+                        return string.charAt(index);
+                    }
+                };
+            }
+        };
+        return newInstance(chars);
     }
 
 
@@ -66,6 +74,16 @@ public final class Iterate {
     public static <T> Elements<T> on(T ... elements) {
         return newInstance(elements != null ? asList(elements) : null);
     }
+
+    /**
+     * Work with multiple bytes.
+     *
+     * @param bytes the bytes to manipulate as vararg/array.
+     */
+    public static Elements<Byte> on(byte[] bytes) {
+        return newInstance(bytes != null ? new BytesIterable(bytes) : null);
+    }
+
 
 
     public static <K, V> Elements<Map.Entry<K, V>> on(Map<K, V> map) {

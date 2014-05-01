@@ -1,12 +1,14 @@
 package no.motif.iter;
 
+import static no.motif.Iterate.none;
 import static no.motif.Iterate.on;
-import static no.motif.Singular.none;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
 import java.util.NoSuchElementException;
+
+import no.motif.Singular;
 
 import org.junit.Test;
 
@@ -14,7 +16,7 @@ public class HeadTailTest {
 
     @Test
     public void headOfEmptyElementsIsNone() {
-        assertThat(on().head(), is(none()));
+        assertThat(none().head(), is(Singular.none()));
     }
 
     @Test
@@ -29,6 +31,6 @@ public class HeadTailTest {
 
     @Test(expected = NoSuchElementException.class)
     public void tailOfEmptyElementsThrowsException() {
-        on().tail();
+        none().tail();
     }
 }

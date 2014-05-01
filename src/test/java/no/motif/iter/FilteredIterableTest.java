@@ -1,17 +1,19 @@
 package no.motif.iter;
 
-import static no.motif.Iterate.on;
 import static no.motif.Base.equalTo;
+import static no.motif.Iterate.none;
+import static no.motif.Iterate.on;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.emptyIterable;
 import static org.junit.Assert.assertThat;
+
 import org.junit.Test;
 
 public class FilteredIterableTest {
 
     @Test
     public void filterAnEmptyIterable() {
-        assertThat(on().filter(equalTo(null)), emptyIterable());
+        assertThat(none().filter(equalTo(null)), emptyIterable());
     }
 
     @Test

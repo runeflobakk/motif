@@ -1,5 +1,6 @@
 package no.motif.iter;
 
+import static no.motif.Iterate.none;
 import static no.motif.Iterate.on;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.emptyIterable;
@@ -13,7 +14,7 @@ public class IndexedIterableTest {
     @SuppressWarnings("unchecked")
     @Test
     public void indexesElements() {
-        assertThat(on().indexed(), emptyIterable());
+        assertThat(none().indexed(), emptyIterable());
         assertThat(on("a", "b").indexed(), contains(Elem.of(0, "a"), Elem.of(1, "b")));
     }
 }

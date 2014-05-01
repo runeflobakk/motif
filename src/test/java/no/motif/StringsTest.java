@@ -1,6 +1,7 @@
 package no.motif;
 
 import static no.motif.Base.always;
+import static no.motif.Iterate.none;
 import static no.motif.Iterate.on;
 import static no.motif.Strings.after;
 import static no.motif.Strings.afterLast;
@@ -254,14 +255,14 @@ public class StringsTest {
     @Test
     public void join() {
         assertThat(on("a", "b", 1).join(), is("ab1"));
-        assertThat(on().join(), is(""));
+        assertThat(none().join(), is(""));
     }
 
     @Test
     public void joinedWithSeparator() {
         assertThat(on("a", "b", 1).join(", "), is("a, b, 1"));
         assertThat(on("a").join(", "), is("a"));
-        assertThat(on().join(", "), is(""));
+        assertThat(none().join(", "), is(""));
     }
 
     @Test
@@ -299,8 +300,8 @@ public class StringsTest {
 
     @Test
     public void bytesOfAString() {
-        assertThat(bytes.$("abc"), is("abc".getBytes()));
-        assertThat(bytes.$(null).length, is(0));
+        assertThat(bytes.$("abc"), contains((byte)'a', (byte)'b', (byte)'c'));
+        assertThat(bytes.$(null), emptyIterable());
     }
 
     @Test

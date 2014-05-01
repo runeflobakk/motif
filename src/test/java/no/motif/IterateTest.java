@@ -12,6 +12,7 @@ import static no.motif.Strings.before;
 import static no.motif.Strings.toChars;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.emptyIterable;
+import static org.hamcrest.Matchers.sameInstance;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -35,9 +36,10 @@ public class IterateTest {
 
     @Test
     public void iteratingNullIsEmptyIterable() {
-        assertThat(on((String) null), emptyIterable());
-        assertThat(on((Integer[]) null), emptyIterable());
-        assertThat(on((Iterable<Integer>) null), emptyIterable());
+        assertThat(on((String) null), sameInstance(Iterate.<Character>none()));
+        assertThat(on((Integer[]) null), sameInstance(Iterate.<Integer>none()));
+        assertThat(on((Iterable<Integer>) null), sameInstance(Iterate.<Integer>none()));
+        assertThat(on((byte[]) null), sameInstance(Iterate.<Byte>none()));
     }
 
 

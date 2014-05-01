@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
+import no.motif.Iterate;
 import no.motif.NOP;
 import no.motif.types.YieldsJavaCollection;
 
@@ -62,7 +63,7 @@ public class CollectingIterableTest {
 
     @Test
     public void lastElementOfEmptyElementsIsNone() {
-        assertThat(on().last(), is(none()));
+        assertThat(Iterate.none().last(), is(none()));
     }
 
     @Test
@@ -72,7 +73,7 @@ public class CollectingIterableTest {
         assertThat(stringsByLength, hasEntry(is(2), contains("ab", "bc")));
         assertThat(stringsByLength.size(), is(2));
 
-        assertThat(on().groupBy(toString).size(), is(0));
+        assertThat(Iterate.none().groupBy(toString).size(), is(0));
     }
 
     @Test

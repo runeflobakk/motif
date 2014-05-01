@@ -1,6 +1,7 @@
 package no.motif.iter;
 
 import static no.motif.Ints.increment;
+import static no.motif.Iterate.none;
 import static no.motif.Iterate.on;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.emptyIterable;
@@ -13,9 +14,9 @@ public class CyclingIterableTest {
 
     @Test
     public void repeatingNoElementsYieldsNoElementsForAnyRepeatAmount() {
-        assertThat(on().repeat(10), emptyIterable());
-        assertThat(on().repeat(0), emptyIterable());
-        assertThat(on().repeat(-1), emptyIterable());
+        assertThat(none().repeat(10), emptyIterable());
+        assertThat(none().repeat(0), emptyIterable());
+        assertThat(none().repeat(-1), emptyIterable());
     }
 
     @Test(expected = IllegalArgumentException.class)
