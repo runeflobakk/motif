@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>IO.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Motif</a> &gt; <a href="index.source.html" class="el_package">no.motif</a> &gt; <span class="el_source">IO.java</span></div><h1>IO.java</h1><pre class="source lang-java linenums">package no.motif;
+
+import static no.motif.Exceptions.asRuntimeException;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
+
+import no.motif.f.Do;
+
+/**
+ * IO-operations.
+ */
+public final class IO {
+
+    /**
+     * {@link PrintStream#println(Object) Print} to a &lt;code&gt;PrintStream&lt;/code&gt;,
+     * each call adding a line feed at the end.
+     *
+     * @param out the {@link PrintStream} to print to.
+     * @return The &lt;code&gt;println&lt;/code&gt; {@link Do} operation.
+     */
+    public static final &lt;T&gt; Do&lt;T&gt; println(final PrintStream out) {
+<span class="fc" id="L24">        return new Do&lt;T&gt;() { @Override public void with(T value) { out.println(value); }}; }</span>
+
+
+    /**
+     * {@link PrintStream#print(Object) Print} to a &lt;code&gt;PrintStream&lt;/code&gt;.
+     *
+     * @param out the {@link PrintStream} to print to.
+     * @return The &lt;code&gt;print&lt;/code&gt; {@link Do} operation.
+     */
+    public static final &lt;T&gt; Do&lt;T&gt; print(final PrintStream out) {
+<span class="fc" id="L34">        return new Do&lt;T&gt;() { @Override public void with(T value) { out.print(value); }}; }</span>
+
+
+    /**
+     * {@link OutputStream#write(Object) Write} bytes to an &lt;code&gt;OutputStream&lt;/code&gt;.
+     *
+     * @param out the {@link OutputStream} to write to.
+     * @return The &lt;code&gt;write&lt;/code&gt; {@link Do} operation.
+     */
+    public static final Do&lt;Byte&gt; writeTo(final OutputStream out) {
+<span class="fc" id="L44">        return new Do&lt;Byte&gt;() { @Override public void with(Byte b) {</span>
+<span class="fc" id="L45">            try { out.write(b); } catch (IOException e) { throw asRuntimeException(e); }</span>
+<span class="fc" id="L46">        }};</span>
+    }
+
+
+<span class="fc" id="L50">    private IO() {}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.0.201403182114</span></div></body></html>

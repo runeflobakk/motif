@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>PartialApplication.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Motif</a> &gt; <a href="index.source.html" class="el_package">no.motif.f</a> &gt; <span class="el_source">PartialApplication.java</span></div><h1>PartialApplication.java</h1><pre class="source lang-java linenums">package no.motif.f;
+
+import static no.motif.Base.always;
+
+/**
+ * A &lt;code&gt;PartialApplication&lt;/code&gt; is used to build more specialized
+ * functions from another function. It is itself a higher order function
+ * ({@link Fn Fn&amp;lt;V, FN&amp;gt;}) which takes a value, and yields the
+ * specialized function, where the value is passed as the first
+ * argument to the more generic function.
+ * &lt;p&gt;
+ * When doing a partial application of a function with &lt;em&gt;n&lt;/em&gt;
+ * arguments, a function taking &lt;em&gt;n-1&lt;/em&gt; arguments is yielded, where &lt;em&gt;n &amp;gt; 0&lt;/em&gt;.
+ * Applying the yielded function will complete the partial application.
+ * &lt;/p&gt;
+ *
+ * @param &lt;V&gt; Type of the value passed as the first argument
+ * @param &lt;FN&gt; The function to partially apply.
+ * @param &lt;PARTIALFN&gt; The resulting partially applied function.
+ */
+public abstract class PartialApplication&lt;FN extends FnType, V, PARTIALFN extends FnType&gt; implements Fn&lt;V, PARTIALFN&gt; {
+
+    private final FN fn;
+
+<span class="fc" id="L25">    PartialApplication(FN partialFn) { this.fn = partialFn; }</span>
+
+<span class="fc" id="L27">    @Override public final PARTIALFN $(V value) { return of(value); }</span>
+
+<span class="fc" id="L29">    public final PARTIALFN of(V value) { return of(always(value)); }</span>
+
+<span class="fc" id="L31">    public final PARTIALFN of(Fn0&lt;V&gt; value) { return partiallyApply(fn, value); }</span>
+
+    /**
+     * Do the partial application, i.e. build the arity &lt;em&gt;n-1&lt;/em&gt; function.
+     *
+     * @param fn the function to partially apply
+     * @param arg the argument to partially apply &lt;code&gt;fn&lt;/code&gt; with.
+     * @return the new function resulting from the partial application.
+     */
+    protected abstract PARTIALFN partiallyApply(FN fn, Fn0&lt;V&gt; arg);
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.0.201403182114</span></div></body></html>

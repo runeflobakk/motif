@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Reflect.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Motif</a> &gt; <a href="index.source.html" class="el_package">no.motif</a> &gt; <span class="el_source">Reflect.java</span></div><h1>Reflect.java</h1><pre class="source lang-java linenums">package no.motif;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Member;
+
+import no.motif.f.Fn;
+import no.motif.f.Predicate;
+
+/**
+ * Operations for doing reflection.
+ */
+public final class Reflect {
+
+
+    /**
+     * Evaluates if objects are of a certain type (class or interface).
+     *
+     * @param type The type that will satisfy the predicate.
+     */
+<span class="fc" id="L21">    public static Predicate&lt;Object&gt; isA(final Class&lt;?&gt; type) { return new Predicate&lt;Object&gt;() {</span>
+<span class="fc" id="L22">        @Override public boolean $(Object object) { return type.isInstance(object); }}; }</span>
+
+
+    /**
+     * Gets the class of an object. This is the functional equivalent of
+     * the {@link Object#getClass()} method, which returns an untyped
+     * {@link Class Class&amp;lt;?&amp;gt;}.
+     */
+<span class="fc" id="L30">    public static final Fn&lt;Object, Class&lt;?&gt;&gt; getClass = type();</span>
+
+
+    /**
+     * This is the same as {@link #getClass}, with the additional
+     * possible typing of the yielded {@link Class}es.
+     */
+<span class="fc" id="L37">    public static &lt;T&gt; Fn&lt;T, Class&lt;? extends T&gt;&gt; type() { return new Fn&lt;T, Class&lt;? extends T&gt;&gt;() {</span>
+        @SuppressWarnings(&quot;unchecked&quot;) @Override public Class&lt;? extends T&gt; $(T object) {
+<span class="fc" id="L39">            return (Class&lt;? extends T&gt;) object.getClass(); }}; }</span>
+
+
+    /**
+     * Get the name of a {@link java.lang.reflect.Member}, e.g.
+     * method or field name.
+     */
+<span class="fc" id="L46">    public static final Fn&lt;Member, String&gt; name = new Fn&lt;Member, String&gt;() {</span>
+<span class="fc" id="L47">        @Override public String $(Member member) { return member.getName(); }};</span>
+
+
+    /**
+     * Get the {@link Class#getName() name} of a &lt;code&gt;Class&lt;/code&gt;.
+     */
+<span class="fc" id="L53">    public static final Fn&lt;Class&lt;?&gt;, String&gt; className = new Fn&lt;Class&lt;?&gt;, String&gt;() {</span>
+<span class="fc" id="L54">        @Override public String $(Class&lt;?&gt; cls) { return cls.getName(); }};</span>
+
+
+    /**
+     * Get the {@link Class#getSimpleName() simple name} of a &lt;code&gt;Class&lt;/code&gt;.
+     */
+<span class="fc" id="L60">    public static final Fn&lt;Class&lt;?&gt;, String&gt; simpleName = new Fn&lt;Class&lt;?&gt;, String&gt;() {</span>
+<span class="fc" id="L61">        @Override public String $(Class&lt;?&gt; cls) { return cls.getSimpleName(); }};</span>
+
+
+    /**
+     * Check if an element (class, method, field, etc) is annotated with a given annotation.
+     *
+     * @param annotation the annotation to check for.
+     */
+    public static Predicate&lt;AnnotatedElement&gt; annotatedWith(final Class&lt;? extends Annotation&gt; annotation) {
+<span class="fc" id="L70">        return new Predicate&lt;AnnotatedElement&gt;() {</span>
+<span class="fc" id="L71">            @Override public boolean $(AnnotatedElement element) { return element.isAnnotationPresent(annotation); }}; }</span>
+
+
+
+    /**
+     * Create instances of classes using the no-arg constructor.
+     * Any checked {@link InstantiationException} or {@link IllegalAccessException}
+     * will be rethrown as &lt;code&gt;RuntimeException&lt;/code&gt;.
+     */
+    public static &lt;T&gt; Fn&lt;Class&lt;? extends T&gt;, T&gt; newInstance() {
+<span class="fc" id="L81">        return new Fn&lt;Class&lt;? extends T&gt;, T&gt;() {</span>
+            @Override public T $(Class&lt;? extends T&gt; clazz) {
+<span class="fc" id="L83">                try { return clazz.newInstance(); }</span>
+<span class="fc" id="L84">                catch (InstantiationException | IllegalAccessException e) {</span>
+<span class="fc" id="L85">                    throw new RuntimeException(&quot;Not able to instantiate &quot; + clazz.getName() +</span>
+                            &quot; because of &quot; + e.getClass().getSimpleName() + &quot;: &quot; + e.getMessage(), e);
+                }
+            }};
+    }
+
+
+<span class="fc" id="L92">    private Reflect() {}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.0.201403182114</span></div></body></html>
