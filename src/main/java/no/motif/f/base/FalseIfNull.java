@@ -18,6 +18,6 @@ public abstract class FalseIfNull<T> implements Predicate<T> {
     protected abstract boolean orElse(T value);
 
     @Override
-    public boolean $(T value) { return value != null && orElse(value); }
+    public final boolean $(T value) { return value != null && orElse(value); }
 
 }

@@ -14,7 +14,7 @@ import no.motif.f.Fn2;
 public abstract class NullIfEitherArgIsNull<I1, I2, O> implements Fn2<I1, I2, O> {
 
     @Override
-    public O $(I1 first, I2 second) {
+    public final O $(I1 first, I2 second) {
         return (first == null || second == null) ? null : orElse(first, second);
     }
 
