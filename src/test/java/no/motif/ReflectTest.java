@@ -8,7 +8,9 @@ import static no.motif.Reflect.annotatedWith;
 import static no.motif.Reflect.className;
 import static no.motif.Reflect.getClass;
 import static no.motif.Reflect.name;
+import static no.motif.Reflect.packageName;
 import static no.motif.Reflect.simpleName;
+import static no.motif.Singular.the;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.isA;
@@ -87,6 +89,11 @@ public class ReflectTest {
     public void getNameOfClasses() {
         assertThat(on(String.class, Serializable.class).map(className), contains("java.lang.String", "java.io.Serializable"));
         assertThat(on(String.class, Serializable.class).map(simpleName), contains("String", "Serializable"));
+    }
+
+    @Test
+    public void getPackageOfClasses() {
+        assertThat(the(String.class).map(packageName), contains("java.lang"));
     }
 
 
