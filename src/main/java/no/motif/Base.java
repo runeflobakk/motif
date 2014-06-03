@@ -278,7 +278,7 @@ public final class Base {
      *                  be applied to the given {@link Fn}.
      * @param fn        The {@link Fn} to apply if <code>condition</code> evaluates to <code>true</code>
      */
-    public static <I, O> When<I, O> when(Predicate<? super I> condition, Fn<I, O> fn) {
+    public static <I, O> When<I, O> when(Predicate<? super I> condition, Fn<? super I, ? extends O> fn) {
         return new When<>(condition, fn);
     }
 
