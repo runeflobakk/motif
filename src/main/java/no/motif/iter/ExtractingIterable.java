@@ -3,6 +3,7 @@ package no.motif.iter;
 import static no.motif.Singular.none;
 import static no.motif.Singular.optional;
 
+import java.io.Serializable;
 import java.util.Iterator;
 
 import no.motif.f.Fn;
@@ -14,7 +15,7 @@ import no.motif.single.Optional;
  * the elements.
  *
  */
-public class ExtractingIterable<T, E> implements Iterable<E> {
+public class ExtractingIterable<T, E> implements Iterable<E>, Serializable {
 
     private final T value;
     private final Iterable<? extends Fn<? super T, ? extends E>> extractors;

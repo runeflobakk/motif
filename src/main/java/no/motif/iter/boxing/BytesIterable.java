@@ -1,10 +1,11 @@
 package no.motif.iter.boxing;
 
+import java.io.Serializable;
 import java.util.Iterator;
 
 import no.motif.iter.PreIndexedContentIterator;
 
-public final class BytesIterable implements Iterable<Byte> {
+public final class BytesIterable implements Iterable<Byte>, Serializable {
 
     private final byte[] bytes;
 
