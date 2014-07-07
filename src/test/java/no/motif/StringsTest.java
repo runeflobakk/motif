@@ -1,6 +1,9 @@
 package no.motif;
 
 import static no.motif.Base.always;
+import static no.motif.Base.either;
+import static no.motif.Chars.digit;
+import static no.motif.Chars.whitespace;
 import static no.motif.Iterate.none;
 import static no.motif.Iterate.on;
 import static no.motif.Strings.after;
@@ -32,6 +35,7 @@ import static no.motif.Strings.numeric;
 import static no.motif.Strings.prepend;
 import static no.motif.Strings.repeat;
 import static no.motif.Strings.reversed;
+import static no.motif.Strings.split;
 import static no.motif.Strings.startsWith;
 import static no.motif.Strings.substring;
 import static no.motif.Strings.toDouble;
@@ -465,5 +469,23 @@ public class StringsTest {
     public void indexOfFirstOccurrenceOfSubstring() {
         assertThat(indexOf("bc").$("abcabc"), is(1));
         assertThat(indexOf("bcd").$("abcabc"), nullValue());
+    }
+
+    @Test
+    public void splitStringByCharacterDelimiter() {
+        Iterable<String> strings = split(' ').$("first second third");
+        assertThat(strings, contains("first", "second", "third"));
+    }
+
+    @Test
+    public void consecutiveSplitCharsAreEliminated() {
+        Iterable<String> strings = split(' ').$("    first    second   third   ");
+        assertThat(strings, contains("first", "second", "third"));
+    }
+
+    @Test
+    public void splittingAStringWhereEveryCharIsAnDelimiterYieldsNoStrings() {
+        Iterable<String> strings = split(either(digit).or(whitespace)).$("  1233 44323 3 42 3");
+        assertThat(strings, emptyIterable());
     }
 }

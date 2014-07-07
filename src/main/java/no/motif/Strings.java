@@ -29,6 +29,7 @@ import no.motif.f.Fn2;
 import no.motif.f.Predicate;
 import no.motif.f.Predicate.Always;
 import no.motif.f.base.FalseIfNull;
+import no.motif.iter.SplitOnCharacter;
 import no.motif.single.Optional;
 
 /**
@@ -592,6 +593,34 @@ public final class Strings {
                 int index = s.lastIndexOf(substring);
                 return index >= 0 ? index : null;
             }});
+    }
+
+
+    /**
+     * Split a string into several by a <code>char</code> delimiter.
+     * The delimiter is not included in the resulting strings, and any
+     * consecutive delimiters are treated as one delimiter instance.
+     *
+     * @param character the delimiter character
+     */
+    public static Fn<String, Iterable<String>> split(char character) { return split(equalTo(character)); }
+
+
+    /**
+     * Split a string into several on any character passing the given
+     * <code>Character</code> predicate.
+     * The characters accepted by the predicate is not included in the
+     * resulting strings, and any consecutive accepted characters are
+     * treated as one delimiter instance.
+     *
+     * @param character the predicate which decides if a character is
+     *                  a delimiter.
+     */
+    public static Fn<String, Iterable<String>> split(final Predicate<Character> character) {
+        return new Fn<String, Iterable<String>>() {
+            @Override public Iterable<String> $(String string) {
+                return new SplitOnCharacter(string, character);
+            }};
     }
 
 
