@@ -535,8 +535,8 @@ public final class Strings {
 
 
     /**
-     * Yields index position of first occurence of a <code>char</code>, or <code>null</code> if the
-     * <code>char</code> cannot be found.
+     * Yields index position of first occurence of a <code>char</code>, or <code>null</code>
+     * if the <code>char</code> cannot be found.
      *
      * @see String#indexOf(int)
      */
@@ -550,8 +550,8 @@ public final class Strings {
 
 
     /**
-     * Yields index position of last occurence of a <code>char</code>, or <code>null</code> if the
-     * <code>char</code> cannot be found.
+     * Yields index position of last occurence of a <code>char</code>, or <code>null</code>
+     * if the <code>char</code> cannot be found.
      *
      * @see String#indexOf(int)
      */
@@ -564,8 +564,8 @@ public final class Strings {
 
 
     /**
-     * Yields index position of first occurence of a substring, or <code>null</code> if the substring cannot
-     * be found.
+     * Yields index position of first occurence of a substring, or <code>null</code>
+     * if the substring cannot be found.
      *
      * @see String#indexOf(String)
      */
@@ -581,8 +581,8 @@ public final class Strings {
 
 
     /**
-     * Yields index position of last occurence of a substring, or <code>null</code> if the substring cannot
-     * be found.
+     * Yields index position of last occurence of a substring, or <code>null</code>
+     * if the substring cannot be found.
      *
      * @see String#indexOf(String)
      */
