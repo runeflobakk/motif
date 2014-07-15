@@ -488,4 +488,10 @@ public class StringsTest {
         Iterable<String> strings = split(either(digit).or(whitespace)).$("  1233 44323 3 42 3");
         assertThat(strings, emptyIterable());
     }
+
+    @Test
+    public void splittingAStringUsingADelimiterString() {
+        Iterable<String> aAndB = split("x").$("axb");
+        assertThat(aAndB, contains("a", "b"));
+    }
 }
