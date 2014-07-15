@@ -14,14 +14,21 @@ import static no.motif.Strings.trimmed;
 import static no.motif.Strings.upperCased;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.emptyIterable;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.Matchers.sameInstance;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.NoSuchElementException;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
@@ -32,6 +39,7 @@ import no.motif.single.Optional.None;
 import no.motif.single.Optional.Some;
 
 import org.junit.Test;
+import org.objenesis.ObjenesisStd;
 
 
 public class OptionalTest {
@@ -217,7 +225,34 @@ public class OptionalTest {
     @Test
     public void adheresToEqualsHashcodeContract() {
         EqualsVerifier.forClass(Some.class).verify();
-        EqualsVerifier.forClass(None.class).verify();
+    }
+
+    @Test
+    public void deserializedNoneIsRestoredAsTheSingletonInstance() throws Exception {
+        ByteArrayOutputStream serialized = new ByteArrayOutputStream();
+        try (ObjectOutputStream serializer = new ObjectOutputStream(serialized)) {
+            serializer.writeObject(none());
+        };
+        ByteArrayInputStream bytes = new ByteArrayInputStream(serialized.toByteArray());
+        None<?> deserialized;
+        try (ObjectInputStream deserializer = new ObjectInputStream(bytes)) {
+            deserialized = (None<?>) deserializer.readObject();
+        }
+        assertSame(deserialized, Singular.none());
+        assertTrue(deserialized.equals(Singular.none()));
+        assertThat(deserialized.hashCode(), is(Singular.none().hashCode()));
+    }
+
+    @Test
+    public void sneakilyInstantiatedNewNoneInstanceShouldBeEqualToSingleton() {
+        None<?> sneakyNone = new ObjenesisStd().getInstantiatorOf(None.class).newInstance();
+        assertFalse(sneakyNone == Singular.none());
+        assertTrue(sneakyNone.equals(Singular.none()));
+    }
+
+    @Test
+    public void noneIsNotEqualToSomeValue() {
+        assertThat(Singular.<String>none(), not(equalTo(optional("x"))));
     }
 
     @Test

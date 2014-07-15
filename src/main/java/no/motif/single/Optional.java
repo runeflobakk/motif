@@ -226,6 +226,20 @@ public abstract class Optional<V>
             return "None";
         }
 
+        private Object readResolve() {
+            return None.getInstance();
+        }
+
+        @Override
+        public boolean equals(Object other) {
+            return this == other || other instanceof None;
+        }
+
+        @Override
+        public int hashCode() {
+            return 43;
+        }
+
     }
 
 
