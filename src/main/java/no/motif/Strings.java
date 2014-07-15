@@ -597,9 +597,9 @@ public final class Strings {
 
 
     /**
-     * Split a string into several by a <code>char</code> delimiter.
-     * The delimiter is not included in the resulting strings, and any
-     * consecutive delimiters are treated as one delimiter instance.
+     * Split a string on each occurence of a <code>char</code> delimiter.
+     * The splitting character is not included in the resulting strings, and any
+     * consecutive occurrences of the character are treated as one delimiter instance.
      *
      * @param character the delimiter character
      */
