@@ -1,10 +1,8 @@
 package no.motif.iter;
 
-import static no.motif.Base.greaterThan;
-import static no.motif.Base.where;
+import static no.motif.Base.equalOrGreaterThan;
 import static no.motif.Singular.none;
 import static no.motif.Singular.optional;
-import static no.motif.Strings.length;
 
 import java.io.Serializable;
 import java.util.Iterator;
@@ -14,16 +12,18 @@ import no.motif.single.Optional;
 public class SplitOnSubstring implements Iterable<String>, Serializable {
 
     private final String string;
+    private final int stringLength;
+
     private final String substring;
+    private final int substringLength;
 
     public SplitOnSubstring(String string, String splittingSubstring) {
         this.string = string;
+        this.stringLength = string.length();
         this.substring = splittingSubstring;
+        this.substringLength = splittingSubstring.length();
     }
 
-    private String getCandidateAt(int pos) {
-        return string.substring(pos, pos + substring.length());
-    }
 
     @Override
     public Iterator<String> iterator() {
@@ -31,30 +31,12 @@ public class SplitOnSubstring implements Iterable<String>, Serializable {
             int pos = 0;
             @Override
             protected Optional<? extends String> nextIfAvailable() {
-                if (pos >= string.length()) return none();
-                getStart();
-                if (pos >= string.length()) return none();
-                int nextDelimiter = string.indexOf(substring, pos);
-                String next = (nextDelimiter == -1) ? string.substring(pos) : string.substring(pos, nextDelimiter);
-                pos = nextDelimiter;
-                return optional(where(length, greaterThan(0)), next);
+                if (pos > stringLength) return none();
+                int endIndex = optional(equalOrGreaterThan(0), string.indexOf(substring, pos)).orElse(stringLength);
+                String next = string.substring(pos, endIndex);
+                pos = endIndex + substringLength;
+                return optional(next);
             }
-
-            private int getStart() {
-                if (pos >= string.length() - substring.length()) return pos;
-                for (String candidate = getCandidateAt(pos);
-                     pos <= string.length() - substring.length() && substring.equals(candidate);
-                     candidate = getCandidateAt(++pos));
-                return pos;
-            }
-
-            private int forwardToSplitter() {
-                for (String candidate = getCandidateAt(pos);
-                     pos < string.length() && !substring.equals(candidate);
-                     candidate = getCandidateAt(++pos));
-                return pos;
-            }
-
         };
     }
 }
