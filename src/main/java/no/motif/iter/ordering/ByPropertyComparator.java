@@ -1,10 +1,11 @@
 package no.motif.iter.ordering;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 import no.motif.f.Fn;
 
-public final class ByPropertyComparator<T, C extends Comparable<C>> implements Comparator<T> {
+public final class ByPropertyComparator<T, C extends Comparable<C>> implements Comparator<T>, Serializable {
 
     private final Fn<T, C> fn;
 
