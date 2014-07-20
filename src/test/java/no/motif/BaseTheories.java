@@ -12,7 +12,7 @@ import org.junit.runner.RunWith;
 import com.pholser.junit.quickcheck.ForAll;
 
 @RunWith(Theories.class)
-public class BaseTheoriesTest {
+public class BaseTheories {
 
     @Theory
     public void hashCode(@ForAll Object anyObject) {

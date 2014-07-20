@@ -25,7 +25,7 @@ import org.junit.runner.RunWith;
 import com.pholser.junit.quickcheck.ForAll;
 
 @RunWith(Theories.class)
-public class StringsTheoriesTest {
+public class StringsTheories {
 
     @Theory
     public void splitAnyStringOnNonExistingSubstringYieldsTheOriginalString(@ForAll String string, @ForAll String substring) {
