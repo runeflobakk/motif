@@ -1,9 +1,6 @@
 package no.motif;
 
 import static no.motif.Base.always;
-import static no.motif.Base.either;
-import static no.motif.Chars.digit;
-import static no.motif.Chars.whitespace;
 import static no.motif.Iterate.none;
 import static no.motif.Iterate.on;
 import static no.motif.Strings.after;
@@ -45,7 +42,6 @@ import static no.motif.Strings.trimmed;
 import static no.motif.Strings.upperCased;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.emptyIterable;
-import static org.hamcrest.Matchers.everyItem;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
@@ -57,7 +53,6 @@ import static org.junit.Assert.fail;
 import java.io.UnsupportedEncodingException;
 import java.util.Locale;
 
-import org.hamcrest.Matchers;
 import org.junit.Test;
 
 public class StringsTest {
@@ -474,13 +469,6 @@ public class StringsTest {
     }
 
     @Test
-    public void splitAnyStringByNonExistingCharacterDelimiterYieldsTheOriginalString() {
-        assertThat(split(' ').$(""), Matchers.contains(""));
-        assertThat(split(' ').$("a"), Matchers.contains("a"));
-        assertThat(split(' ').$("abc"), Matchers.contains("abc"));
-    }
-
-    @Test
     public void splitStringByCharacterDelimiter() {
         Iterable<String> strings = split(' ').$("first second third");
         assertThat(strings, contains("first", "second", "third"));
@@ -490,14 +478,6 @@ public class StringsTest {
     public void consecutiveSplitCharsYieldsEmptyStrings() {
         Iterable<String> strings = split(',').$(",,first,second,,third,");
         assertThat(strings, contains("", "", "first", "second", "", "third", ""));
-    }
-
-    @Test
-    public void splittingAStringWhereEveryCharIsAnDelimiterYieldsEmptyStrings() {
-        String string = " 12 ";
-        Iterable<String> strings = split(either(digit).or(whitespace)).$(string);
-        assertThat(strings, Matchers.<String>iterableWithSize(string.length() + 1));
-        assertThat(strings, everyItem(is("")));
     }
 
     @Test
@@ -511,10 +491,4 @@ public class StringsTest {
         assertThat(split("<|>").$("<|><|>a<|>b<|><|>c<|><|>"), contains("", "", "a", "b", "", "c", "", ""));
     }
 
-    @Test
-    public void splitAnyStringByNonExistingSubstringDelimiterYieldsTheOriginalString() {
-        assertThat(split("ab").$(""), Matchers.contains(""));
-        assertThat(split("ab").$("a"), Matchers.contains("a"));
-        assertThat(split("ab").$("axbx"), Matchers.contains("axbx"));
-    }
 }
