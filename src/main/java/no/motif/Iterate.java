@@ -2,8 +2,11 @@ package no.motif;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
+import static no.motif.Base.notNull;
+import static no.motif.Base.when;
 import static no.motif.Singular.optional;
 
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
@@ -153,6 +156,14 @@ public final class Iterate {
      */
     public static final Predicate<Iterator<?>> hasNext = new Predicate<Iterator<?>>() {
         @Override public boolean $(Iterator<?> iterator) { return iterator.hasNext(); }};
+
+
+    /**
+     * Yields the {@link Collection#size() size} of collections, or <code>0</code> if
+     * the collection is <code>null</code>.
+     */
+    public static final Fn<Collection<?>, Integer> size = when(notNull, new Fn<Collection<?>, Integer>() {
+        @Override public Integer $(Collection<?> collection) { return collection.size(); }}).orElse(0);
 
 
     /**
