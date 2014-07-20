@@ -13,9 +13,9 @@ public class SplitOnCharacter implements Iterable<String>, Serializable {
 
     private final String string;
     private final int stringLength;
-    private final Predicate<Character> splittingCharacter;
+    private final Predicate<? super Character> splittingCharacter;
 
-    public SplitOnCharacter(String string, Predicate<Character> splittingCharacter) {
+    public SplitOnCharacter(String string, Predicate<? super Character> splittingCharacter) {
         this.string = string;
         this.stringLength = string.length();
         this.splittingCharacter = splittingCharacter;
@@ -36,7 +36,7 @@ public class SplitOnCharacter implements Iterable<String>, Serializable {
         };
     }
 
-    private static int indexOf(Predicate<Character> character, String string, int startIndex) {
+    private static int indexOf(Predicate<? super Character> character, String string, int startIndex) {
         for ( ; startIndex < string.length() && !character.$(string.charAt(startIndex)); startIndex++);
         return startIndex;
     }

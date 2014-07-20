@@ -634,7 +634,7 @@ public final class Strings {
      * @param character the predicate which decides if a character is
      *                  a delimiter.
      */
-    public static Fn<String, Iterable<String>> split(final Predicate<Character> character) {
+    public static Fn<String, Iterable<String>> split(final Predicate<? super Character> character) {
         return new Fn<String, Iterable<String>>() {
             @Override public Iterable<String> $(String string) {
                 return new SplitOnCharacter(string, character);
