@@ -16,6 +16,7 @@ import static org.junit.Assume.assumeThat;
 import java.util.List;
 
 import no.motif.f.Predicate.Always;
+import no.motif.single.Elem;
 
 import org.junit.contrib.theories.Theories;
 import org.junit.contrib.theories.Theory;
@@ -54,5 +55,12 @@ public class StringsTheoriesTest {
         List<String> splitted = the(string).split(splittingOn(c)).collect();
         int charOccurences = on(string).filter(equalTo(c)).collect().size();
         assertThat(splitted, hasSize(charOccurences + 1));
+    }
+
+    @Theory
+    public void iteratingAnyStringYieldsItsCharacters(@ForAll String anyString) {
+        for (Elem<Character> c : on(anyString).indexed().collect()) {
+            assertThat(c.value, is(anyString.charAt(c.index)));
+        }
     }
 }

@@ -352,6 +352,17 @@ public final class Base {
     public static <I1, I2, V> Constant<I1, I2, V> always(V value) { return new Constant<>(value); }
 
 
+    /**
+     * Create a predicate which always yields the given <code>boolean</code> value.
+     *
+     * @param bool The <code>boolean</code> value to yield.
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> Predicate<T> always(boolean bool) {
+        return (Predicate<T>) (bool ? Predicate.Always.yes() : Predicate.Always.no());
+    }
+
+
 
     /**
      * Create a function which always throw the given exception. If the
