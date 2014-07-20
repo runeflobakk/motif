@@ -602,11 +602,9 @@ public final class Strings {
      * The substring is not included in the resulting strings, and any
      * consecutive substring are treated as one delimiter instance.
      *
-     * @param character the delimiter character
-     * @param string
-     * @return
+     * @param substring
      */
-    public static Fn<String, Iterable<String>> split(final String substring) {
+    public static Fn<String, Iterable<String>> splittingOn(final String substring) {
         return new Fn<String, Iterable<String>>() {
             @Override public Iterable<String> $(String string) {
                 return new SplitOnSubstring(string, substring);
@@ -621,7 +619,7 @@ public final class Strings {
      *
      * @param character the delimiter character
      */
-    public static Fn<String, Iterable<String>> split(char character) { return split(equalTo(character)); }
+    public static Fn<String, Iterable<String>> splittingOn(char character) { return splittingOn(equalTo(character)); }
 
 
     /**
@@ -634,7 +632,7 @@ public final class Strings {
      * @param character the predicate which decides if a character is
      *                  a delimiter.
      */
-    public static Fn<String, Iterable<String>> split(final Predicate<? super Character> character) {
+    public static Fn<String, Iterable<String>> splittingOn(final Predicate<? super Character> character) {
         return new Fn<String, Iterable<String>>() {
             @Override public Iterable<String> $(String string) {
                 return new SplitOnCharacter(string, character);

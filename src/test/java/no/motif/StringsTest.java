@@ -32,7 +32,7 @@ import static no.motif.Strings.numeric;
 import static no.motif.Strings.prepend;
 import static no.motif.Strings.repeat;
 import static no.motif.Strings.reversed;
-import static no.motif.Strings.split;
+import static no.motif.Strings.splittingOn;
 import static no.motif.Strings.startsWith;
 import static no.motif.Strings.substring;
 import static no.motif.Strings.toDouble;
@@ -470,25 +470,25 @@ public class StringsTest {
 
     @Test
     public void splitStringByCharacterDelimiter() {
-        Iterable<String> strings = split(' ').$("first second third");
+        Iterable<String> strings = splittingOn(' ').$("first second third");
         assertThat(strings, contains("first", "second", "third"));
     }
 
     @Test
     public void consecutiveSplitCharsYieldsEmptyStrings() {
-        Iterable<String> strings = split(',').$(",,first,second,,third,");
+        Iterable<String> strings = splittingOn(',').$(",,first,second,,third,");
         assertThat(strings, contains("", "", "first", "second", "", "third", ""));
     }
 
     @Test
     public void splittingAStringUsingADelimiterString() {
-        assertThat(split(",").$("a,b"), contains("a", "b"));
+        assertThat(splittingOn(",").$("a,b"), contains("a", "b"));
     }
 
     @Test
     public void consecutiveSplittingSubstringsYieldsEmptyStrings() {
-        assertThat(split(",").$(",a,,b,"), contains("", "a", "", "b", ""));
-        assertThat(split("<|>").$("<|><|>a<|>b<|><|>c<|><|>"), contains("", "", "a", "b", "", "c", "", ""));
+        assertThat(splittingOn(",").$(",a,,b,"), contains("", "a", "", "b", ""));
+        assertThat(splittingOn("<|>").$("<|><|>a<|>b<|><|>c<|><|>"), contains("", "", "a", "b", "", "c", "", ""));
     }
 
 }

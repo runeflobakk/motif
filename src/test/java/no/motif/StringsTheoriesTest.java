@@ -3,7 +3,7 @@ package no.motif;
 import static no.motif.Base.equalTo;
 import static no.motif.Iterate.on;
 import static no.motif.Singular.the;
-import static no.motif.Strings.split;
+import static no.motif.Strings.splittingOn;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.everyItem;
@@ -29,7 +29,7 @@ public class StringsTheoriesTest {
     @Theory
     public void splitAnyStringOnNonExistingSubstringYieldsTheOriginalString(@ForAll String string, @ForAll String substring) {
         assumeThat(string, not(containsString(substring)));
-        List<String> splitted = the(string).split(split(substring)).collect();
+        List<String> splitted = the(string).split(splittingOn(substring)).collect();
         assertThat(splitted, hasSize(1));
         assertThat(splitted, contains(string));
     }
@@ -37,21 +37,21 @@ public class StringsTheoriesTest {
     @Theory
     public void splitAnyStringOnNonExistingCharYieldsTheOriginalString(@ForAll String string, @ForAll char c) {
         assumeThat(string.indexOf(c), is(-1));
-        List<String> splitted = the(string).split(split(c)).collect();
+        List<String> splitted = the(string).split(splittingOn(c)).collect();
         assertThat(splitted, hasSize(1));
         assertThat(splitted, contains(string));
     }
 
     @Theory
     public void splittingStringsWhereEveryCharIsAnDelimiterYieldsEmptyStrings(@ForAll String string) {
-        List<String> splitted = the(string).split(split(Always.yes())).collect();
+        List<String> splitted = the(string).split(splittingOn(Always.yes())).collect();
         assertThat(splitted, hasSize(string.length() + 1));
         assertThat(splitted, everyItem(is("")));
     }
 
     @Theory
     public void splitsToOneMoreStringsThanOccurencesOfTheCharacter(@ForAll String string, @ForAll char c) {
-        List<String> splitted = the(string).split(split(c)).collect();
+        List<String> splitted = the(string).split(splittingOn(c)).collect();
         int charOccurences = on(string).filter(equalTo(c)).collect().size();
         assertThat(splitted, hasSize(charOccurences + 1));
     }
