@@ -35,7 +35,7 @@ public final class IO {
 
 
     /**
-     * {@link OutputStream#write(Object) Write} bytes to an <code>OutputStream</code>.
+     * {@link OutputStream#write(int) Write} bytes to an <code>OutputStream</code>.
      *
      * @param out the {@link OutputStream} to write to.
      * @return The <code>write</code> {@link Do} operation.
