@@ -251,6 +251,12 @@ public final class Base {
         @Override public String $(Object value) { return String.valueOf(value); }};
 
 
+    /**
+     * Yields the {@link Object#hashCode() hashCode} for objects, or 0 if <code>null</code>.
+     */
+    public static final Fn<Object, Integer> hashCode = new Fn<Object, Integer>() {
+        @Override public Integer $(Object o) { return o != null ? o.hashCode() : 0; }};
+
 
     /**
      * Get the {@link Throwable#getMessage() message} of a <code>Throwable</code>.
