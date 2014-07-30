@@ -1,7 +1,7 @@
 package no.motif.iter;
 
 import static no.motif.Singular.none;
-import static no.motif.Singular.optional;
+import static no.motif.Singular.the;
 
 import java.io.Serializable;
 import java.util.Iterator;
@@ -28,7 +28,7 @@ final class FilteredIterable<T> implements Iterable<T>, Serializable {
             protected Optional<T> nextIfAvailable() {
                 while (iterator.hasNext()) {
                     T next = iterator.next();
-                    if (accepts.$(next)) return optional(next);
+                    if (accepts.$(next)) return the(next).asOptional();
                 }
                 return none();
             }

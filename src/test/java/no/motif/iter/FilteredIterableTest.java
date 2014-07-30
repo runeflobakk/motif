@@ -1,6 +1,9 @@
 package no.motif.iter;
 
+import static no.motif.Base.either;
 import static no.motif.Base.equalTo;
+import static no.motif.Base.is;
+import static no.motif.Base.isNull;
 import static no.motif.Iterate.none;
 import static no.motif.Iterate.on;
 import static org.hamcrest.Matchers.contains;
@@ -29,6 +32,11 @@ public class FilteredIterableTest {
     @Test
     public void filterMatchesNoneOfTheElements() {
         assertThat(on("a", "b", "c").filter(equalTo("d")), emptyIterable());
+    }
+
+    @Test
+    public void treatsNullsAsValidElements() {
+        assertThat(on("a", null, "b", null).filter(either(is("a")).or(isNull)), contains("a", null, null));
     }
 
 }

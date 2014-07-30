@@ -72,4 +72,11 @@ public interface A<V> extends Iterable<V>, Mappable<V>, Filterable<V>, Appendabl
      */
     <O> Elements<O> split(Fn<? super V, ? extends Iterable<O>> splitter);
 
+
+    /**
+     * @return <code>this</code>, typed as an {@link Optional} <em>which is present</em> regardless
+     *         of the contained value.
+     */
+    Optional<V> asOptional();
+
 }
