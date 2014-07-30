@@ -2,12 +2,14 @@ package no.motif;
 
 import static no.motif.Iterate.on;
 
+import java.util.Collection;
 import java.util.Objects;
 
 import no.motif.f.Do;
 import no.motif.f.Fn;
 import no.motif.f.Fn2;
 import no.motif.f.Predicate;
+import no.motif.f.Predicate.Always;
 import no.motif.f.combine.Conjunction;
 import no.motif.f.combine.Disjunction;
 import no.motif.f.combine.DoChain;
@@ -380,6 +382,14 @@ public final class Base {
 
 
 
+    /**
+     * Evaluates if objects are {@link Collection#contains(Object) contained in} a the given
+     * <code>Collection</code>.
+     */
+    public static <T> Predicate<T> containedIn(final Collection<? extends T> collection) {
+        return collection == null || collection.isEmpty() ? Always.<T>no() : new Predicate<T>() {
+            @Override public boolean $(T value) { return collection.contains(value); }};
+    }
 
     private Base() {}
 
