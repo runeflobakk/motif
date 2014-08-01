@@ -1,5 +1,6 @@
 package no.motif.iter;
 
+import static no.motif.Base.always;
 import static no.motif.Base.toString;
 import static no.motif.Iterate.none;
 import static no.motif.Iterate.on;
@@ -19,6 +20,12 @@ public class MappedIterableTest {
     @Test
     public void mapTheValuesOfAnIterable() {
         assertThat(on(1, 2).map(toString), contains("1", "2"));
+    }
+
+    @Test
+    public void treatsNullsAsValidElements() {
+        assertThat(on("a", null, "b", null).map(always("x")), contains("x", "x", "x", "x"));
+        assertThat(on("a", null, "b", null).map(always(null)), contains((Object) null, null, null, null));
     }
 
 }

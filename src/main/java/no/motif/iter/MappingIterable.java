@@ -1,12 +1,11 @@
 package no.motif.iter;
 
-import static no.motif.Iterate.hasNext;
-import static no.motif.Singular.optional;
+import static no.motif.Singular.the;
 
 import java.io.Serializable;
 import java.util.Iterator;
 
-import no.motif.Iterate;
+import no.motif.Singular;
 import no.motif.f.Fn;
 import no.motif.single.Optional;
 
@@ -28,7 +27,7 @@ final class MappingIterable<I, O> implements Iterable<O>, Serializable {
 
             @Override
             protected Optional<O> nextIfAvailable() {
-                return optional(hasNext, iterator).map(Iterate.<I>next()).map(map);
+                return iterator.hasNext() ? the(map.$(iterator.next())).asOptional() : Singular.<O>none();
             }
         };
     }
