@@ -96,7 +96,7 @@ public class CombinedMapsView<K, I, V> implements Map<K, V> {
 
     @Override
     public void clear() {
-        for (Entry<K, I> entry : on(m1).filter(where(Maps.<I>value(), keyIn(m2)))) {
+        for (Entry<K, I> entry : on(m1).filter(where(Maps.<I>value(), keyIn(m2))).eval()) {
             m1.remove(entry.getKey());
             m2.remove(entry.getValue());
         }
