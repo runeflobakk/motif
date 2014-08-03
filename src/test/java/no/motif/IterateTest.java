@@ -8,6 +8,7 @@ import static no.motif.Base.toString;
 import static no.motif.Iterate.empty;
 import static no.motif.Iterate.on;
 import static no.motif.Singular.optional;
+import static no.motif.Singular.the;
 import static no.motif.Strings.before;
 import static no.motif.Strings.toChars;
 import static org.hamcrest.Matchers.contains;
@@ -24,10 +25,14 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import no.motif.f.Fn;
+import no.motif.iter.SimpleIterator;
+import no.motif.single.Optional;
 import no.motif.types.Elements;
 
 import org.junit.Test;
@@ -95,6 +100,26 @@ public class IterateTest {
     public void flatMap() {
         assertThat(on("ab", "cd").flatMap(toChars), contains('a', 'b', 'c', 'd'));
         assertThat(on(1, 2).flatMap(always(emptyList())), emptyIterable());
+    }
+
+    @Test
+    public void consumingStreamLikeIterables() {
+        Iterable<Integer> naturals = new Iterable<Integer>() {
+            int current = 1;
+            @Override
+            public Iterator<Integer> iterator() {
+                return new SimpleIterator<Integer>() {
+                    @Override protected Optional<Integer> nextIfAvailable() throws Exception {
+                        return the(current++).asOptional();
+                    }}; }
+        };
+
+        assertThat(on(naturals).take(4), contains(1, 2, 3, 4));
+    }
+
+    @Test
+    public void iterateEmptyJavaCollectionYieldsNoneInstance() {
+        assertThat(on(new ArrayList<>()), sameInstance(Iterate.none()));
     }
 
 }

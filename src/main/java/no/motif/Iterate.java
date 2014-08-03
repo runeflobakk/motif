@@ -110,7 +110,7 @@ public final class Iterate {
 
 
     private static <T> Elements<T> newInstance(Iterable<T> elements) {
-        if (elements == null || !elements.iterator().hasNext()) return none();
+        if (elements == null || (elements instanceof Collection && ((Collection<?>)elements).isEmpty())) return none();
         else return new PreparedIterable<T>(elements);
     }
 
