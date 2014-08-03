@@ -1,6 +1,7 @@
 package no.motif;
 
 import static no.motif.Base.always;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -21,5 +22,18 @@ public class ImplicitsTest {
         Implicits.setTimeZone(always(pst));
         assertThat(Implicits.getTimeZone(), is(pst));
         Implicits.setDefaultTimeZone();
+    }
+
+    @Test
+    public void defaultTimeMillis() {
+        long now = System.currentTimeMillis();
+        assertThat(Implicits.getTimeMillis(), greaterThanOrEqualTo(now));
+    }
+
+    @Test
+    public void overrideSystemTime() {
+        Implicits.setTimeMillis(always(1000L));
+        assertThat(Implicits.getTimeMillis(), is(1000L));
+        Implicits.useSystemClock();
     }
 }
