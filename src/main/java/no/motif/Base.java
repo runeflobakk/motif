@@ -7,6 +7,7 @@ import java.util.Objects;
 
 import no.motif.f.Do;
 import no.motif.f.Fn;
+import no.motif.f.Fn0;
 import no.motif.f.Fn2;
 import no.motif.f.Predicate;
 import no.motif.f.Predicate.Always;
@@ -163,10 +164,19 @@ public final class Base {
      * Equality predicate, checks if values are equal to the given value.
      *
      * @param value the value the predicate should check for equality against.
-     * @return the equality predicate.
      */
-    public static <T> Predicate<T> equalTo(final T value) {
-        return new Predicate<T>() { @Override public boolean $(T input) { return Objects.equals(input, value); }}; }
+    public static <T> Predicate<T> equalTo(final T value) { return equalTo(always(value)); }
+
+
+    /**
+     * Equality predicate, checks if values are equal to the value computed from the given {@link Fn0}.
+     *
+     * @param value the {@link Fn0} which will compute the value to check for equality against on each
+     *              application of the predicate.
+     */
+    public static <T> Predicate<T> equalTo(final Fn0<? super T> value) {
+        return new Predicate<T>() { @Override public boolean $(T input) {
+            return Objects.equals(input, value.$()); }}; }
 
 
     /**
