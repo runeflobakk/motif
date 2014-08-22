@@ -315,8 +315,8 @@ public final class Base {
      * @param fn The first function in the chain.
      * @return the given function as the first function in a chain.
      */
-    public static final <I, O> FnChain<I, O, O> first(Fn<I, O> fn) {
-        return new FnChain<>(fn, NOP.<O>fn());
+    public static final <I, O> FnChain<I, O> first(Fn<I, O> fn) {
+        return FnChain.chain(fn);
     }
 
 
