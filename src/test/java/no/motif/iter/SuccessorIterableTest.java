@@ -1,6 +1,6 @@
 package no.motif.iter;
 
-import static no.motif.Base.cause;
+import static no.motif.Exceptions.cause;
 import static no.motif.Ints.increment;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;

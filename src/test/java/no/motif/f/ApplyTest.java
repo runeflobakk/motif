@@ -1,6 +1,6 @@
 package no.motif.f;
 
-import static no.motif.Base.cause;
+import static no.motif.Exceptions.cause;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
