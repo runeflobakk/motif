@@ -12,6 +12,12 @@ public class DoChain<T> implements Do<T> {
         this.secondAction = secondAction;
     }
 
+    /**
+     * Append another sideeffect action to the chain.
+     *
+     * @param nextAction the next action.
+     * @return new chain with the given {@link Do} appended
+     */
     public DoChain<T> then(Do<? super T> nextAction) {
         return new DoChain<>(this, nextAction);
     }
