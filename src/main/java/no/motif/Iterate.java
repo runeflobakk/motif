@@ -15,7 +15,7 @@ import java.util.Set;
 
 import no.motif.f.Fn;
 import no.motif.f.Predicate;
-import no.motif.iter.PreIndexedContentIterator;
+import no.motif.iter.CharsInStringIterator;
 import no.motif.iter.PreparedIterable;
 import no.motif.iter.boxing.BytesIterable;
 import no.motif.iter.ordering.ByPropertyComparator;
@@ -53,16 +53,12 @@ public final class Iterate {
      */
     public static Elements<Character> on(final CharSequence string) {
         if (string == null) return Iterate.none();
-        Iterable<Character> chars = new Iterable<Character>() {
-            @Override public Iterator<Character> iterator() {
-                return new PreIndexedContentIterator<Character>(string.length()) {
-                    @Override protected Character elementAt(int index) {
-                        return string.charAt(index);
-                    }
-                };
+        return newInstance(new Iterable<Character>() {
+            @Override
+            public Iterator<Character> iterator() {
+                return new CharsInStringIterator(string);
             }
-        };
-        return newInstance(chars);
+        });
     }
 
 

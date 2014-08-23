@@ -12,7 +12,9 @@ import no.motif.f.Fn2;
 import no.motif.f.Predicate;
 import no.motif.f.Predicate.Always;
 import no.motif.f.combine.Conjunction;
+import no.motif.f.combine.ConjunctionPremise;
 import no.motif.f.combine.Disjunction;
+import no.motif.f.combine.DisjunctionPremise;
 import no.motif.f.combine.DoChain;
 import no.motif.f.combine.Fn2Chain;
 import no.motif.f.combine.FnChain;
@@ -83,6 +85,20 @@ public final class Base {
     }
 
 
+    /**
+     * Create a AND-expression of several {@link Fn0 Fn0&lt;Boolean&gt;s}, starting with the one
+     * given to this method.
+     *
+     * @see ConjunctionPremise
+     * @param premise The first <code>Fn0&lt;Boolean&gt;</code>.
+     * @return a new <code>Fn0&lt;Boolean&gt;</code> which may be used to build up an AND-expression by
+     *         chaining the {@link ConjunctionPremise#and(Fn0) and(anotherPremise)} method.
+     */
+    public static ConjunctionPremise both(Fn0<Boolean> premise) {
+        return new ConjunctionPremise(premise);
+    }
+
+
 
     /**
      * Compose an AND-expression of several predicates.
@@ -95,6 +111,20 @@ public final class Base {
     @SuppressWarnings("varargs")
     public static <T> Conjunction<T> allOf(Predicate<? super T> ... predicates) {
         return new Conjunction<>(predicates);
+    }
+
+    /**
+     * Compose an AND-expression of several {@link Fn0 Fn0&lt;Boolean&gt;s}.
+     *
+     * @see ConjunctionPremise
+     * @param premises the <code>Fn0&lt;Boolean&gt;s</code>.
+     * @return a new <code>Fn0&lt;Boolean&gt;</code> which is the conjunction
+     *         (AND) of the given premises.
+     */
+    @SafeVarargs
+    @SuppressWarnings("varargs")
+    public static ConjunctionPremise allOf(Fn0<Boolean> ... premises) {
+        return new ConjunctionPremise(premises);
     }
 
 
@@ -114,6 +144,19 @@ public final class Base {
     }
 
 
+    /**
+     * Create a OR-expression of several {@link Fn0 Fn0&lt;Boolean&gt;s},
+     * starting with the one given to this method.
+     *
+     * @see DisjunctionPremise
+     * @param premise The first <code>Fn0&lt;Boolean&gt;</code>.
+     * @return a new <code>Fn0&lt;Boolean&gt;</code> which may be used to build up an OR-expression by
+     *         chaining the {@link DisjunctionPremise#or(Fn0) or(anotherPremise)} method.
+     */
+    public static DisjunctionPremise either(Fn0<Boolean> premise) {
+        return new DisjunctionPremise(premise);
+    }
+
 
     /**
      * Compose an OR-expression of several predicates.
@@ -126,6 +169,20 @@ public final class Base {
     @SuppressWarnings("varargs")
     public static <T> Disjunction<T> anyOf(Predicate<? super T> ... predicates) {
         return new Disjunction<>(predicates);
+    }
+
+
+    /**
+     * Compose an OR-expression of several {@link Fn0 Fn0&lt;Boolean&gt;s}.
+     *
+     * @see DisjunctionPremise
+     * @param premises the <code>Fn0&lt;Boolean&gt;s</code>.
+     * @return a new <code>Fn0&lt;Boolean&gt;s</code> which is the disjunction (OR) of the given premises.
+     */
+    @SafeVarargs
+    @SuppressWarnings("varargs")
+    public static DisjunctionPremise anyOf(Fn0<Boolean> ... premises) {
+        return new DisjunctionPremise(premises);
     }
 
 

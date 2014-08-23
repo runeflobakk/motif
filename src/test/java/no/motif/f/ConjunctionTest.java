@@ -8,6 +8,9 @@ import static no.motif.Strings.contains;
 import static no.motif.Strings.length;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
+import java.util.Arrays;
+
 import org.junit.Test;
 
 public class ConjunctionTest {
@@ -32,6 +35,8 @@ public class ConjunctionTest {
 
     @Test
     public void emptyConjunctionIsTrue() {
-        assertTrue(allOf().$("x"));
+        @SuppressWarnings("unchecked")
+        Predicate<Object>[] none = (Predicate<Object>[]) Arrays.<Predicate<Object>>asList().toArray();
+        assertTrue(allOf(none).$("x"));
     }
 }

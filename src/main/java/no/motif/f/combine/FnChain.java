@@ -40,7 +40,7 @@ public abstract class FnChain<I, O> implements Fn<I, O> {
      * yields the result from the last <code>Fn</code> as usual, after it has been passed to the given
      * <code>Do</code>. If you need the resulting chain as a <code>Do</code>, use {@link #asDo}.
      *
-     * @param action The {@link Do} to apply on the output from the last <code>Fn</code> in the chain.
+     * @param sideeffect The {@link Do} to apply on the output from the last <code>Fn</code> in the chain.
      * @return The resulting new chain.
      */
     public abstract FnChain<I, O> then(Do<? super O> sideeffect);

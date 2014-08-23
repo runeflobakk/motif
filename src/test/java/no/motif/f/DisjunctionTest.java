@@ -9,6 +9,8 @@ import static no.motif.Strings.length;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Arrays;
+
 import org.junit.Test;
 
 public class DisjunctionTest {
@@ -33,6 +35,8 @@ public class DisjunctionTest {
 
     @Test
     public void emptyDisjunctionIsFalse() {
-        assertFalse(anyOf().$("x"));
+        @SuppressWarnings("unchecked")
+        Predicate<Object>[] none = (Predicate<Object>[]) Arrays.<Predicate<Object>>asList().toArray();
+        assertFalse(anyOf(none).$("x"));
     }
 }
