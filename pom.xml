@@ -42,13 +42,13 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.11</version>
+            <version>4.12-beta-1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.contrib</groupId>
             <artifactId>junit-theories</artifactId>
-            <version>4.11</version>
+            <version>4.12-beta-1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -60,7 +60,7 @@
         <dependency>
             <groupId>org.reflections</groupId>
             <artifactId>reflections</artifactId>
-            <version>0.9.9-RC1</version>
+            <version>0.9.9-RC2</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -84,25 +84,25 @@
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy</artifactId>
-            <version>2.3.0-beta-2</version>
+            <version>2.4.0-beta-2</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>nl.jqno.equalsverifier</groupId>
             <artifactId>equalsverifier</artifactId>
-            <version>1.4.1</version>
+            <version>1.5</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.pholser</groupId>
             <artifactId>junit-quickcheck-core</artifactId>
-            <version>0.3</version>
+            <version>0.4-beta-1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.pholser</groupId>
             <artifactId>junit-quickcheck-generators</artifactId>
-            <version>0.3</version>
+            <version>0.4-beta-1</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -112,7 +112,7 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.7.0.201403182114</version>
+                <version>0.7.1.201405082137</version>
                 <executions>
                     <execution>
                         <goals>
@@ -124,7 +124,7 @@
             <plugin>
                 <groupId>de.thetaphi</groupId>
                 <artifactId>forbiddenapis</artifactId>
-                <version>1.4.1</version>
+                <version>1.6.1</version>
                 <executions>
                     <execution>
                         <goals>
@@ -194,7 +194,7 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-source-plugin</artifactId>
-                    <version>2.2.1</version>
+                    <version>2.3</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-javadoc-plugin</artifactId>
@@ -202,7 +202,7 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-jar-plugin</artifactId>
-                    <version>2.4</version>
+                    <version>2.5</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-install-plugin</artifactId>
@@ -232,7 +232,7 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-scm-publish-plugin</artifactId>
-                    <version>1.0-beta-2</version>
+                    <version>1.1</version>
                     <configuration>
                         <scmBranch>gh-pages</scmBranch>
                     </configuration>
@@ -248,7 +248,7 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-site-plugin</artifactId>
-                    <version>3.3</version>
+                    <version>3.4</version>
                     <configuration>
                         <skipDeploy>true</skipDeploy>
                     </configuration>
@@ -266,14 +266,9 @@
                     </executions>
                     <dependencies>
                         <dependency>
-                            <groupId>org.apache.maven.doxia</groupId>
-                            <artifactId>doxia-module-markdown</artifactId>
-                            <version>1.5</version>
-                        </dependency>
-                        <dependency>
                             <groupId>lt.velykis.maven.skins</groupId>
                             <artifactId>reflow-velocity-tools</artifactId>
-                            <version>1.1.0</version>
+                            <version>1.1.1</version>
                         </dependency>
                         <dependency>
                             <groupId>org.apache.velocity</groupId>
@@ -363,12 +358,12 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>findbugs-maven-plugin</artifactId>
-                <version>2.5.3</version>
+                <version>3.0.0</version>
             </plugin>
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.7.0.201403182114</version>
+                <version>0.7.1.201405082137</version>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
