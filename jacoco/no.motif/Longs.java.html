@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Longs.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Motif</a> &gt; <a href="index.source.html" class="el_package">no.motif</a> &gt; <span class="el_source">Longs.java</span></div><h1>Longs.java</h1><pre class="source lang-java linenums">package no.motif;
+
+import static no.motif.Base.not;
+import static no.motif.Base.notNull;
+import static no.motif.Base.when;
+import static no.motif.f.Apply.argsReversed;
+import no.motif.f.Apply;
+import no.motif.f.Fn;
+import no.motif.f.Fn2;
+import no.motif.f.Predicate;
+import no.motif.f.base.FalseIfNull;
+import no.motif.f.base.NullIfEitherArgIsNull;
+
+public final class Longs {
+
+<span class="fc" id="L16">    public static final Predicate&lt;Long&gt; even = new FalseIfNull&lt;Long&gt;() {</span>
+<span class="fc bfc" id="L17" title="All 2 branches covered.">        @Override public boolean orElse(Long i) { return i % 2 == 0; }};</span>
+
+<span class="fc" id="L19">    public static final Predicate&lt;Long&gt; odd = not(even);</span>
+
+
+    /**
+     * Yields the {@link Number#longValue() long value} of any number.
+     */
+<span class="fc" id="L25">    public static final Fn&lt;Number, Long&gt; longValue = when(notNull, new Fn&lt;Number, Long&gt;() {</span>
+<span class="fc" id="L26">        @Override public Long $(Number value) { return value.longValue(); }});</span>
+
+
+<span class="fc" id="L29">    public static final Fn2&lt;Number, Number, Long&gt; sum = new NullIfEitherArgIsNull&lt;Number, Number, Long&gt;() {</span>
+        @Override public Long orElse(Number first, Number second) {
+<span class="fc" id="L31">            return first.longValue() + second.longValue(); }};</span>
+
+
+<span class="fc" id="L34">    public static final Fn2&lt;Number, Number, Long&gt; multiply = new NullIfEitherArgIsNull&lt;Number, Number, Long&gt;() {</span>
+        @Override public Long orElse(Number factor1, Number factor2) {
+<span class="fc" id="L36">            return factor1.longValue() * factor2.longValue(); }};</span>
+
+
+<span class="fc" id="L39">    public static final Fn2&lt;Number, Number, Long&gt; divide = new Fn2&lt;Number, Number, Long&gt;() {</span>
+        @Override public Long $(Number factor1, Number factor2) {
+<span class="fc" id="L41">            return factor1.longValue() / factor2.longValue(); }};</span>
+
+
+<span class="fc" id="L44">    public static final Fn&lt;Number, Long&gt; doubled = multipliedBy(2);</span>
+
+
+<span class="fc" id="L47">    public static final Fn&lt;Number, Long&gt; rounded = when(notNull, new Fn&lt;Number, Long&gt;() {</span>
+<span class="fc" id="L48">        @Override public Long $(Number decimal) { return Math.round(decimal.doubleValue()); }});</span>
+
+
+<span class="fc" id="L51">    public static final Fn&lt;Number, Long&gt; increment = when(notNull, new Fn&lt;Number, Long&gt;() {</span>
+<span class="fc" id="L52">        @Override public Long $(Number n) { return n.longValue() + 1; }});</span>
+
+<span class="fc" id="L54">    public static final Fn&lt;Number, Long&gt; add(long value) { return when(notNull, Apply.partially(sum).of(value)); }</span>
+
+<span class="fc" id="L56">    public static final Fn&lt;Number, Long&gt; subtract(long value) { return add(value * -1); }</span>
+
+<span class="fc" id="L58">    public static final Fn&lt;Number, Long&gt; multipliedBy(long value) { return when(notNull, Apply.partially(multiply).of(value)); }</span>
+
+<span class="fc" id="L60">    public static final Fn&lt;Number, Long&gt; dividedBy(long value) { return when(notNull, Apply.partially(argsReversed(divide)).of(value)); }</span>
+
+
+<span class="fc" id="L63">    private Longs() {}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.0.201403182114</span></div></body></html>

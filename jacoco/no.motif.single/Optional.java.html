@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Optional.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Motif</a> &gt; <a href="index.source.html" class="el_package">no.motif.single</a> &gt; <span class="el_source">Optional.java</span></div><h1>Optional.java</h1><pre class="source lang-java linenums">package no.motif.single;
+
+import static no.motif.Base.notNull;
+
+import java.io.Serializable;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+import java.util.Objects;
+
+import no.motif.Iterate;
+import no.motif.Singular;
+import no.motif.f.Fn;
+import no.motif.f.Predicate;
+import no.motif.iter.EmptyIterator;
+import no.motif.iter.SingularIterator;
+import no.motif.types.Appendable;
+import no.motif.types.Elements;
+import no.motif.types.Filterable;
+import no.motif.types.Mappable;
+import no.motif.types.Prependable;
+
+/**
+ * An &lt;code&gt;Optional&lt;/code&gt; wraps a value that is either defined or
+ * undefined. Usually, undefined means &lt;code&gt;null&lt;/code&gt;, and defined means
+ * an object instance, but the distinction between defined and undefined can
+ * be customized with a {@link Predicate}.
+ *
+ * @param &lt;V&gt; The type of the wrapped object.
+ */
+public abstract class Optional&lt;V&gt;
+    implements Iterable&lt;V&gt;, Mappable&lt;V&gt;, Filterable&lt;V&gt;, Appendable&lt;V&gt;, Prependable&lt;V&gt;, Serializable {
+
+
+    /**
+     * &lt;h1&gt;*** Not part of the public API! ***&lt;/h1&gt;
+     * Factory method for resolving a value to {@link Some} or {@link None}.
+     *
+     * @see Singular#optional(Object)
+     * @see Singular#optional(Predicate, Object)
+     * @see Singular#none()
+     */
+    public static &lt;V&gt; Optional&lt;V&gt; resolve(Predicate&lt;? super V&gt; isPresent, V value) {
+<span class="fc bfc" id="L43" title="All 2 branches covered.">        if (isPresent.$(value)) {</span>
+<span class="fc" id="L44">            return some(value);</span>
+        } else {
+<span class="fc" id="L46">            return None.getInstance();</span>
+        }
+    }
+
+    /**
+     * &lt;h1&gt;*** Not part of the public API! ***&lt;/h1&gt;
+     *
+     * @see Singular#the(Object)
+     */
+    public static &lt;V&gt; Some&lt;V&gt; some(V value) {
+<span class="fc" id="L56">        return new Some&lt;&gt;(value);</span>
+    }
+
+
+    /**
+     * Wrapper for a 'defined' value. You never under normal
+     * circumstances refer to this type.
+     *
+     * @param &lt;V&gt; The type of the wrapped object.
+     */
+    public static final class Some&lt;V&gt; extends Optional&lt;V&gt; implements A&lt;V&gt; {
+
+        private final V value;
+
+<span class="fc" id="L70">        private Some(V value) {</span>
+<span class="fc" id="L71">            this.value = value;</span>
+<span class="fc" id="L72">        }</span>
+
+        @Override
+        public V get() {
+<span class="fc" id="L76">            return value;</span>
+        }
+
+        @Override
+        public final Iterator&lt;V&gt; iterator() {
+<span class="fc" id="L81">            return new SingularIterator&lt;V&gt;(value);</span>
+        }
+
+        @Override
+        public final boolean isSome() {
+<span class="fc" id="L86">            return true;</span>
+        }
+
+        @Override
+        public final V orElse(V fallback) {
+<span class="fc" id="L91">            return get();</span>
+        }
+
+        @Override
+        public V orNull() {
+<span class="fc" id="L96">            return value;</span>
+        }
+
+        @Override
+        public Optional&lt;V&gt; or(Optional&lt;V&gt; otherOptional) {
+<span class="fc" id="L101">            return this;</span>
+        }
+
+        @Override
+        public &lt;O&gt; Optional&lt;O&gt; map(Fn&lt;? super V, O&gt; mapper) {
+<span class="fc" id="L106">            O mapped = mapper.$(this.value);</span>
+<span class="fc" id="L107">            return resolve(notNull, mapped);</span>
+        }
+
+        @Override
+        public &lt;O&gt; Optional&lt;O&gt; map(Predicate&lt;? super O&gt; isPresent, Fn&lt;? super V, O&gt; mapper) {
+<span class="fc" id="L112">            O mapped = mapper.$(this.value);</span>
+<span class="fc" id="L113">            return resolve(isPresent, mapped);</span>
+        }
+
+        @Override
+        public &lt;O&gt; Optional&lt;O&gt; flatMap(Fn&lt;? super V, Optional&lt;O&gt;&gt; mapper) {
+<span class="fc" id="L118">            return mapper.$(value);</span>
+        }
+
+        @Override
+        public Optional&lt;V&gt; filter(Predicate&lt;? super V&gt; accepted) {
+<span class="fc" id="L123">            return resolve(accepted, value);</span>
+        }
+
+        @Override
+        public &lt;O&gt; Elements&lt;O&gt; split(Fn&lt;? super V, ? extends Iterable&lt;O&gt;&gt; splitter) {
+<span class="fc" id="L128">            return Iterate.on(splitter.$(value));</span>
+        }
+
+        @Override
+        public boolean equals(Object o) {
+<span class="fc bfc" id="L133" title="All 2 branches covered.">            if (o instanceof Some) {</span>
+<span class="fc" id="L134">                Some&lt;?&gt; other = (Some&lt;?&gt;) o;</span>
+<span class="fc" id="L135">                return Objects.equals(this.value, other.value);</span>
+            }
+<span class="fc" id="L137">            return false;</span>
+        }
+
+        @Override
+        public int hashCode() {
+<span class="fc" id="L142">            return Objects.hashCode(value);</span>
+        }
+
+        @Override
+        public String toString() {
+<span class="fc" id="L147">            return &quot;Some(&quot; + value + &quot;)&quot;;</span>
+        }
+
+    }
+
+    /**
+     * Wrapper for an 'undefined' value. You never under normal
+     * circumstances refer to this type.
+     *
+     * @param &lt;V&gt; The type of the undefined value.
+     */
+    public static final class None&lt;V&gt; extends Optional&lt;V&gt; {
+
+<span class="fc" id="L160">        private static final None&lt;?&gt; INSTANCE = new None&lt;Object&gt;();</span>
+
+        @SuppressWarnings(&quot;unchecked&quot;)
+        public static &lt;V&gt; None&lt;V&gt; getInstance() {
+<span class="fc" id="L164">            return (None&lt;V&gt;) INSTANCE;</span>
+        }
+
+<span class="fc" id="L167">        private None() {}</span>
+
+        @Override
+        public V get() {
+<span class="fc" id="L171">            throw new NoSuchElementException(&quot;Called get() on &quot; + this);</span>
+        }
+
+        @Override
+        public final Iterator&lt;V&gt; iterator() {
+<span class="fc" id="L176">            return EmptyIterator.instance();</span>
+        }
+
+        @Override
+        public final boolean isSome() {
+<span class="fc" id="L181">            return false;</span>
+        }
+
+        @Override
+        public final V orElse(V fallback) {
+<span class="fc" id="L186">            return fallback;</span>
+        }
+
+        @Override
+        public V orNull() {
+<span class="fc" id="L191">            return null;</span>
+        }
+
+        @Override
+        public Optional&lt;V&gt; or(Optional&lt;V&gt; otherOptional) {
+<span class="fc" id="L196">            return otherOptional;</span>
+        }
+
+        @Override
+        public &lt;O&gt; Optional&lt;O&gt; map(Fn&lt;? super V, O&gt; mapper) {
+<span class="fc" id="L201">            return None.getInstance();</span>
+        }
+
+        @Override
+        public &lt;O&gt; Optional&lt;O&gt; map(Predicate&lt;? super O&gt; isPresent, Fn&lt;? super V, O&gt; mapper) {
+<span class="fc" id="L206">            return None.getInstance();</span>
+        }
+
+        @Override
+        public &lt;O&gt; Optional&lt;O&gt; flatMap(Fn&lt;? super V, Optional&lt;O&gt;&gt; mapper) {
+<span class="fc" id="L211">            return None.getInstance();</span>
+        }
+
+        @Override
+        public Optional&lt;V&gt; filter(Predicate&lt;? super V&gt; filter) {
+<span class="fc" id="L216">            return None.getInstance();</span>
+        }
+
+        @Override
+        public &lt;O&gt; Elements&lt;O&gt; split(Fn&lt;? super V, ? extends Iterable&lt;O&gt;&gt; splitter) {
+<span class="fc" id="L221">            return Iterate.none();</span>
+        }
+
+        @Override
+        public String toString() {
+<span class="fc" id="L226">            return &quot;None&quot;;</span>
+        }
+
+        private Object readResolve() {
+<span class="fc" id="L230">            return None.getInstance();</span>
+        }
+
+        @Override
+        public boolean equals(Object other) {
+<span class="fc bfc" id="L235" title="All 4 branches covered.">            return this == other || other instanceof None;</span>
+        }
+
+        @Override
+        public int hashCode() {
+<span class="fc" id="L240">            return 43;</span>
+        }
+
+    }
+
+
+
+    /**
+     * Obtain the value contained in the &lt;code&gt;Optional&lt;/code&gt;. To use
+     * this method one &lt;em&gt;must&lt;/em&gt; first determine that the
+     * &lt;code&gt;Optional&lt;/code&gt; does in fact hold a value.
+     *
+     * To obtain the wrapped value, it is in general preferable to favor
+     * &lt;em&gt;iterating&lt;/em&gt; or using {@link #orElse(Object)}, which will never
+     * throw an exception.
+     *
+     * @throws NoSuchElementException if this method is called on an
+     *         &lt;code&gt;Optional&lt;/code&gt; without a defined value.
+     *
+     * @see #isSome()
+     */
+    public abstract V get();
+
+
+
+    /**
+     * Map this &lt;code&gt;Optional&lt;/code&gt; to another type of &lt;code&gt;Optional&lt;/code&gt;.
+     *
+     * @param mapper      A {@link Fn function} which transforms
+     *                    (or maps) the wrapped value to another value. This
+     *                    function will only ever be called if the
+     *                    &lt;code&gt;Optional&lt;/code&gt; holds a defined value.
+     *
+     * @return A new &lt;code&gt;Optional&lt;/code&gt; from which the new value can be
+     *         obtained, if it is defined.
+     */
+    @Override
+    public abstract &lt;O&gt; Optional&lt;O&gt; map(Fn&lt;? super V, O&gt; mapper);
+
+
+    /**
+     * Map this &lt;code&gt;Optional&lt;/code&gt; to another type of &lt;code&gt;Optional&lt;/code&gt;.
+     *
+     * @see #map(Fn)
+     * @see #resolve(Predicate, Object)
+     */
+    public abstract &lt;O&gt; Optional&lt;O&gt; map(Predicate&lt;? super O&gt; isPresent, Fn&lt;? super V, O&gt; mapper);
+
+
+    public abstract &lt;O&gt; Optional&lt;O&gt; flatMap(Fn&lt;? super V, Optional&lt;O&gt;&gt; mapper);
+
+
+    @Override
+    public abstract Optional&lt;V&gt; filter(Predicate&lt;? super V&gt; filter);
+
+
+    /**
+     * @return &lt;code&gt;true&lt;/code&gt; if the &lt;code&gt;Optional&lt;/code&gt; holds a
+     *         defined value, or &lt;code&gt;false&lt;/code&gt; otherwise, which usually
+     *         means that the wrapped value is &lt;code&gt;null&lt;/code&gt;.
+     */
+    public abstract boolean isSome();
+
+
+    /**
+     *
+     * @param fallback A value to return if called on a {@link None}.
+     * @return The wrapped value, or the fallback value if it is undefined.
+     */
+    public abstract V orElse(V fallback);
+
+
+    /**
+     * Shortcut for {@link #orElse(Object) .orElse(null)}
+     * @return The wrapped value, or &lt;code&gt;null&lt;/code&gt; if it is undefined.
+     */
+    public abstract V orNull();
+
+    /**
+     * @return If this &lt;code&gt;Optional&lt;/code&gt; is not defined, the given &lt;code&gt;otherOptional&lt;/code&gt;
+     *         is returned, otherwise the original &lt;code&gt;Optional&lt;/code&gt; is returned as-is.
+     */
+    public abstract Optional&lt;V&gt; or(Optional&lt;V&gt; otherOptional);
+
+
+    /**
+     * Split an optional value, if defined, into multiple values.
+     * &lt;p&gt;
+     * Due to limitations of the type system in Java, it is not possible to overload this
+     * method to accept both functions yielding an {@link Iterable} (as this method does)
+     * as well as functions yielding an array. It is recommended to prefer implementing
+     * {@link Fn functions} yielding Iterables. If implementing an array-yielding
+     * function is most appropriate for your case, and you wish to use the function to split
+     * an optional value using this method, it is possible to adapt the function using
+     * {@link Iterate#toIterable(Fn)}
+     * &lt;/p&gt;
+     *
+     * @param splitter a function yielding an iterable.
+     * @return the elements, or empty iterable if undefined value.
+     */
+    public abstract &lt;O&gt; Elements&lt;O&gt; split(Fn&lt;? super V, ? extends Iterable&lt;O&gt;&gt; splitter);
+
+
+    @Override
+    public Elements&lt;V&gt; append(Iterable&lt;? extends V&gt; trailingElements) {
+<span class="fc" id="L345">        return Iterate.on(this).append(trailingElements);</span>
+    }
+
+    @Override
+    public Elements&lt;V&gt; append(V value) {
+<span class="fc" id="L350">        return Iterate.on(this).append(value);</span>
+    }
+
+    @Override
+    public Elements&lt;V&gt; prepend(Iterable&lt;? extends V&gt; leadingElements) {
+<span class="fc" id="L355">        return Iterate.on(this).prepend(leadingElements);</span>
+    }
+
+    @Override
+    public Elements&lt;V&gt; prepend(V value) {
+<span class="fc" id="L360">        return Iterate.on(this).prepend(value);</span>
+    }
+
+
+<span class="fc" id="L364">    private Optional() {}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.0.201403182114</span></div></body></html>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>FilteredIterable.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Motif</a> &gt; <a href="index.source.html" class="el_package">no.motif.iter</a> &gt; <span class="el_source">FilteredIterable.java</span></div><h1>FilteredIterable.java</h1><pre class="source lang-java linenums">package no.motif.iter;
+
+import static no.motif.Singular.none;
+import static no.motif.Singular.optional;
+
+import java.io.Serializable;
+import java.util.Iterator;
+
+import no.motif.f.Predicate;
+import no.motif.single.Optional;
+
+final class FilteredIterable&lt;T&gt; implements Iterable&lt;T&gt;, Serializable {
+
+    private final Iterable&lt;T&gt; elements;
+    private final Predicate&lt;? super T&gt; accepts;
+
+<span class="fc" id="L17">    FilteredIterable(Iterable&lt;T&gt; elements, Predicate&lt;? super T&gt; filter) {</span>
+<span class="fc" id="L18">        this.elements = elements;</span>
+<span class="fc" id="L19">        this.accepts = filter;</span>
+<span class="fc" id="L20">    }</span>
+
+    @Override
+    public Iterator&lt;T&gt; iterator() {
+<span class="fc" id="L24">        return new SimpleIterator&lt;T&gt;() {</span>
+<span class="fc" id="L25">            final Iterator&lt;T&gt; iterator = elements.iterator();</span>
+
+            @Override
+            protected Optional&lt;T&gt; nextIfAvailable() {
+<span class="fc bfc" id="L29" title="All 2 branches covered.">                while (iterator.hasNext()) {</span>
+<span class="fc" id="L30">                    T next = iterator.next();</span>
+<span class="fc bfc" id="L31" title="All 2 branches covered.">                    if (accepts.$(next)) return optional(next);</span>
+<span class="fc" id="L32">                }</span>
+<span class="fc" id="L33">                return none();</span>
+            }
+        };
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.0.201403182114</span></div></body></html>
