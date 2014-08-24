@@ -425,6 +425,12 @@
 
     <profiles>
         <profile>
+            <id>publish-site</id>
+            <build>
+                <defaultGoal>clean test site site:stage scm-publish:publish-scm</defaultGoal>
+            </build>
+        </profile>
+        <profile>
             <id>gpg-sign-for-release</id>
             <activation>
                 <property>

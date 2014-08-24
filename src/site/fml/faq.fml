@@ -7,14 +7,6 @@
         <faq id="unfamiliar-java">
             <question>Why should I code Java in such an unfamiliar way?</question>
             <answer>
-                <p>Java is more or less the only contemporary general purpose language which does not yet
-                have native support for lambdas or first class functions. Java 8 will get support for this,
-                when it is eventually released.</p> 
-                
-                <p>It is <em>not</em> about being able to write lots of one-liners. You <em>will</em> be
-                able to express more behavior in less code, but you should still use lines as a way of
-                grouping your program logic into "chunks" you can reason about, and making your code
-                readable.</p> 
                 <p>Writing code by composing functions together, will
                 arguably produce more robust and correct code. Both because your code will be closer
                 to how you would actually verbally express the original problem you are solving, instead
@@ -32,18 +24,23 @@
                 to the actual problem or feature you are solving. Use a code coverage tool to verify that
                 the different parts are executed with a higher level test. Since you don't have all
                 these paths your code may exectute for different cases, the need for very low level
-                unit testing diminishes, and tests can focus on higher level behavior.</p>  
+                unit testing diminishes, and tests can focus on higher level behavior.</p>
+                <p>It is <em>not</em> about being able to write lots of one-liners. You <em>will</em> be
+                able to express more behavior in less code, but you should still use lines as a way of
+                grouping your program logic into "chunks" you can reason about, and making your code
+                readable.</p>
             </answer>
         </faq>
         <faq id="wait-java8">
             <question>
-                But Java 8 is right around the corner! Shouldn't I just wait until I get native lambdas instead
+                But we are planning to upgrade to Java 8! Shouldn't I just wait until I get native lambdas instead
                 of littering these pseudo-functions all over my code?
             </question>
             <answer>
-                For code you are writing today on Java 7 or below, there is really no reason to wait. You
+                For code you are writing today on Java 7, there is really no reason to wait until you eventually
+                will be able to upgrade to Java 8 instead of starting to use Motif already now. You
                 will get a head start to thinking in a more functional way, so you will be ready to exploit
-                the new language features in Java 8, when it finally arrives. In addition, if you worry about
+                the new language features in Java 8, when you are able to upgrade. In addition, if you worry about
                 refactoring your code to use Java 8 features later, this will actually be an easier task if
                 the code already is done in a functional manner. The API of Motif is actually not that far from
                 the new
@@ -55,6 +52,23 @@
                 <code>Fn</code>, etc.
             </answer>
         </faq>
+        <faq id="using-java8">
+            <question>I am already using Java 8, and it has support for lambdas. Can Motif provide
+            anything useful in an Java 8 environment?</question>
+            <answer>
+                Indeed! Because of the way lambdas in Java 8 are translated to actual classes,
+                you can supply lambdas directly to the Motif API. Now, you can say that the new
+                <a href="http://download.java.net/jdk8/docs/api/java/util/stream/Stream.html">Stream API</a>
+                and Java's own
+                <a href="http://docs.oracle.com/javase/8/docs/api/java/util/Optional.html">Optional</a> type
+                replaces Motif's <code>Elements</code> and <code>Optional</code>, though they have some subtle
+                differences. In addition, Motif contains lots of constructs for composing more complex
+                functions from simpler ones, which also can be based on Java 8 lambdas. All suggestions
+                to make Motif more usable with Java 8, while still being Java 7 compatible, are most
+                welcome!
+            </answer>
+        </faq>
+
         <faq id="other-libraries">
             <question>Why should I use Motif instead of Guava/LambdaJ/other library?</question>
             <answer>
@@ -68,7 +82,7 @@
             code to use Motif instead?</question>
             <answer>
                 <p>Guava, or any other library which offers implementations of various Collections, will work
-                fine together with Motif. You don't need to actually choose one or the other. 
+                fine together with Motif. You don't need to actually choose one or the other.
                 In fact, Motif focuses on being conveniently usable with existing
                 collections instead of providing its own, so Guava's collections will work just as well with Motif as
                 the collections in the JDK. In addition, Guava offers a much broader scope of functionality
