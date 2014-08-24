@@ -35,6 +35,15 @@ import no.motif.types.Elements;
 public final class Base {
 
     /**
+     * Shorthand for {@link #not(Predicate) not(}{@link #equalTo(Object) equalTo(o))}.
+     *
+     * @see #not(Predicate)
+     * @see #equalTo(Object)
+     */
+    public static <T> Predicate<T> not(T o) { return not(equalTo(o)); }
+
+
+    /**
      * Negates a predicate.
      * @param p The predicate to negate.
      * @return The new predicate.
@@ -130,6 +139,14 @@ public final class Base {
 
 
     /**
+     * Shorthand for {@link #either(Predicate) either(}{@link #equalTo(Object) equalTo(o))}.
+     *
+     * @see #either(Predicate)
+     * @see Disjunction
+     */
+    public static <T> Disjunction<T> either(T o) { return either(equalTo(o)); }
+
+    /**
      * Create a OR-expression of several predicates, starting with the one
      * given to this method.
      *
@@ -155,6 +172,24 @@ public final class Base {
      */
     public static DisjunctionPremise either(Fn0<Boolean> premise) {
         return new DisjunctionPremise(premise);
+    }
+
+
+    /**
+     * Shorthand for
+     * {@link #anyOf(Predicate...) anyOf(}{@link #equalTo(Object) equalTo(o1), equalTo(o2), ..., equalTo(on))}
+     *
+     * @param objects the candidate objects for equivalence check.
+     * @see Disjunction
+     */
+    @SafeVarargs
+    @SuppressWarnings("varargs")
+    public static <T> Disjunction<T> anyOf(T ... objects) {
+        @SuppressWarnings("unchecked")
+        Predicate<T>[] equalToPredicates = on(objects)
+            .map(new Fn<T, Predicate<T>>() { @Override public Predicate<T> $(T o) { return equalTo(o); }})
+            .collect().toArray(new Predicate[objects.length]);
+        return anyOf(equalToPredicates);
     }
 
 
@@ -197,6 +232,16 @@ public final class Base {
     public static <E, I extends Iterable<E>> Predicate<I> all(final Predicate<? super E> predicate) {
         return new Predicate<I>() { @Override public boolean $(I iterable) {
             return on(iterable).filter(not(predicate)).isEmpty(); }};}
+
+
+    /**
+     * Shorthand for {@link #exists(Predicate) exists(}{@link #equalTo(Object) equalTo(element))}
+     *
+     * @param element The element to look for in an {@link Iterable}.
+     * @return a predicate which evaluates to <code>true</code> if an element equal to the given
+     *         element is found, <code>false</code> otherwise.
+     */
+    public static <E, I extends Iterable<E>> Predicate<I> exists(E element) { return exists(equalTo(element)); }
 
 
     /**

@@ -23,14 +23,20 @@ public class DisjunctionTest {
 
     @Test
     public void onlyOneMustBeTrueForTheDisjunctionToBeTrue() {
-        assertFalse(either(is(1)).or(is(2)).$(3));
-        assertTrue(either(is(1)).or(is(2)).$(2));
+        assertFalse(either(1).or(2).$(3));
+        assertTrue(either(1).or(2).$(2));
     }
 
     @Test
     public void disjunctionFromListOfPredicates() {
         assertTrue(anyOf(is("abc"), contains("c"), where(length, is(3))).$("cc"));
         assertFalse(anyOf(contains("c"), where(length, is(4))).$("a"));
+    }
+
+    @Test
+    public void disjunctionFromListOfCandidateObjects() {
+        assertFalse(anyOf("a", "b", "c").$("d"));
+        assertTrue(anyOf("a", "b", "c").$("c"));
     }
 
     @Test

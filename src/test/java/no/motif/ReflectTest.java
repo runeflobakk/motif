@@ -1,6 +1,5 @@
 package no.motif;
 
-import static no.motif.Base.is;
 import static no.motif.Base.not;
 import static no.motif.Base.where;
 import static no.motif.Iterate.on;
@@ -75,7 +74,7 @@ public class ReflectTest {
 
     @Test
     public void getNameOfFields() {
-        assertThat(on(B.class.getDeclaredFields()).map(name).filter(not(is("$jacocoData"))), contains("num1", "num2"));
+        assertThat(on(B.class.getDeclaredFields()).map(name).filter(not("$jacocoData")), contains("num1", "num2"));
     }
 
     @Test

@@ -40,6 +40,7 @@ public class BaseTest {
 
         assertTrue(exists(isNull).$(on(new Object(), null)));
         assertFalse(exists(blank).$(on("a", "b")));
+        assertTrue(exists("b").$(on("a", "b")));
     }
 
     @Test
