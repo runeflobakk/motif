@@ -40,31 +40,37 @@
             <theme>bootswatch-flatly</theme>
 <!--             <theme>default</theme> -->
             <highlightJs>true</highlightJs>
+            <highlightJsTheme>docco</highlightJsTheme>
             <brand>
                 <name>Motif</name>
                 <href>http://runeflobakk.github.io/motif</href>
             </brand>
-            <toc>top</toc>
+            <toc>off</toc>
             <topNav>Documentation|reports</topNav>
+            <bottomNav>
+                <column>Main</column>
+                <column>Documentation</column>
+                <column>reports</column>
+            </bottomNav>
 
             <pages>
                 <index project="motif">
                     <shortTitle>Welcome</shortTitle>
-                    <breadcrumbs>false</breadcrumbs>
-                    <toc>true</toc>
                     <sections>
-                        <columns>1</columns>
+                        <body />
+                        <sidebar />
                         <columns>2</columns>
                     </sections>
                 </index>
                 <documentation>
                 	<shortTitle>Documentation</shortTitle>
-                    <breadcrumbs>true</breadcrumbs>
-                    <toc>sidebar</toc>
                 </documentation>
-                <developer-info>
+                <libraries-compare>
                     <toc>sidebar</toc>
-                </developer-info>
+                </libraries-compare>
+                <contributing>
+                    <toc>sidebar</toc>
+                </contributing>
             </pages>
         </reflowSkin>
     </custom>
