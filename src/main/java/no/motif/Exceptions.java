@@ -1,5 +1,6 @@
 package no.motif;
 
+import no.motif.f.Fn;
 
 
 /**
@@ -33,6 +34,21 @@ public final class Exceptions {
             return rtEx;
         }
     }
+
+
+    /**
+     * Get the {@link Throwable#getMessage() message} of a <code>Throwable</code>.
+     */
+    public static final Fn<Throwable, String> message = new Fn<Throwable, String>() {
+        @Override public String $(Throwable throwable) { return throwable.getMessage(); }};
+
+
+    /**
+     * Get the {@link Throwable#getCause() cause} of a <code>Throwable</code>.
+     */
+    public static final Fn<Throwable, Throwable> cause = new Fn<Throwable, Throwable>() {
+        @Override public Throwable $(Throwable throwable) { return throwable.getCause(); }};
+
 
     private Exceptions() {}
 }

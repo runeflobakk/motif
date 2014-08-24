@@ -29,6 +29,8 @@ import no.motif.f.Fn2;
 import no.motif.f.Predicate;
 import no.motif.f.Predicate.Always;
 import no.motif.f.base.FalseIfNull;
+import no.motif.iter.SplitOnCharacter;
+import no.motif.iter.SplitOnSubstring;
 import no.motif.single.Optional;
 
 /**
@@ -534,8 +536,8 @@ public final class Strings {
 
 
     /**
-     * Yields index position of first occurence of a <code>char</code>, or <code>null</code> if the
-     * <code>char</code> cannot be found.
+     * Yields index position of first occurence of a <code>char</code>, or <code>null</code>
+     * if the <code>char</code> cannot be found.
      *
      * @see String#indexOf(int)
      */
@@ -549,8 +551,8 @@ public final class Strings {
 
 
     /**
-     * Yields index position of last occurence of a <code>char</code>, or <code>null</code> if the
-     * <code>char</code> cannot be found.
+     * Yields index position of last occurence of a <code>char</code>, or <code>null</code>
+     * if the <code>char</code> cannot be found.
      *
      * @see String#indexOf(int)
      */
@@ -563,8 +565,8 @@ public final class Strings {
 
 
     /**
-     * Yields index position of first occurence of a substring, or <code>null</code> if the substring cannot
-     * be found.
+     * Yields index position of first occurence of a substring, or <code>null</code>
+     * if the substring cannot be found.
      *
      * @see String#indexOf(String)
      */
@@ -580,8 +582,8 @@ public final class Strings {
 
 
     /**
-     * Yields index position of last occurence of a substring, or <code>null</code> if the substring cannot
-     * be found.
+     * Yields index position of last occurence of a substring, or <code>null</code>
+     * if the substring cannot be found.
      *
      * @see String#indexOf(String)
      */
@@ -592,6 +594,49 @@ public final class Strings {
                 int index = s.lastIndexOf(substring);
                 return index >= 0 ? index : null;
             }});
+    }
+
+
+    /**
+     * Split a string on each occurence of a substring.
+     * The substring is not included in the resulting strings, and any
+     * consecutive substring are treated as one delimiter instance.
+     *
+     * @param substring
+     */
+    public static Fn<String, Iterable<String>> splittingOn(final String substring) {
+        return new Fn<String, Iterable<String>>() {
+            @Override public Iterable<String> $(String string) {
+                return new SplitOnSubstring(string, substring);
+            }};
+    }
+
+
+    /**
+     * Split a string on each occurence of a <code>char</code> delimiter.
+     * The splitting character is not included in the resulting strings, and any
+     * consecutive occurrences of the character are treated as one delimiter instance.
+     *
+     * @param character the delimiter character
+     */
+    public static Fn<String, Iterable<String>> splittingOn(char character) { return splittingOn(equalTo(character)); }
+
+
+    /**
+     * Split a string into several on any character passing the given
+     * <code>Character</code> predicate.
+     * The characters accepted by the predicate is not included in the
+     * resulting strings, and any consecutive accepted characters are
+     * treated as one delimiter instance.
+     *
+     * @param character the predicate which decides if a character is
+     *                  a delimiter.
+     */
+    public static Fn<String, Iterable<String>> splittingOn(final Predicate<? super Character> character) {
+        return new Fn<String, Iterable<String>>() {
+            @Override public Iterable<String> $(String string) {
+                return new SplitOnCharacter(string, character);
+            }};
     }
 
 

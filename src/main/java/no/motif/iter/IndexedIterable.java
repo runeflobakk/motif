@@ -3,13 +3,14 @@ package no.motif.iter;
 import static no.motif.Iterate.hasNext;
 import static no.motif.Singular.optional;
 
+import java.io.Serializable;
 import java.util.Iterator;
 
 import no.motif.Iterate;
 import no.motif.single.Elem;
 import no.motif.single.Optional;
 
-class IndexedIterable<T> implements Iterable<Elem<T>> {
+class IndexedIterable<T> implements Iterable<Elem<T>>, Serializable {
 
     private final Iterable<T> elements;
     private final int startIndex;

@@ -1,8 +1,9 @@
 package no.motif.iter.ordering;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
-final class OppositeOrderComparator<T> implements Comparator<T> {
+final class OppositeOrderComparator<T> implements Comparator<T>, Serializable {
 
     private final Comparator<T> comparator;
 

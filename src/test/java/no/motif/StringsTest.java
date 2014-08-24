@@ -32,6 +32,7 @@ import static no.motif.Strings.numeric;
 import static no.motif.Strings.prepend;
 import static no.motif.Strings.repeat;
 import static no.motif.Strings.reversed;
+import static no.motif.Strings.splittingOn;
 import static no.motif.Strings.startsWith;
 import static no.motif.Strings.substring;
 import static no.motif.Strings.toDouble;
@@ -466,4 +467,28 @@ public class StringsTest {
         assertThat(indexOf("bc").$("abcabc"), is(1));
         assertThat(indexOf("bcd").$("abcabc"), nullValue());
     }
+
+    @Test
+    public void splitStringByCharacterDelimiter() {
+        Iterable<String> strings = splittingOn(' ').$("first second third");
+        assertThat(strings, contains("first", "second", "third"));
+    }
+
+    @Test
+    public void consecutiveSplitCharsYieldsEmptyStrings() {
+        Iterable<String> strings = splittingOn(',').$(",,first,second,,third,");
+        assertThat(strings, contains("", "", "first", "second", "", "third", ""));
+    }
+
+    @Test
+    public void splittingAStringUsingADelimiterString() {
+        assertThat(splittingOn(",").$("a,b"), contains("a", "b"));
+    }
+
+    @Test
+    public void consecutiveSplittingSubstringsYieldsEmptyStrings() {
+        assertThat(splittingOn(",").$(",a,,b,"), contains("", "a", "", "b", ""));
+        assertThat(splittingOn("<|>").$("<|><|>a<|>b<|><|>c<|><|>"), contains("", "", "a", "b", "", "c", "", ""));
+    }
+
 }

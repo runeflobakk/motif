@@ -2,14 +2,19 @@ package no.motif;
 
 import static no.motif.Iterate.on;
 
+import java.util.Collection;
 import java.util.Objects;
 
 import no.motif.f.Do;
 import no.motif.f.Fn;
+import no.motif.f.Fn0;
 import no.motif.f.Fn2;
 import no.motif.f.Predicate;
+import no.motif.f.Predicate.Always;
 import no.motif.f.combine.Conjunction;
+import no.motif.f.combine.ConjunctionPremise;
 import no.motif.f.combine.Disjunction;
+import no.motif.f.combine.DisjunctionPremise;
 import no.motif.f.combine.DoChain;
 import no.motif.f.combine.Fn2Chain;
 import no.motif.f.combine.FnChain;
@@ -28,6 +33,15 @@ import no.motif.types.Elements;
  * @see Fn
  */
 public final class Base {
+
+    /**
+     * Shorthand for {@link #not(Predicate) not(}{@link #equalTo(Object) equalTo(o))}.
+     *
+     * @see #not(Predicate)
+     * @see #equalTo(Object)
+     */
+    public static <T> Predicate<T> not(T o) { return not(equalTo(o)); }
+
 
     /**
      * Negates a predicate.
@@ -80,6 +94,20 @@ public final class Base {
     }
 
 
+    /**
+     * Create a AND-expression of several {@link Fn0 Fn0&lt;Boolean&gt;s}, starting with the one
+     * given to this method.
+     *
+     * @see ConjunctionPremise
+     * @param premise The first <code>Fn0&lt;Boolean&gt;</code>.
+     * @return a new <code>Fn0&lt;Boolean&gt;</code> which may be used to build up an AND-expression by
+     *         chaining the {@link ConjunctionPremise#and(Fn0) and(anotherPremise)} method.
+     */
+    public static ConjunctionPremise both(Fn0<Boolean> premise) {
+        return new ConjunctionPremise(premise);
+    }
+
+
 
     /**
      * Compose an AND-expression of several predicates.
@@ -94,7 +122,29 @@ public final class Base {
         return new Conjunction<>(predicates);
     }
 
+    /**
+     * Compose an AND-expression of several {@link Fn0 Fn0&lt;Boolean&gt;s}.
+     *
+     * @see ConjunctionPremise
+     * @param premises the <code>Fn0&lt;Boolean&gt;s</code>.
+     * @return a new <code>Fn0&lt;Boolean&gt;</code> which is the conjunction
+     *         (AND) of the given premises.
+     */
+    @SafeVarargs
+    @SuppressWarnings("varargs")
+    public static ConjunctionPremise allOf(Fn0<Boolean> ... premises) {
+        return new ConjunctionPremise(premises);
+    }
 
+
+
+    /**
+     * Shorthand for {@link #either(Predicate) either(}{@link #equalTo(Object) equalTo(o))}.
+     *
+     * @see #either(Predicate)
+     * @see Disjunction
+     */
+    public static <T> Disjunction<T> either(T o) { return either(equalTo(o)); }
 
     /**
      * Create a OR-expression of several predicates, starting with the one
@@ -110,6 +160,37 @@ public final class Base {
         return new Disjunction<T>(predicate);
     }
 
+
+    /**
+     * Create a OR-expression of several {@link Fn0 Fn0&lt;Boolean&gt;s},
+     * starting with the one given to this method.
+     *
+     * @see DisjunctionPremise
+     * @param premise The first <code>Fn0&lt;Boolean&gt;</code>.
+     * @return a new <code>Fn0&lt;Boolean&gt;</code> which may be used to build up an OR-expression by
+     *         chaining the {@link DisjunctionPremise#or(Fn0) or(anotherPremise)} method.
+     */
+    public static DisjunctionPremise either(Fn0<Boolean> premise) {
+        return new DisjunctionPremise(premise);
+    }
+
+
+    /**
+     * Shorthand for
+     * {@link #anyOf(Predicate...) anyOf(}{@link #equalTo(Object) equalTo(o1), equalTo(o2), ..., equalTo(on))}
+     *
+     * @param objects the candidate objects for equivalence check.
+     * @see Disjunction
+     */
+    @SafeVarargs
+    @SuppressWarnings("varargs")
+    public static <T> Disjunction<T> anyOf(T ... objects) {
+        @SuppressWarnings("unchecked")
+        Predicate<T>[] equalToPredicates = on(objects)
+            .map(new Fn<T, Predicate<T>>() { @Override public Predicate<T> $(T o) { return equalTo(o); }})
+            .collect().toArray(new Predicate[objects.length]);
+        return anyOf(equalToPredicates);
+    }
 
 
     /**
@@ -127,6 +208,20 @@ public final class Base {
 
 
     /**
+     * Compose an OR-expression of several {@link Fn0 Fn0&lt;Boolean&gt;s}.
+     *
+     * @see DisjunctionPremise
+     * @param premises the <code>Fn0&lt;Boolean&gt;s</code>.
+     * @return a new <code>Fn0&lt;Boolean&gt;s</code> which is the disjunction (OR) of the given premises.
+     */
+    @SafeVarargs
+    @SuppressWarnings("varargs")
+    public static DisjunctionPremise anyOf(Fn0<Boolean> ... premises) {
+        return new DisjunctionPremise(premises);
+    }
+
+
+    /**
      * Evaluate if all elements satisfies a predicate, i.e. the <em>Universal quantifier function</em>.
      * Note that the predicate
      *
@@ -137,6 +232,16 @@ public final class Base {
     public static <E, I extends Iterable<E>> Predicate<I> all(final Predicate<? super E> predicate) {
         return new Predicate<I>() { @Override public boolean $(I iterable) {
             return on(iterable).filter(not(predicate)).isEmpty(); }};}
+
+
+    /**
+     * Shorthand for {@link #exists(Predicate) exists(}{@link #equalTo(Object) equalTo(element))}
+     *
+     * @param element The element to look for in an {@link Iterable}.
+     * @return a predicate which evaluates to <code>true</code> if an element equal to the given
+     *         element is found, <code>false</code> otherwise.
+     */
+    public static <E, I extends Iterable<E>> Predicate<I> exists(E element) { return exists(equalTo(element)); }
 
 
     /**
@@ -161,10 +266,19 @@ public final class Base {
      * Equality predicate, checks if values are equal to the given value.
      *
      * @param value the value the predicate should check for equality against.
-     * @return the equality predicate.
      */
-    public static <T> Predicate<T> equalTo(final T value) {
-        return new Predicate<T>() { @Override public boolean $(T input) { return Objects.equals(input, value); }}; }
+    public static <T> Predicate<T> equalTo(final T value) { return equalTo(always(value)); }
+
+
+    /**
+     * Equality predicate, checks if values are equal to the value computed from the given {@link Fn0}.
+     *
+     * @param value the {@link Fn0} which will compute the value to check for equality against on each
+     *              application of the predicate.
+     */
+    public static <T> Predicate<T> equalTo(final Fn0<? super T> value) {
+        return new Predicate<T>() { @Override public boolean $(T input) {
+            return Objects.equals(input, value.$()); }}; }
 
 
     /**
@@ -251,19 +365,11 @@ public final class Base {
         @Override public String $(Object value) { return String.valueOf(value); }};
 
 
-
     /**
-     * Get the {@link Throwable#getMessage() message} of a <code>Throwable</code>.
+     * Yields the {@link Object#hashCode() hashCode} for objects, or 0 if <code>null</code>.
      */
-    public static final Fn<Throwable, String> message = new Fn<Throwable, String>() {
-        @Override public String $(Throwable throwable) { return throwable.getMessage(); }};
-
-
-    /**
-     * Get the {@link Throwable#getCause() cause} of a <code>Throwable</code>.
-     */
-    public static final Fn<Throwable, Throwable> cause = new Fn<Throwable, Throwable>() {
-        @Override public Throwable $(Throwable throwable) { return throwable.getCause(); }};
+    public static final Fn<Object, Integer> hashCode = new Fn<Object, Integer>() {
+        @Override public Integer $(Object o) { return o != null ? o.hashCode() : 0; }};
 
 
     /**
@@ -278,7 +384,7 @@ public final class Base {
      *                  be applied to the given {@link Fn}.
      * @param fn        The {@link Fn} to apply if <code>condition</code> evaluates to <code>true</code>
      */
-    public static <I, O> When<I, O> when(Predicate<? super I> condition, Fn<I, O> fn) {
+    public static <I, O> When<I, O> when(Predicate<? super I> condition, Fn<? super I, ? extends O> fn) {
         return new When<>(condition, fn);
     }
 
@@ -297,8 +403,8 @@ public final class Base {
      * @param fn The first function in the chain.
      * @return the given function as the first function in a chain.
      */
-    public static final <I, O> FnChain<I, O, O> first(Fn<I, O> fn) {
-        return new FnChain<>(fn, NOP.<O>fn());
+    public static final <I, O> FnChain<I, O> first(Fn<I, O> fn) {
+        return FnChain.chain(fn);
     }
 
 
@@ -352,6 +458,17 @@ public final class Base {
     public static <I1, I2, V> Constant<I1, I2, V> always(V value) { return new Constant<>(value); }
 
 
+    /**
+     * Create a predicate which always yields the given <code>boolean</code> value.
+     *
+     * @param bool The <code>boolean</code> value to yield.
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> Predicate<T> always(boolean bool) {
+        return (Predicate<T>) (bool ? Predicate.Always.yes() : Predicate.Always.no());
+    }
+
+
 
     /**
      * Create a function which always throw the given exception. If the
@@ -363,6 +480,14 @@ public final class Base {
 
 
 
+    /**
+     * Evaluates if objects are {@link Collection#contains(Object) contained in} a the given
+     * <code>Collection</code>.
+     */
+    public static <T> Predicate<T> containedIn(final Collection<? extends T> collection) {
+        return collection == null || collection.isEmpty() ? Always.<T>no() : new Predicate<T>() {
+            @Override public boolean $(T value) { return collection.contains(value); }};
+    }
 
     private Base() {}
 

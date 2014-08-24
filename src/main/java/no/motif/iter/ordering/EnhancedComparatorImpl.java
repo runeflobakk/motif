@@ -4,11 +4,12 @@ import static no.motif.Base.isNull;
 import static no.motif.Base.not;
 import static no.motif.Base.notNull;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 import no.motif.f.Predicate;
 
-public class EnhancedComparatorImpl<T> implements EnhancedComparator<T> {
+public class EnhancedComparatorImpl<T> implements EnhancedComparator<T>, Serializable {
 
     private final Comparator<T> comparator;
 

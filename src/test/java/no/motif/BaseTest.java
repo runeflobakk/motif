@@ -2,12 +2,12 @@ package no.motif;
 
 import static no.motif.Base.all;
 import static no.motif.Base.always;
-import static no.motif.Base.cause;
+import static no.motif.Base.alwaysThrow;
 import static no.motif.Base.exists;
 import static no.motif.Base.extract;
 import static no.motif.Base.first;
 import static no.motif.Base.isNull;
-import static no.motif.Base.message;
+import static no.motif.Base.not;
 import static no.motif.Base.notNull;
 import static no.motif.Base.when;
 import static no.motif.BaseTest.Phonenum.areaCode;
@@ -15,7 +15,10 @@ import static no.motif.BaseTest.Phonenum.number;
 import static no.motif.Iterate.on;
 import static no.motif.Singular.none;
 import static no.motif.Singular.optional;
+import static no.motif.Strings.append;
 import static no.motif.Strings.blank;
+import static no.motif.Strings.endsWith;
+import static no.motif.Strings.indexOf;
 import static no.motif.Strings.lowerCased;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.is;
@@ -37,6 +40,7 @@ public class BaseTest {
 
         assertTrue(exists(isNull).$(on(new Object(), null)));
         assertFalse(exists(blank).$(on("a", "b")));
+        assertTrue(exists("b").$(on("a", "b")));
     }
 
     @Test
@@ -47,14 +51,6 @@ public class BaseTest {
         assertFalse(all(blank).$(on("a", "b")));
     }
 
-    @Test
-    public void getTheRootMessageOfAnException() {
-        Exception e = new RuntimeException(new IllegalArgumentException(
-                new UnsupportedOperationException("not supported")));
-        assertThat(optional(e).map(Iterate.last(cause)).map(message).get(), is("not supported"));
-        assertThat(optional(new RuntimeException("fail")).map(Iterate.last(cause)).map(message).get(), is("fail"));
-        assertThat(optional(new Exception()).map(Iterate.last(cause)).map(message), is(Singular.<String>none()));
-    }
 
     @Test
     public void alwaysYieldConstantValueForDifferentFunctionTypes() {
@@ -79,14 +75,23 @@ public class BaseTest {
 
     @Test
     public void guardFnWithPredicate() {
-        When<Object, String> throwWhenNull = when(isNull, Base.<Object, Object, String>alwaysThrow(new RuntimeException()));
+        When<Object, Object> throwWhenNull = when(isNull, alwaysThrow(new RuntimeException()));
         assertThat(throwWhenNull.$("blocked"), nullValue());
-        assertThat(throwWhenNull.orElse("passed").$("blocked"), is("passed"));
+        assertThat(throwWhenNull.orElse("passed").$("blocked"), is((Object) "passed"));
         assertThat(when(notNull, lowerCased).$("A"), is("a"));
         assertThat(
                 first((Fn<Object, Object>)always(null))
                 .then(when(notNull, always("not expected")).orElse("expected")).$("anything"),
             is("expected"));
+
+        Fn<String, String> appendSlashIfMissing = when(not(endsWith("/")), append("/")).orElse(NOP.<String>fn());
+        assertThat(appendSlashIfMissing.$("x"), is("x/"));
+        assertThat(appendSlashIfMissing.$(""), is("/"));
+        assertThat(appendSlashIfMissing.$("x/"), is("x/"));
+        assertThat(appendSlashIfMissing.$(null), is("/"));
+
+        assertThat(when(notNull, indexOf('b')).$("ab"), is(1));
+        assertThat(when(notNull, indexOf('b')).orElse(-1).$(null), is(-1));
     }
 
 

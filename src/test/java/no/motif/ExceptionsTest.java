@@ -1,6 +1,10 @@
 package no.motif;
 
 import static no.motif.Exceptions.asRuntimeException;
+import static no.motif.Exceptions.cause;
+import static no.motif.Exceptions.message;
+import static no.motif.Iterate.last;
+import static no.motif.Singular.optional;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.sameInstance;
@@ -35,5 +39,14 @@ public class ExceptionsTest {
         IOException ex = new IOException("IO fail");
         RuntimeException runtimeException = asRuntimeException(ex);
         assertTrue(Arrays.equals(runtimeException.getStackTrace(), ex.getStackTrace()));
+    }
+
+    @Test
+    public void getTheRootMessageOfAnException() {
+        Exception e = new RuntimeException(new IllegalArgumentException(
+                new UnsupportedOperationException("not supported")));
+        assertThat(optional(e).map(last(cause)).map(message).get(), is("not supported"));
+        assertThat(optional(new RuntimeException("fail")).map(last(cause)).map(message).get(), is("fail"));
+        assertThat(optional(new Exception()).map(last(cause)).map(message), is(Singular.<String>none()));
     }
 }

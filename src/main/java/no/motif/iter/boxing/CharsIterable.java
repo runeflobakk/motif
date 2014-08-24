@@ -1,10 +1,11 @@
 package no.motif.iter.boxing;
 
+import java.io.Serializable;
 import java.util.Iterator;
 
 import no.motif.iter.PreIndexedContentIterator;
 
-public final class CharsIterable implements Iterable<Character> {
+public final class CharsIterable implements Iterable<Character>, Serializable {
 
     private final char[] chars;
 

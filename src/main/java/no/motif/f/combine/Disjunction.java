@@ -1,6 +1,7 @@
 package no.motif.f.combine;
 
 import static java.util.Arrays.asList;
+import static no.motif.Base.equalTo;
 import no.motif.Iterate;
 import no.motif.f.Predicate;
 
@@ -29,6 +30,12 @@ public class Disjunction<T> implements Predicate<T> {
         for (Predicate<? super T> p : predicates) if (p.$(value)) return true;
         return false;
     }
+
+
+    public Disjunction<T> or(T other) {
+        return or(equalTo(other));
+    }
+
 
     public Disjunction<T> or(Predicate<? super T> otherPredicate) {
         return new Disjunction<T>(predicates.append(otherPredicate));

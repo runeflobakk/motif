@@ -1,5 +1,7 @@
 package no.motif;
 
+import static no.motif.Base.first;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Member;
@@ -59,6 +61,20 @@ public final class Reflect {
      */
     public static final Fn<Class<?>, String> simpleName = new Fn<Class<?>, String>() {
         @Override public String $(Class<?> cls) { return cls.getSimpleName(); }};
+
+
+    /**
+     * Get the {@link Class#getPackage() package} of a <code>Class</code>.
+     */
+    public static final Fn<Class<?>, Package> getPackage = new Fn<Class<?>, Package>() {
+        @Override public Package $(Class<?> cls) { return cls.getPackage(); }};
+
+
+    /**
+     * Get the {@link Package#getName() package name} of a <code>Class</code>.
+     */
+    public static final Fn<Class<?>, String> packageName = first(getPackage).then(new Fn<Package, String>() {
+        @Override public String $(Package pkg) { return pkg.getName(); }});
 
 
     /**

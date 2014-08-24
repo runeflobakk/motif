@@ -1,6 +1,5 @@
 package no.motif;
 
-import static no.motif.Base.is;
 import static no.motif.Base.not;
 import static no.motif.Base.where;
 import static no.motif.Iterate.on;
@@ -8,7 +7,9 @@ import static no.motif.Reflect.annotatedWith;
 import static no.motif.Reflect.className;
 import static no.motif.Reflect.getClass;
 import static no.motif.Reflect.name;
+import static no.motif.Reflect.packageName;
 import static no.motif.Reflect.simpleName;
+import static no.motif.Singular.the;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.isA;
@@ -73,7 +74,7 @@ public class ReflectTest {
 
     @Test
     public void getNameOfFields() {
-        assertThat(on(B.class.getDeclaredFields()).map(name).filter(not(is("$jacocoData"))), contains("num1", "num2"));
+        assertThat(on(B.class.getDeclaredFields()).map(name).filter(not("$jacocoData")), contains("num1", "num2"));
     }
 
     @Test
@@ -87,6 +88,11 @@ public class ReflectTest {
     public void getNameOfClasses() {
         assertThat(on(String.class, Serializable.class).map(className), contains("java.lang.String", "java.io.Serializable"));
         assertThat(on(String.class, Serializable.class).map(simpleName), contains("String", "Serializable"));
+    }
+
+    @Test
+    public void getPackageOfClasses() {
+        assertThat(the(String.class).map(packageName), contains("java.lang"));
     }
 
 

@@ -147,6 +147,11 @@ public abstract class Optional<V>
             return "Some(" + value + ")";
         }
 
+        @Override
+        public Optional<V> asOptional() {
+            return this;
+        }
+
     }
 
     /**

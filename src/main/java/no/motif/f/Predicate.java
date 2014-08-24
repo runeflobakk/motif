@@ -31,8 +31,8 @@ public interface Predicate<T> extends Serializable {
         public static <T> Predicate<T> yes() { return (Predicate<T>) TRUE; }
 
 
-        private static Predicate<?> FALSE = new Always<Object>(false);
-        private static Predicate<?> TRUE = new Always<Object>(true);
+        private static final Predicate<?> FALSE = new Always<Object>(false);
+        private static final Predicate<?> TRUE = new Always<Object>(true);
 
         private final boolean constant;
 

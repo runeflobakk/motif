@@ -2,8 +2,11 @@ package no.motif;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
+import static no.motif.Base.notNull;
+import static no.motif.Base.when;
 import static no.motif.Singular.optional;
 
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
@@ -12,7 +15,7 @@ import java.util.Set;
 
 import no.motif.f.Fn;
 import no.motif.f.Predicate;
-import no.motif.iter.PreIndexedContentIterator;
+import no.motif.iter.CharsInStringIterator;
 import no.motif.iter.PreparedIterable;
 import no.motif.iter.boxing.BytesIterable;
 import no.motif.iter.ordering.ByPropertyComparator;
@@ -50,16 +53,12 @@ public final class Iterate {
      */
     public static Elements<Character> on(final CharSequence string) {
         if (string == null) return Iterate.none();
-        Iterable<Character> chars = new Iterable<Character>() {
-            @Override public Iterator<Character> iterator() {
-                return new PreIndexedContentIterator<Character>(string.length()) {
-                    @Override protected Character elementAt(int index) {
-                        return string.charAt(index);
-                    }
-                };
+        return newInstance(new Iterable<Character>() {
+            @Override
+            public Iterator<Character> iterator() {
+                return new CharsInStringIterator(string);
             }
-        };
-        return newInstance(chars);
+        });
     }
 
 
@@ -107,7 +106,7 @@ public final class Iterate {
 
 
     private static <T> Elements<T> newInstance(Iterable<T> elements) {
-        if (elements == null || !elements.iterator().hasNext()) return none();
+        if (elements == null || (elements instanceof Collection && ((Collection<?>)elements).isEmpty())) return none();
         else return new PreparedIterable<T>(elements);
     }
 
@@ -153,6 +152,14 @@ public final class Iterate {
      */
     public static final Predicate<Iterator<?>> hasNext = new Predicate<Iterator<?>>() {
         @Override public boolean $(Iterator<?> iterator) { return iterator.hasNext(); }};
+
+
+    /**
+     * Yields the {@link Collection#size() size} of collections, or <code>0</code> if
+     * the collection is <code>null</code>.
+     */
+    public static final Fn<Collection<?>, Integer> size = when(notNull, new Fn<Collection<?>, Integer>() {
+        @Override public Integer $(Collection<?> collection) { return collection.size(); }}).orElse(0);
 
 
     /**

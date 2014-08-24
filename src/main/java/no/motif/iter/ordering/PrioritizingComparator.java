@@ -1,10 +1,11 @@
 package no.motif.iter.ordering;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 import no.motif.f.Predicate;
 
-class PrioritizingComparator<T> implements Comparator<T> {
+final class PrioritizingComparator<T> implements Comparator<T>, Serializable {
 
     private final Comparator<T> comparator;
     private final Predicate<? super T> prioritized;

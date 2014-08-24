@@ -9,7 +9,11 @@ import static no.motif.Iterate.on;
 import static no.motif.Strings.blank;
 import static no.motif.Strings.length;
 import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
+
+import java.util.Comparator;
+
 import no.motif.Longs;
 import no.motif.f.Fn;
 
@@ -24,12 +28,12 @@ public class EnhancedComparatorTest {
 
     @Test
     public void placeNullsFirst() {
-        assertThat(on("B", "A", null).sorted(byOrderingOf(String.class).nullsFirst()), contains(null, "A", "B"));
+        assertThat(on("B", "A", null, null).sorted(byOrderingOf(String.class).nullsFirst()), contains(null, null, "A", "B"));
     }
 
     @Test
     public void placeNullsLast() {
-        assertThat(on("B", null, "A").sorted(byOrderingOf(String.class).nullsLast()), contains("A", "B", null));
+        assertThat(on(null, null, "B", null, "A").sorted(byOrderingOf(String.class).nullsLast()), contains("A", "B", null, null, null));
     }
 
     @Test
@@ -58,5 +62,16 @@ public class EnhancedComparatorTest {
         assertThat(on(4, 2, 3, 1).sorted(byOrderingOf(Integer.class).first(odd)), contains(1, 3, 2, 4));
         assertThat(on(4L, 2L, 3L, 1L).sorted(byOrderingOf(Long.class).last(Longs.even)), contains(1L, 3L, 2L, 4L));
         assertThat(on(4L, 2L, 3L, 1L).sorted(byOrderingOf(Long.class).first(Longs.odd)), contains(1L, 3L, 2L, 4L));
+    }
+
+    @Test
+    public void twoNullsSafeComparatorTreatsTwoNullsAsEqualOrElseDelegatesToContainedComparator() {
+        Comparator<String> nullFirst = new TwoNullsSafeComparator<>(new Comparator<String>() {
+            @Override public int compare(String o1, String o2) {
+                return o1 == null ? -1 : 1;
+            }});
+        assertThat(nullFirst.compare(null, ""), is(-1));
+        assertThat(nullFirst.compare(null, null), is(0));
+        assertThat(nullFirst.compare("", null), is(1));
     }
 }
