@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Exceptions.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Motif</a> &gt; <a href="index.source.html" class="el_package">no.motif</a> &gt; <span class="el_source">Exceptions.java</span></div><h1>Exceptions.java</h1><pre class="source lang-java linenums">package no.motif;
 
+import no.motif.f.Fn;
 
 
 /**
@@ -25,15 +26,30 @@ public final class Exceptions {
      *         new RuntimeException.
      */
     public static RuntimeException asRuntimeException(Exception e) {
-<span class="fc bfc" id="L28" title="All 2 branches covered.">        if (e instanceof RuntimeException) {</span>
-<span class="fc" id="L29">            return (RuntimeException) e;</span>
+<span class="fc bfc" id="L29" title="All 2 branches covered.">        if (e instanceof RuntimeException) {</span>
+<span class="fc" id="L30">            return (RuntimeException) e;</span>
         } else {
-<span class="fc" id="L31">            RuntimeException rtEx = new RuntimeException(e.getClass().getName() + &quot;: &quot; + e.getMessage(), e);</span>
-<span class="fc" id="L32">            rtEx.setStackTrace(e.getStackTrace());</span>
-<span class="fc" id="L33">            return rtEx;</span>
+<span class="fc" id="L32">            RuntimeException rtEx = new RuntimeException(e.getClass().getName() + &quot;: &quot; + e.getMessage(), e);</span>
+<span class="fc" id="L33">            rtEx.setStackTrace(e.getStackTrace());</span>
+<span class="fc" id="L34">            return rtEx;</span>
         }
     }
 
-<span class="fc" id="L37">    private Exceptions() {}</span>
+
+    /**
+     * Get the {@link Throwable#getMessage() message} of a &lt;code&gt;Throwable&lt;/code&gt;.
+     */
+<span class="fc" id="L42">    public static final Fn&lt;Throwable, String&gt; message = new Fn&lt;Throwable, String&gt;() {</span>
+<span class="fc" id="L43">        @Override public String $(Throwable throwable) { return throwable.getMessage(); }};</span>
+
+
+    /**
+     * Get the {@link Throwable#getCause() cause} of a &lt;code&gt;Throwable&lt;/code&gt;.
+     */
+<span class="fc" id="L49">    public static final Fn&lt;Throwable, Throwable&gt; cause = new Fn&lt;Throwable, Throwable&gt;() {</span>
+<span class="fc" id="L50">        @Override public Throwable $(Throwable throwable) { return throwable.getCause(); }};</span>
+
+
+<span class="fc" id="L53">    private Exceptions() {}</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.0.201403182114</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.1.201405082137</span></div></body></html>

@@ -12,15 +12,21 @@ public class DoChain&lt;T&gt; implements Do&lt;T&gt; {
 <span class="fc" id="L12">        this.secondAction = secondAction;</span>
 <span class="fc" id="L13">    }</span>
 
+    /**
+     * Append another sideeffect action to the chain.
+     *
+     * @param nextAction the next action.
+     * @return new chain with the given {@link Do} appended
+     */
     public DoChain&lt;T&gt; then(Do&lt;? super T&gt; nextAction) {
-<span class="fc" id="L16">        return new DoChain&lt;&gt;(this, nextAction);</span>
+<span class="fc" id="L22">        return new DoChain&lt;&gt;(this, nextAction);</span>
     }
 
     @Override
     public void with(T value) {
-<span class="fc" id="L21">        firstAction.with(value);</span>
-<span class="fc" id="L22">        secondAction.with(value);</span>
-<span class="fc" id="L23">    }</span>
+<span class="fc" id="L27">        firstAction.with(value);</span>
+<span class="fc" id="L28">        secondAction.with(value);</span>
+<span class="fc" id="L29">    }</span>
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.0.201403182114</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.1.201405082137</span></div></body></html>

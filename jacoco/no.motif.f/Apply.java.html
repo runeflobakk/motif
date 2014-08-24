@@ -2,16 +2,20 @@
 
 /**
  * Utilities to adapt how functions are invoked.
- *
- * &lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt;
- * This is part of the more advanced API, and might seem
- * a bit intimidating to some. It is however &lt;em&gt;not&lt;/em&gt;
- * a requirement to be acquainted with this API and still
- * benefit from using the Motif library. This part of the API
- * should be considered as a small &quot;value-add&quot; for developers who
- * are comfortable with these concepts.&lt;/p&gt;
  */
 public final class Apply {
+
+
+    /**
+     * Convert an {@link Fn} to a {@link Do}. This is only usable for &lt;code&gt;Fns&lt;/code&gt; which
+     * performs some kind of side effect, and you need to pass it somewhere which expects a
+     * &lt;code&gt;Do&lt;/code&gt;.
+     *
+     * @param fn The {@link Fn} to apply as a &lt;code&gt;Do&lt;/code&gt;.
+     * @return The resulting {@link Do}
+     */
+    public static final &lt;I&gt; Do&lt;I&gt; justSideEffectOf(final Fn&lt;I, ?&gt; fn) {
+<span class="fc" id="L18">        return new Do&lt;I&gt;() { @Override public void with(I value) { fn.$(value); }}; }</span>
 
 
     /**
@@ -22,20 +26,22 @@ public final class Apply {
      * @return a new {@link Fn2} where the argument order is reversed.
      */
     public static final &lt;I1, I2, O&gt; Fn2&lt;I2, I1, O&gt; argsReversed(final Fn2&lt;I1, I2, O&gt; fn2) {
-<span class="fc" id="L25">        return new Fn2&lt;I2, I1, O&gt;() { @Override public O $(I2 second, I1 first) { return fn2.$(first, second); }}; }</span>
+<span class="fc" id="L29">        return new Fn2&lt;I2, I1, O&gt;() { @Override public O $(I2 second, I1 first) { return fn2.$(first, second); }}; }</span>
 
 
     /**
      * {@link PartialApplication Partially apply} a {@link Fn2 function taking 2 arguments}.
-     * @see    PartialApplication
+     *
      *
      * @param  fn2 The function to partially apply.
      * @return use {@link PartialApplication#of(Object) of()}
      *         to partially invoke &lt;code&gt;fn2&lt;/code&gt; and yield an {@link Fn}
+     *
+     * @see    PartialApplication
      */
-<span class="fc" id="L36">    public static final &lt;I1, I2, O&gt; PartialApplication&lt;Fn2&lt;I1, I2, O&gt;, I1, Fn&lt;I2, O&gt;&gt; partially(Fn2&lt;I1, I2, O&gt; fn2) { return new PartialApplication&lt;Fn2&lt;I1, I2, O&gt;, I1, Fn&lt;I2,O&gt;&gt;(fn2) {</span>
-<span class="fc" id="L37">        @Override public Fn&lt;I2, O&gt; partiallyApply(final Fn2&lt;I1, I2, O&gt; fn2, final Fn0&lt;I1&gt; v1) { return new Fn&lt;I2, O&gt;() {</span>
-<span class="fc" id="L38">            @Override public O $(I2 v2) { return fn2.$(v1.$(), v2); }}; }}; }</span>
+<span class="fc" id="L42">    public static final &lt;I1, I2, O&gt; PartialApplication&lt;Fn2&lt;I1, I2, O&gt;, I1, Fn&lt;I2, O&gt;&gt; partially(Fn2&lt;I1, I2, O&gt; fn2) { return new PartialApplication&lt;Fn2&lt;I1, I2, O&gt;, I1, Fn&lt;I2,O&gt;&gt;(fn2) {</span>
+<span class="fc" id="L43">        @Override public Fn&lt;I2, O&gt; partiallyApply(final Fn2&lt;I1, I2, O&gt; fn2, final Fn0&lt;I1&gt; v1) { return new Fn&lt;I2, O&gt;() {</span>
+<span class="fc" id="L44">            @Override public O $(I2 v2) { return fn2.$(v1.$(), v2); }}; }}; }</span>
 
 
     /**
@@ -44,13 +50,18 @@ public final class Apply {
      * @param fn The function to partially apply.
      * @return use {@link PartialApplication#of(Object) of()}
      *         to partially invoke &lt;code&gt;fn&lt;/code&gt; and yield an {@link Fn0}
+     *
+     * @see    PartialApplication
      */
-<span class="fc" id="L48">    public static final &lt;I, O&gt; PartialApplication&lt;Fn&lt;I, O&gt;, I, Fn0&lt;O&gt;&gt; partially(Fn&lt;I, O&gt; fn) { return new PartialApplication&lt;Fn&lt;I, O&gt;, I, Fn0&lt;O&gt;&gt;(fn) {</span>
-<span class="fc" id="L49">        @Override public Fn0&lt;O&gt; partiallyApply(final Fn&lt;I, O&gt; fn, final Fn0&lt;I&gt; v1) { return new Fn0&lt;O&gt;() {</span>
-<span class="fc" id="L50">            @Override public O $() { return fn.$(v1.$()); }}; }}; }</span>
+<span class="fc" id="L56">    public static final &lt;I, O&gt; PartialApplication&lt;Fn&lt;I, O&gt;, I, Fn0&lt;O&gt;&gt; partially(Fn&lt;I, O&gt; fn) { return new PartialApplication&lt;Fn&lt;I, O&gt;, I, Fn0&lt;O&gt;&gt;(fn) {</span>
+<span class="fc" id="L57">        @Override public Fn0&lt;O&gt; partiallyApply(final Fn&lt;I, O&gt; fn, final Fn0&lt;I&gt; v1) { return new Fn0&lt;O&gt;() {</span>
+<span class="fc" id="L58">            @Override public O $() { return fn.$(v1.$()); }}; }}; }</span>
 
 
-<span class="fc" id="L53">    private Apply() {}</span>
+
+
+
+<span class="fc" id="L64">    private Apply() {}</span>
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.0.201403182114</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.1.201405082137</span></div></body></html>

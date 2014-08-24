@@ -2,8 +2,11 @@
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
+import static no.motif.Base.notNull;
+import static no.motif.Base.when;
 import static no.motif.Singular.optional;
 
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
@@ -12,7 +15,7 @@ import java.util.Set;
 
 import no.motif.f.Fn;
 import no.motif.f.Predicate;
-import no.motif.iter.PreIndexedContentIterator;
+import no.motif.iter.CharsInStringIterator;
 import no.motif.iter.PreparedIterable;
 import no.motif.iter.boxing.BytesIterable;
 import no.motif.iter.ordering.ByPropertyComparator;
@@ -30,14 +33,14 @@ import no.motif.types.Elements;
  */
 public final class Iterate {
 
-<span class="fc" id="L33">    private static final Elements&lt;?&gt; NONE = new PreparedIterable&lt;&gt;(emptyList());</span>
+<span class="fc" id="L36">    private static final Elements&lt;?&gt; NONE = new PreparedIterable&lt;&gt;(emptyList());</span>
 
     /**
      * @return An empty &lt;code&gt;Elements&lt;/code&gt; container.
      */
     @SuppressWarnings(&quot;unchecked&quot;)
     public static &lt;T&gt; Elements&lt;T&gt; none() {
-<span class="fc" id="L40">        return (Elements&lt;T&gt;) NONE;</span>
+<span class="fc" id="L43">        return (Elements&lt;T&gt;) NONE;</span>
     }
 
 
@@ -49,17 +52,13 @@ public final class Iterate {
      * @return {@link Elements} characters
      */
     public static Elements&lt;Character&gt; on(final CharSequence string) {
-<span class="fc bfc" id="L52" title="All 2 branches covered.">        if (string == null) return Iterate.none();</span>
-<span class="fc" id="L53">        Iterable&lt;Character&gt; chars = new Iterable&lt;Character&gt;() {</span>
-            @Override public Iterator&lt;Character&gt; iterator() {
-<span class="fc" id="L55">                return new PreIndexedContentIterator&lt;Character&gt;(string.length()) {</span>
-                    @Override protected Character elementAt(int index) {
-<span class="fc" id="L57">                        return string.charAt(index);</span>
-                    }
-                };
+<span class="fc bfc" id="L55" title="All 2 branches covered.">        if (string == null) return Iterate.none();</span>
+<span class="fc" id="L56">        return newInstance(new Iterable&lt;Character&gt;() {</span>
+            @Override
+            public Iterator&lt;Character&gt; iterator() {
+<span class="fc" id="L59">                return new CharsInStringIterator(string);</span>
             }
-        };
-<span class="fc" id="L62">        return newInstance(chars);</span>
+        });
     }
 
 
@@ -72,7 +71,7 @@ public final class Iterate {
     @SafeVarargs
     @SuppressWarnings(&quot;varargs&quot;)
     public static &lt;T&gt; Elements&lt;T&gt; on(T ... elements) {
-<span class="fc bfc" id="L75" title="All 2 branches covered.">        return newInstance(elements != null ? asList(elements) : null);</span>
+<span class="fc bfc" id="L74" title="All 2 branches covered.">        return newInstance(elements != null ? asList(elements) : null);</span>
     }
 
     /**
@@ -81,13 +80,13 @@ public final class Iterate {
      * @param bytes the bytes to manipulate as vararg/array.
      */
     public static Elements&lt;Byte&gt; on(byte[] bytes) {
-<span class="fc bfc" id="L84" title="All 2 branches covered.">        return newInstance(bytes != null ? new BytesIterable(bytes) : null);</span>
+<span class="fc bfc" id="L83" title="All 2 branches covered.">        return newInstance(bytes != null ? new BytesIterable(bytes) : null);</span>
     }
 
 
 
     public static &lt;K, V&gt; Elements&lt;Map.Entry&lt;K, V&gt;&gt; on(Map&lt;K, V&gt; map) {
-<span class="fc bfc" id="L90" title="All 2 branches covered.">        return on(map != null ? map.entrySet() : null);</span>
+<span class="fc bfc" id="L89" title="All 2 branches covered.">        return on(map != null ? map.entrySet() : null);</span>
     }
 
 
@@ -98,7 +97,7 @@ public final class Iterate {
      * @return {@link Elements}
      */
     public static &lt;T&gt; Elements&lt;T&gt; on(Iterable&lt;T&gt; elements) {
-<span class="fc bfc" id="L101" title="All 2 branches covered.">        return elements instanceof Elements ? (Elements&lt;T&gt;) elements : newInstance(elements);</span>
+<span class="fc bfc" id="L100" title="All 2 branches covered.">        return elements instanceof Elements ? (Elements&lt;T&gt;) elements : newInstance(elements);</span>
     }
 
 
@@ -107,8 +106,8 @@ public final class Iterate {
 
 
     private static &lt;T&gt; Elements&lt;T&gt; newInstance(Iterable&lt;T&gt; elements) {
-<span class="fc bfc" id="L110" title="All 4 branches covered.">        if (elements == null || !elements.iterator().hasNext()) return none();</span>
-<span class="fc" id="L111">        else return new PreparedIterable&lt;T&gt;(elements);</span>
+<span class="fc bfc" id="L109" title="All 6 branches covered.">        if (elements == null || (elements instanceof Collection &amp;&amp; ((Collection&lt;?&gt;)elements).isEmpty())) return none();</span>
+<span class="fc" id="L110">        else return new PreparedIterable&lt;T&gt;(elements);</span>
     }
 
 
@@ -122,7 +121,7 @@ public final class Iterate {
      * @return a {@link Comparator} using the value yielded from the given {@link Fn}.
      */
     public static &lt;T, P extends Comparable&lt;P&gt;&gt; EnhancedComparator&lt;T&gt; by(final Fn&lt;T, P&gt; property) {
-<span class="fc" id="L125">        return new EnhancedComparatorImpl&lt;&gt;(new ByPropertyComparator&lt;&gt;(property));</span>
+<span class="fc" id="L124">        return new EnhancedComparatorImpl&lt;&gt;(new ByPropertyComparator&lt;&gt;(property));</span>
     }
 
 
@@ -138,28 +137,36 @@ public final class Iterate {
      * @return the &lt;code&gt;Comparator&lt;/code&gt;
      */
     public static &lt;T extends Comparable&lt;T&gt;&gt; EnhancedComparator&lt;T&gt; byOrderingOf(Class&lt;T&gt; comparableType) {
-<span class="fc" id="L141">        return by(NOP.&lt;T&gt;fn()); }</span>
+<span class="fc" id="L140">        return by(NOP.&lt;T&gt;fn()); }</span>
 
 
     /**
      * Evaluates if an {@link Iterable} is empty.
      */
-<span class="fc" id="L147">    public static final Predicate&lt;Iterable&lt;?&gt;&gt; empty = new Predicate&lt;Iterable&lt;?&gt;&gt;() {</span>
-<span class="fc" id="L148">        @Override public boolean $(Iterable&lt;?&gt; iterable) { return on(iterable).isEmpty(); }};</span>
+<span class="fc" id="L146">    public static final Predicate&lt;Iterable&lt;?&gt;&gt; empty = new Predicate&lt;Iterable&lt;?&gt;&gt;() {</span>
+<span class="fc" id="L147">        @Override public boolean $(Iterable&lt;?&gt; iterable) { return on(iterable).isEmpty(); }};</span>
 
 
     /**
      * The {@link Iterator#hasNext()} method as a function.
      */
-<span class="fc" id="L154">    public static final Predicate&lt;Iterator&lt;?&gt;&gt; hasNext = new Predicate&lt;Iterator&lt;?&gt;&gt;() {</span>
-<span class="fc" id="L155">        @Override public boolean $(Iterator&lt;?&gt; iterator) { return iterator.hasNext(); }};</span>
+<span class="fc" id="L153">    public static final Predicate&lt;Iterator&lt;?&gt;&gt; hasNext = new Predicate&lt;Iterator&lt;?&gt;&gt;() {</span>
+<span class="fc" id="L154">        @Override public boolean $(Iterator&lt;?&gt; iterator) { return iterator.hasNext(); }};</span>
+
+
+    /**
+     * Yields the {@link Collection#size() size} of collections, or &lt;code&gt;0&lt;/code&gt; if
+     * the collection is &lt;code&gt;null&lt;/code&gt;.
+     */
+<span class="fc" id="L161">    public static final Fn&lt;Collection&lt;?&gt;, Integer&gt; size = when(notNull, new Fn&lt;Collection&lt;?&gt;, Integer&gt;() {</span>
+<span class="fc" id="L162">        @Override public Integer $(Collection&lt;?&gt; collection) { return collection.size(); }}).orElse(0);</span>
 
 
     /**
      * @return The {@link Iterator#next()} as a function.
      */
-<span class="fc" id="L161">    public static final &lt;T&gt; Fn&lt;Iterator&lt;T&gt;, T&gt; next() { return new Fn&lt;Iterator&lt;T&gt;, T&gt;() {</span>
-<span class="fc" id="L162">        @Override public T $(Iterator&lt;T&gt; iterator) { return iterator.next(); }};};</span>
+<span class="fc" id="L168">    public static final &lt;T&gt; Fn&lt;Iterator&lt;T&gt;, T&gt; next() { return new Fn&lt;Iterator&lt;T&gt;, T&gt;() {</span>
+<span class="fc" id="L169">        @Override public T $(Iterator&lt;T&gt; iterator) { return iterator.next(); }};};</span>
 
 
 
@@ -177,9 +184,9 @@ public final class Iterate {
      *         returned function will result in an infinite recursion.
      */
     public static &lt;T&gt; Fn&lt;T, T&gt; last(final Fn&lt;? super T, ? extends T&gt; next) {
-<span class="fc" id="L180">        return new Fn&lt;T, T&gt;() {</span>
+<span class="fc" id="L187">        return new Fn&lt;T, T&gt;() {</span>
         @Override public T $(T value) {
-<span class="fc" id="L182">            return optional(next.$(value)).map(this).orElse(value);</span>
+<span class="fc" id="L189">            return optional(next.$(value)).map(this).orElse(value);</span>
         }};
     }
 
@@ -191,11 +198,11 @@ public final class Iterate {
      * @return an adapted function yielding an iterable of the array yielded from the original function.
      */
     public static &lt;I, O&gt; Fn&lt;I, Iterable&lt;O&gt;&gt; toIterable(final Fn&lt;I, O[]&gt; yieldsArray) {
-<span class="fc" id="L194">        return new Fn&lt;I, Iterable&lt;O&gt;&gt;() { @Override public Iterable&lt;O&gt; $(I value) { return on(yieldsArray.$(value)); }}; }</span>
+<span class="fc" id="L201">        return new Fn&lt;I, Iterable&lt;O&gt;&gt;() { @Override public Iterable&lt;O&gt; $(I value) { return on(yieldsArray.$(value)); }}; }</span>
 
 
 
-<span class="fc" id="L198">    private Iterate() {}</span>
+<span class="fc" id="L205">    private Iterate() {}</span>
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.0.201403182114</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.1.201405082137</span></div></body></html>

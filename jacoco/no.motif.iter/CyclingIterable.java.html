@@ -3,37 +3,38 @@
 import static no.motif.Singular.none;
 import static no.motif.Singular.optional;
 
+import java.io.Serializable;
 import java.util.Iterator;
 
 import no.motif.single.Optional;
 
-public class CyclingIterable&lt;T&gt; implements Iterable&lt;T&gt; {
+public class CyclingIterable&lt;T&gt; implements Iterable&lt;T&gt;, Serializable {
 
     private final Iterable&lt;T&gt; elements;
     private final int times;
 
-<span class="fc" id="L15">    public CyclingIterable(int times, Iterable&lt;T&gt; elements) {</span>
-<span class="fc" id="L16">        this.times = times;</span>
-<span class="fc" id="L17">        this.elements = elements;</span>
-<span class="fc" id="L18">    }</span>
+<span class="fc" id="L16">    public CyclingIterable(int times, Iterable&lt;T&gt; elements) {</span>
+<span class="fc" id="L17">        this.times = times;</span>
+<span class="fc" id="L18">        this.elements = elements;</span>
+<span class="fc" id="L19">    }</span>
 
     @Override
     public Iterator&lt;T&gt; iterator() {
-<span class="fc" id="L22">        return new SimpleIterator&lt;T&gt;() {</span>
-<span class="fc" id="L23">            Iterator&lt;T&gt; iterator = elements.iterator();</span>
-<span class="fc" id="L24">            int cycle = 0;</span>
+<span class="fc" id="L23">        return new SimpleIterator&lt;T&gt;() {</span>
+<span class="fc" id="L24">            Iterator&lt;T&gt; iterator = elements.iterator();</span>
+<span class="fc" id="L25">            int cycle = 0;</span>
 
             @Override
             protected Optional&lt;? extends T&gt; nextIfAvailable() {
-<span class="fc bfc" id="L28" title="All 2 branches covered.">                if (iterator.hasNext()) return optional(iterator.next());</span>
-<span class="fc bfc" id="L29" title="All 2 branches covered.">                else if (++cycle == times) return none();</span>
+<span class="fc bfc" id="L29" title="All 2 branches covered.">                if (iterator.hasNext()) return optional(iterator.next());</span>
+<span class="fc bfc" id="L30" title="All 2 branches covered.">                else if (++cycle == times) return none();</span>
                 else {
-<span class="fc" id="L31">                    iterator = elements.iterator();</span>
-<span class="fc" id="L32">                    return nextIfAvailable();</span>
+<span class="fc" id="L32">                    iterator = elements.iterator();</span>
+<span class="fc" id="L33">                    return nextIfAvailable();</span>
                 }
             }
         };
     }
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.0.201403182114</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.1.201405082137</span></div></body></html>

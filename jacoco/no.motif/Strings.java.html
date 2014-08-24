@@ -29,6 +29,8 @@ import no.motif.f.Fn2;
 import no.motif.f.Predicate;
 import no.motif.f.Predicate.Always;
 import no.motif.f.base.FalseIfNull;
+import no.motif.iter.SplitOnCharacter;
+import no.motif.iter.SplitOnSubstring;
 import no.motif.single.Optional;
 
 /**
@@ -40,43 +42,43 @@ public final class Strings {
      * Converts a string to a &lt;code&gt;int&lt;/code&gt; value using {@link Integer#valueOf(String)}.
      * If the string is &lt;code&gt;null&lt;/code&gt;, 0 is yielded.
      */
-<span class="fc" id="L43">    public static final Fn&lt;String, Integer&gt; toInt = new Fn&lt;String, Integer&gt;() {</span>
-<span class="fc bfc" id="L44" title="All 2 branches covered.">        @Override public Integer $(String numeric) { return numeric != null ? Integer.valueOf(numeric) : 0; }};</span>
+<span class="fc" id="L45">    public static final Fn&lt;String, Integer&gt; toInt = new Fn&lt;String, Integer&gt;() {</span>
+<span class="fc bfc" id="L46" title="All 2 branches covered.">        @Override public Integer $(String numeric) { return numeric != null ? Integer.valueOf(numeric) : 0; }};</span>
 
 
     /**
      * Converts a string to a &lt;code&gt;long&lt;/code&gt; value using {@link Long#valueOf(String)}.
      * If the string is &lt;code&gt;null&lt;/code&gt;, 0 is yielded.
      */
-<span class="fc" id="L51">    public static final Fn&lt;String, Long&gt; toLong = new Fn&lt;String, Long&gt;() {</span>
-<span class="fc bfc" id="L52" title="All 2 branches covered.">        @Override public Long $(String numeric) { return numeric != null ? Long.valueOf(numeric) : 0; }};</span>
+<span class="fc" id="L53">    public static final Fn&lt;String, Long&gt; toLong = new Fn&lt;String, Long&gt;() {</span>
+<span class="fc bfc" id="L54" title="All 2 branches covered.">        @Override public Long $(String numeric) { return numeric != null ? Long.valueOf(numeric) : 0; }};</span>
 
 
     /**
      * Converts a string to a &lt;code&gt;double&lt;/code&gt; value using {@link Double#valueOf(String)}.
      * If the string is &lt;code&gt;null&lt;/code&gt;, 0 is yielded.
      */
-<span class="fc" id="L59">    public static final Fn&lt;String, Double&gt; toDouble = new Fn&lt;String, Double&gt;() {</span>
-<span class="fc bfc" id="L60" title="All 2 branches covered.">        @Override public Double $(String decimalValue) { return decimalValue != null ? Double.valueOf(decimalValue) : 0; }};</span>
+<span class="fc" id="L61">    public static final Fn&lt;String, Double&gt; toDouble = new Fn&lt;String, Double&gt;() {</span>
+<span class="fc bfc" id="L62" title="All 2 branches covered.">        @Override public Double $(String decimalValue) { return decimalValue != null ? Double.valueOf(decimalValue) : 0; }};</span>
 
 
     /**
      * Splits a string into characters.
      */
-<span class="fc" id="L66">    public static final Fn&lt;String, Iterable&lt;Character&gt;&gt; toChars = new Fn&lt;String, Iterable&lt;Character&gt;&gt;() {</span>
-<span class="fc" id="L67">        @Override public Iterable&lt;Character&gt; $(String value) { return Iterate.on(value); }};</span>
+<span class="fc" id="L68">    public static final Fn&lt;String, Iterable&lt;Character&gt;&gt; toChars = new Fn&lt;String, Iterable&lt;Character&gt;&gt;() {</span>
+<span class="fc" id="L69">        @Override public Iterable&lt;Character&gt; $(String value) { return Iterate.on(value); }};</span>
 
 
     /**
      * Yields the bytes of a String.
      * @see String#getBytes()
      */
-<span class="fc" id="L74">    public static final Fn&lt;String, Iterable&lt;Byte&gt;&gt; bytes = when(notNull, new Fn&lt;String, Iterable&lt;Byte&gt;&gt;() {</span>
+<span class="fc" id="L76">    public static final Fn&lt;String, Iterable&lt;Byte&gt;&gt; bytes = when(notNull, new Fn&lt;String, Iterable&lt;Byte&gt;&gt;() {</span>
         @Override public Iterable&lt;Byte&gt; $(String s) {
             try {
-<span class="fc" id="L77">                return Iterate.on(s.getBytes(Implicits.getEncoding()));</span>
-<span class="fc" id="L78">            } catch (UnsupportedEncodingException e) {</span>
-<span class="fc" id="L79">                throw asRuntimeException(e);</span>
+<span class="fc" id="L79">                return Iterate.on(s.getBytes(Implicits.getEncoding()));</span>
+<span class="fc" id="L80">            } catch (UnsupportedEncodingException e) {</span>
+<span class="fc" id="L81">                throw asRuntimeException(e);</span>
             }
         }
     }).orElse(Iterate.&lt;Byte&gt;none());
@@ -88,34 +90,34 @@ public final class Strings {
      * A blank string is either &lt;code&gt;null&lt;/code&gt;, empty, or
      * all characters {@link Chars#whitespace are whitespace}.
      */
-<span class="fc" id="L91">    public static final Predicate&lt;String&gt; blank = where(toChars, all(whitespace));</span>
+<span class="fc" id="L93">    public static final Predicate&lt;String&gt; blank = where(toChars, all(whitespace));</span>
 
 
     /**
      * A nonblank string has at least one character, and must contain at least
      * one character which is {@link Chars#whitespace not whitespace}.
      */
-<span class="fc" id="L98">    public static final Predicate&lt;String&gt; nonblank = where(toChars, exists(not(whitespace)));</span>
+<span class="fc" id="L100">    public static final Predicate&lt;String&gt; nonblank = where(toChars, exists(not(whitespace)));</span>
 
 
     /**
      * A numeric string must have at least one character, and all of them
      * must be {@link Chars#digit digits}.
      */
-<span class="fc" id="L105">    public static final Predicate&lt;String&gt; numeric = nonblankAllChars(digit);</span>
+<span class="fc" id="L107">    public static final Predicate&lt;String&gt; numeric = nonblankAllChars(digit);</span>
 
 
     /**
      * Alphanumeric strings are at least one character, and all
      * {@link Chars#digit digits} and/or {@link Chars#letter letters}.
      */
-<span class="fc" id="L112">    public static final Predicate&lt;String&gt; alphanumeric = nonblankAllChars(letterOrDigit);</span>
+<span class="fc" id="L114">    public static final Predicate&lt;String&gt; alphanumeric = nonblankAllChars(letterOrDigit);</span>
 
 
     /**
      * Alphabetic strings are at least one character, and all {@link Chars#letter letters}.
      */
-<span class="fc" id="L118">    public static final Predicate&lt;String&gt; alphabetic = nonblankAllChars(letter);</span>
+<span class="fc" id="L120">    public static final Predicate&lt;String&gt; alphabetic = nonblankAllChars(letter);</span>
 
 
     /**
@@ -124,7 +126,7 @@ public final class Strings {
      * @param valid The predicate evaluating all characters in a string.
      */
     public static final Predicate&lt;String&gt; allChars(Predicate&lt;Character&gt; valid) {
-<span class="fc" id="L127">        return where(toChars, all(valid)); }</span>
+<span class="fc" id="L129">        return where(toChars, all(valid)); }</span>
 
     /**
      * Predicate verifying that strings are {@link #nonblank not blank} and
@@ -133,43 +135,43 @@ public final class Strings {
      * @param valid
      */
     public static final Predicate&lt;String&gt; nonblankAllChars(Predicate&lt;Character&gt; valid) {
-<span class="fc" id="L136">        return both(nonblank).and(allChars(valid)); }</span>
+<span class="fc" id="L138">        return both(nonblank).and(allChars(valid)); }</span>
 
 
     /**
      * Trims a string, removing all leading and trailing whitespace.
      */
-<span class="fc" id="L142">    public static final Fn&lt;String, String&gt; trimmed = when(notNull, new Fn&lt;String, String&gt;() {</span>
-<span class="fc" id="L143">        @Override public String $(String s) { return s.trim(); }});</span>
+<span class="fc" id="L144">    public static final Fn&lt;String, String&gt; trimmed = when(notNull, new Fn&lt;String, String&gt;() {</span>
+<span class="fc" id="L145">        @Override public String $(String s) { return s.trim(); }});</span>
 
 
     /**
      * Convert a string to {@link String#toLowerCase() lower case}.
      */
-<span class="fc" id="L149">    public static final Fn&lt;String, String&gt; lowerCased = when(notNull, new Fn&lt;String, String&gt;() {</span>
-<span class="fc" id="L150">        @Override public String $(String s) { return s.toLowerCase(Implicits.getLocale()); }});</span>
+<span class="fc" id="L151">    public static final Fn&lt;String, String&gt; lowerCased = when(notNull, new Fn&lt;String, String&gt;() {</span>
+<span class="fc" id="L152">        @Override public String $(String s) { return s.toLowerCase(Implicits.getLocale()); }});</span>
 
 
     /**
      * Convert a string to {@link String#toUpperCase() upper case}
      */
-<span class="fc" id="L156">    public static final Fn&lt;String, String&gt; upperCased = when(notNull, new Fn&lt;String, String&gt;() {</span>
-<span class="fc" id="L157">        @Override public String $(String s) { return s.toUpperCase(Implicits.getLocale()); }});</span>
+<span class="fc" id="L158">    public static final Fn&lt;String, String&gt; upperCased = when(notNull, new Fn&lt;String, String&gt;() {</span>
+<span class="fc" id="L159">        @Override public String $(String s) { return s.toUpperCase(Implicits.getLocale()); }});</span>
 
 
     /**
      * Gives the length of a string, i.e. the amount of characters. &lt;code&gt;null&lt;/code&gt;
      * yields length 0.
      */
-<span class="fc" id="L164">    public static final Fn&lt;String, Integer&gt; length = when(notNull, new Fn&lt;String, Integer&gt;() {</span>
-<span class="fc" id="L165">        @Override public Integer $(String s) { return s.length(); }}).orElse(0);</span>
+<span class="fc" id="L166">    public static final Fn&lt;String, Integer&gt; length = when(notNull, new Fn&lt;String, Integer&gt;() {</span>
+<span class="fc" id="L167">        @Override public Integer $(String s) { return s.length(); }}).orElse(0);</span>
 
 
     /**
      * Evaluate if strings are of a exact length.
      * &lt;code&gt;null&lt;code&gt;s are considered to have length zero.
      */
-<span class="fc" id="L172">    public static final Predicate&lt;String&gt; hasLength(int exactLength) { return hasLength(equalTo(exactLength)); }</span>
+<span class="fc" id="L174">    public static final Predicate&lt;String&gt; hasLength(int exactLength) { return hasLength(equalTo(exactLength)); }</span>
 
 
     /**
@@ -179,24 +181,24 @@ public final class Strings {
      * @param accepted The predicate evaluating accepted length.
      * @return The predicate evaluating string length.
      */
-<span class="fc" id="L182">    public static final Predicate&lt;String&gt; hasLength(Predicate&lt;? super Integer&gt; accepted) { return where(length, accepted); }</span>
+<span class="fc" id="L184">    public static final Predicate&lt;String&gt; hasLength(Predicate&lt;? super Integer&gt; accepted) { return where(length, accepted); }</span>
 
 
     /**
      * Concatenate a string with the {@link Object#toString() string representation}
      * of an arbitrary object, i.e. &lt;em&gt;reduces&lt;/em&gt; two strings to one.
      */
-<span class="fc" id="L189">    public static final Fn2&lt;Object, Object, String&gt; concat = new Fn2&lt;Object, Object, String&gt;() {</span>
-<span class="fc bfc" id="L190" title="All 2 branches covered.">        String emptyIfNull(Object o) { return (o != null? String.valueOf(o) : &quot;&quot;); }</span>
-<span class="fc" id="L191">        @Override public String $(Object acc, Object c) { return emptyIfNull(acc) + emptyIfNull(c); }};</span>
+<span class="fc" id="L191">    public static final Fn2&lt;Object, Object, String&gt; concat = new Fn2&lt;Object, Object, String&gt;() {</span>
+<span class="fc bfc" id="L192" title="All 2 branches covered.">        String emptyIfNull(Object o) { return (o != null? String.valueOf(o) : &quot;&quot;); }</span>
+<span class="fc" id="L193">        @Override public String $(Object acc, Object c) { return emptyIfNull(acc) + emptyIfNull(c); }};</span>
 
 
 
     /**
      * Yields the given string with its characters in reversed order.
      */
-<span class="fc" id="L198">    public static final Fn&lt;String, String&gt; reversed = when(notNull, new Fn&lt;String, String&gt;() {</span>
-<span class="fc" id="L199">        @Override public String $(String s) { return new StringBuilder(s).reverse().toString(); }});</span>
+<span class="fc" id="L200">    public static final Fn&lt;String, String&gt; reversed = when(notNull, new Fn&lt;String, String&gt;() {</span>
+<span class="fc" id="L201">        @Override public String $(String s) { return new StringBuilder(s).reverse().toString(); }});</span>
 
 
 
@@ -209,8 +211,8 @@ public final class Strings {
      * @return The predicate.
      */
     public static Predicate&lt;String&gt; contains(final CharSequence charSequence) {
-<span class="fc bfc" id="L212" title="All 2 branches covered.">        return charSequence == null ? Always.&lt;String&gt;no() : new FalseIfNull&lt;String&gt;() {</span>
-<span class="fc" id="L213">        @Override protected boolean orElse(String string) { return string.contains(charSequence); }}; }</span>
+<span class="fc bfc" id="L214" title="All 2 branches covered.">        return charSequence == null ? Always.&lt;String&gt;no() : new FalseIfNull&lt;String&gt;() {</span>
+<span class="fc" id="L215">        @Override protected boolean orElse(String string) { return string.contains(charSequence); }}; }</span>
 
 
     /**
@@ -220,8 +222,8 @@ public final class Strings {
      * @return The predicate.
      */
     public static Predicate&lt;String&gt; startsWith(final String prefix) {
-<span class="fc bfc" id="L223" title="All 2 branches covered.">        return prefix == null ? Always.&lt;String&gt;no() : new FalseIfNull&lt;String&gt;() {</span>
-<span class="fc" id="L224">        @Override protected boolean orElse(String string) { return string.startsWith(prefix); }}; }</span>
+<span class="fc bfc" id="L225" title="All 2 branches covered.">        return prefix == null ? Always.&lt;String&gt;no() : new FalseIfNull&lt;String&gt;() {</span>
+<span class="fc" id="L226">        @Override protected boolean orElse(String string) { return string.startsWith(prefix); }}; }</span>
 
 
     /**
@@ -231,8 +233,8 @@ public final class Strings {
      * @return The predicate.
      */
     public static Predicate&lt;String&gt; endsWith(final String suffix) {
-<span class="fc bfc" id="L234" title="All 2 branches covered.">        return suffix == null ? Always.&lt;String&gt;no() : new FalseIfNull&lt;String&gt;() {</span>
-<span class="fc" id="L235">        @Override protected boolean orElse(String string) { return string.endsWith(suffix); }}; }</span>
+<span class="fc bfc" id="L236" title="All 2 branches covered.">        return suffix == null ? Always.&lt;String&gt;no() : new FalseIfNull&lt;String&gt;() {</span>
+<span class="fc" id="L237">        @Override protected boolean orElse(String string) { return string.endsWith(suffix); }}; }</span>
 
 
     /**
@@ -242,22 +244,22 @@ public final class Strings {
      * @return the predicate.
      */
     public static Predicate&lt;String&gt; matches(final String regex) {
-<span class="fc bfc" id="L245" title="All 2 branches covered.">        return regex == null ? Always.&lt;String&gt;no() : new FalseIfNull&lt;String&gt;() {</span>
-<span class="fc" id="L246">        @Override protected boolean orElse(String string) { return string.matches(regex); }};}</span>
+<span class="fc bfc" id="L247" title="All 2 branches covered.">        return regex == null ? Always.&lt;String&gt;no() : new FalseIfNull&lt;String&gt;() {</span>
+<span class="fc" id="L248">        @Override protected boolean orElse(String string) { return string.matches(regex); }};}</span>
 
 
     /**
      * Create a new strings by prepending a prefix.
      * @param prefix the prefix to prepend
      */
-<span class="fc" id="L253">    public static Fn&lt;Object, String&gt; prepend(String prefix) { return Apply.partially(concat).of(prefix); }</span>
+<span class="fc" id="L255">    public static Fn&lt;Object, String&gt; prepend(String prefix) { return Apply.partially(concat).of(prefix); }</span>
 
 
     /**
      * Create a new strings by appending a suffix.
      * @param suffix the suffix to append
      */
-<span class="fc" id="L260">    public static Fn&lt;Object, String&gt; append(String suffix) { return Apply.partially(argsReversed(concat)).of(suffix); }</span>
+<span class="fc" id="L262">    public static Fn&lt;Object, String&gt; append(String suffix) { return Apply.partially(argsReversed(concat)).of(suffix); }</span>
 
 
     /**
@@ -270,16 +272,16 @@ public final class Strings {
      * @param endIndex The index to end the extraction.
      */
     public static Fn&lt;String, String&gt; substring(final int beginIndex, final int endIndex) {
-<span class="fc bfc" id="L273" title="All 4 branches covered.">        if (beginIndex &lt; 0 || endIndex &lt; 0)</span>
-<span class="fc" id="L274">            return alwaysThrow(new StringIndexOutOfBoundsException(</span>
+<span class="fc bfc" id="L275" title="All 4 branches covered.">        if (beginIndex &lt; 0 || endIndex &lt; 0)</span>
+<span class="fc" id="L276">            return alwaysThrow(new StringIndexOutOfBoundsException(</span>
                     &quot;Cannot extract substring using negative index. &quot; +
                     &quot;beginIndex: &quot; + beginIndex + &quot;, endIndex: &quot; + endIndex));
-<span class="fc" id="L277">        return substring(always(beginIndex), always(endIndex));</span>
+<span class="fc" id="L279">        return substring(always(beginIndex), always(endIndex));</span>
     }
 
     public static Fn&lt;String, String&gt; substring(final Fn&lt;? super String, Integer&gt; beginIndex, final Fn&lt;? super String, Integer&gt; endIndex) {
-<span class="fc" id="L281">        return when(notNull, new Fn&lt;String, String&gt;() { @Override public String $(String s) {</span>
-<span class="fc" id="L282">            return optional(s).map(before(endIndex)).map(from(beginIndex)).orNull();</span>
+<span class="fc" id="L283">        return when(notNull, new Fn&lt;String, String&gt;() { @Override public String $(String s) {</span>
+<span class="fc" id="L284">            return optional(s).map(before(endIndex)).map(from(beginIndex)).orNull();</span>
         }});
     }
 
@@ -289,8 +291,8 @@ public final class Strings {
      * If the string is shorter than the amount, the original string is returned.
      */
     public static Fn&lt;String, String&gt; first(final int charAmount) {
-<span class="fc" id="L292">        return when(notNull, new Fn&lt;String, String&gt;() { @Override public String $(String s) {</span>
-<span class="fc bfc" id="L293" title="All 2 branches covered.">                    return (charAmount &gt; s.length()) ? s : s.substring(0, charAmount);</span>
+<span class="fc" id="L294">        return when(notNull, new Fn&lt;String, String&gt;() { @Override public String $(String s) {</span>
+<span class="fc bfc" id="L295" title="All 2 branches covered.">                    return (charAmount &gt; s.length()) ? s : s.substring(0, charAmount);</span>
                 }}).orElse(&quot;&quot;);
     }
 
@@ -300,8 +302,8 @@ public final class Strings {
      * If the string is shorter than the amount, the original string is returned.
      */
     public static Fn&lt;String, String&gt; last(final int charAmount) {
-<span class="fc" id="L303">        return when(notNull, new Fn&lt;String, String&gt;() { @Override public String $(String s) {</span>
-<span class="fc bfc" id="L304" title="All 2 branches covered.">                    return (charAmount &gt; s.length()) ? s : s.substring(s.length() - charAmount, s.length());</span>
+<span class="fc" id="L305">        return when(notNull, new Fn&lt;String, String&gt;() { @Override public String $(String s) {</span>
+<span class="fc bfc" id="L306" title="All 2 branches covered.">                    return (charAmount &gt; s.length()) ? s : s.substring(s.length() - charAmount, s.length());</span>
                 }}).orElse(&quot;&quot;);
     }
 
@@ -313,7 +315,7 @@ public final class Strings {
      * @param suffix The suffix to appear after the string
      */
     public static Fn&lt;Object,String&gt; inBetween(final String prefix, final String suffix) {
-<span class="fc" id="L316">        return Base.first(prepend(prefix)).then(append(suffix)); }</span>
+<span class="fc" id="L318">        return Base.first(prepend(prefix)).then(append(suffix)); }</span>
 
 
     /**
@@ -321,8 +323,8 @@ public final class Strings {
      *
      * @param times The amount of times to repeat the string.
      */
-<span class="fc" id="L324">    public static Fn&lt;String, String&gt; repeat(final int times) { return when(notNull, new Fn&lt;String, String&gt;() {</span>
-<span class="fc" id="L325">        @Override public String $(String s) { return on((Object) s).repeat(times).join(); }}); }</span>
+<span class="fc" id="L326">    public static Fn&lt;String, String&gt; repeat(final int times) { return when(notNull, new Fn&lt;String, String&gt;() {</span>
+<span class="fc" id="L327">        @Override public String $(String s) { return on((Object) s).repeat(times).join(); }}); }</span>
 
 
     /**
@@ -332,8 +334,8 @@ public final class Strings {
      * @param separator The separator string to insert between the repeating strings.
      */
     public static Fn&lt;String, String&gt; repeat(final int times, final String separator) {
-<span class="fc" id="L335">        return when(notNull, new Fn&lt;String, String&gt;() {</span>
-<span class="fc" id="L336">            @Override public String $(String s) { return on((Object) s).repeat(times).join(separator); }}); }</span>
+<span class="fc" id="L337">        return when(notNull, new Fn&lt;String, String&gt;() {</span>
+<span class="fc" id="L338">            @Override public String $(String s) { return on((Object) s).repeat(times).join(separator); }}); }</span>
 
 
 
@@ -353,8 +355,8 @@ public final class Strings {
      * @param substring the substring to search for.
      */
     public static Fn&lt;String, String&gt; after(final String substring) {
-<span class="fc bfc" id="L356" title="All 4 branches covered.">        if (substring == null || substring.isEmpty()) return NOP.fn();</span>
-<span class="fc" id="L357">        return from(Base.first(indexOf(substring)).then(add(substring.length())));</span>
+<span class="fc bfc" id="L358" title="All 4 branches covered.">        if (substring == null || substring.isEmpty()) return NOP.fn();</span>
+<span class="fc" id="L359">        return from(Base.first(indexOf(substring)).then(add(substring.length())));</span>
     }
 
 
@@ -373,8 +375,8 @@ public final class Strings {
      * @param substring the substring to search for.
      */
     public static Fn&lt;String, String&gt; afterLast(final String substring) {
-<span class="fc bfc" id="L376" title="All 4 branches covered.">        if (substring == null || substring.isEmpty()) return when(notNull, Base.&lt;String, String, String&gt;always(&quot;&quot;));</span>
-<span class="fc" id="L377">        return from(Base.first(lastIndexOf(substring)).then(add(substring.length())));</span>
+<span class="fc bfc" id="L378" title="All 4 branches covered.">        if (substring == null || substring.isEmpty()) return when(notNull, Base.&lt;String, String, String&gt;always(&quot;&quot;));</span>
+<span class="fc" id="L379">        return from(Base.first(lastIndexOf(substring)).then(add(substring.length())));</span>
     }
 
 
@@ -383,7 +385,7 @@ public final class Strings {
      * Yields substrings &lt;em&gt;from&lt;/em&gt; a position index.
      * @see #from(Fn)
      */
-<span class="fc" id="L386">    public static Fn&lt;String, String&gt; from(int index) { return from(always(index)); }</span>
+<span class="fc" id="L388">    public static Fn&lt;String, String&gt; from(int index) { return from(always(index)); }</span>
 
 
 
@@ -399,13 +401,13 @@ public final class Strings {
      * @param index The {@link Fn} to resolve the index.
      */
     public static Fn&lt;String, String&gt; from(final Fn&lt;? super String, Integer&gt; index) {
-<span class="fc" id="L402">        return when(notNull, new Fn&lt;String, String&gt;() {</span>
+<span class="fc" id="L404">        return when(notNull, new Fn&lt;String, String&gt;() {</span>
             @Override
             public String $(String s) {
-<span class="fc" id="L405">                Integer idx = index.$(s);</span>
-<span class="fc bfc" id="L406" title="All 2 branches covered.">                if (idx == null) return null;</span>
-<span class="fc bfc" id="L407" title="All 2 branches covered.">                if (idx &gt;= s.length()) return &quot;&quot;;</span>
-<span class="fc" id="L408">                return s.substring(idx);</span>
+<span class="fc" id="L407">                Integer idx = index.$(s);</span>
+<span class="fc bfc" id="L408" title="All 2 branches covered.">                if (idx == null) return null;</span>
+<span class="fc bfc" id="L409" title="All 2 branches covered.">                if (idx &gt;= s.length()) return &quot;&quot;;</span>
+<span class="fc" id="L410">                return s.substring(idx);</span>
             }});
     }
 
@@ -430,7 +432,7 @@ public final class Strings {
      * @param substring the substring to search for.
      */
     public static Fn&lt;String, String&gt; before(final String substring) {
-<span class="fc bfc" id="L433" title="All 2 branches covered.">        return substring == null ? NOP.&lt;String&gt;fn() : before(indexOf(substring));</span>
+<span class="fc bfc" id="L435" title="All 2 branches covered.">        return substring == null ? NOP.&lt;String&gt;fn() : before(indexOf(substring));</span>
     }
 
 
@@ -448,7 +450,7 @@ public final class Strings {
      * @param substring the substring to search for.
      */
     public static Fn&lt;String, String&gt; beforeLast(final String substring) {
-<span class="fc bfc" id="L451" title="All 2 branches covered.">        return substring != null ? before(lastIndexOf(substring)) : NOP.&lt;String&gt;fn();</span>
+<span class="fc bfc" id="L453" title="All 2 branches covered.">        return substring != null ? before(lastIndexOf(substring)) : NOP.&lt;String&gt;fn();</span>
     }
 
 
@@ -456,7 +458,7 @@ public final class Strings {
      * Yields substrings &lt;em&gt;before&lt;/em&gt; a position index.
      * @see #before(Fn)
      */
-<span class="fc" id="L459">    public static Fn&lt;String, String&gt; before(int index) { return before(always(index)); }</span>
+<span class="fc" id="L461">    public static Fn&lt;String, String&gt; before(int index) { return before(always(index)); }</span>
 
 
     /**
@@ -470,13 +472,13 @@ public final class Strings {
      * @param index The {@link Fn} to resolve the index.
      */
     public static Fn&lt;String, String&gt; before(final Fn&lt;? super String, Integer&gt; index) {
-<span class="fc" id="L473">        return when(notNull, new Fn&lt;String, String&gt;() {</span>
+<span class="fc" id="L475">        return when(notNull, new Fn&lt;String, String&gt;() {</span>
             @Override
             public String $(String s) {
-<span class="fc" id="L476">                Integer idx = index.$(s);</span>
-<span class="fc bfc" id="L477" title="All 2 branches covered.">                if (idx == null) return null;</span>
-<span class="fc bfc" id="L478" title="All 2 branches covered.">                if (idx &gt;= s.length()) return s;</span>
-<span class="fc" id="L479">                return s.substring(0, idx);</span>
+<span class="fc" id="L478">                Integer idx = index.$(s);</span>
+<span class="fc bfc" id="L479" title="All 2 branches covered.">                if (idx == null) return null;</span>
+<span class="fc bfc" id="L480" title="All 2 branches covered.">                if (idx &gt;= s.length()) return s;</span>
+<span class="fc" id="L481">                return s.substring(0, idx);</span>
             }});
     }
 
@@ -490,8 +492,8 @@ public final class Strings {
      * @param closeSubstring
      */
     public static Fn&lt;String,String&gt; between(String openSubstring, String closeSubstring) {
-<span class="fc bfc" id="L493" title="All 4 branches covered.">        if (openSubstring == null || closeSubstring == null) return always(null);</span>
-<span class="fc" id="L494">        return Base.first(after(openSubstring)).then(before(closeSubstring));</span>
+<span class="fc bfc" id="L495" title="All 4 branches covered.">        if (openSubstring == null || closeSubstring == null) return always(null);</span>
+<span class="fc" id="L496">        return Base.first(after(openSubstring)).then(before(closeSubstring));</span>
     }
 
 
@@ -504,8 +506,8 @@ public final class Strings {
      * @param closeSubstring
      */
     public static Fn&lt;String,String&gt; betweenOuter(String openSubstring, String closeSubstring) {
-<span class="fc bfc" id="L507" title="All 4 branches covered.">        if (openSubstring == null || closeSubstring == null) return always(null);</span>
-<span class="fc" id="L508">        return Base.first(after(openSubstring)).then(beforeLast(closeSubstring));</span>
+<span class="fc bfc" id="L509" title="All 4 branches covered.">        if (openSubstring == null || closeSubstring == null) return always(null);</span>
+<span class="fc" id="L510">        return Base.first(after(openSubstring)).then(beforeLast(closeSubstring));</span>
     }
 
 
@@ -516,85 +518,128 @@ public final class Strings {
      * @param closeSubstring
      */
     public static Fn&lt;String, Iterable&lt;String&gt;&gt; allBetween(final String openSubstring, final String closeSubstring) {
-<span class="fc bfc" id="L519" title="All 4 branches covered.">        if (openSubstring == null || closeSubstring == null) return always((Iterable&lt;String&gt;) Collections.&lt;String&gt;emptySet());</span>
-<span class="fc bfc" id="L520" title="All 4 branches covered.">        if (&quot;&quot;.equals(openSubstring) &amp;&amp; &quot;&quot;.equals(closeSubstring)) return alwaysThrow(new IllegalArgumentException(</span>
+<span class="fc bfc" id="L521" title="All 4 branches covered.">        if (openSubstring == null || closeSubstring == null) return always((Iterable&lt;String&gt;) Collections.&lt;String&gt;emptySet());</span>
+<span class="fc bfc" id="L522" title="All 4 branches covered.">        if (&quot;&quot;.equals(openSubstring) &amp;&amp; &quot;&quot;.equals(closeSubstring)) return alwaysThrow(new IllegalArgumentException(</span>
                 &quot;Extracting all strings between two empty strings would yield an infinite amount of empty strings!&quot;));
-<span class="fc" id="L522">        return when(notNull, new Fn&lt;String, Iterable&lt;String&gt;&gt;() {</span>
-<span class="fc" id="L523">            final Fn&lt;String, String&gt; firstSubstring = between(openSubstring, closeSubstring);</span>
+<span class="fc" id="L524">        return when(notNull, new Fn&lt;String, Iterable&lt;String&gt;&gt;() {</span>
+<span class="fc" id="L525">            final Fn&lt;String, String&gt; firstSubstring = between(openSubstring, closeSubstring);</span>
             @Override
             public Iterable&lt;String&gt; $(String s) {
-<span class="fc" id="L526">                Optional&lt;String&gt; original = optional(s);</span>
-<span class="fc" id="L527">                Optional&lt;String&gt; first = original.map(firstSubstring);</span>
-<span class="fc bfc" id="L528" title="All 2 branches covered.">                if (!first.isSome()) return Collections.emptySet();</span>
-<span class="fc" id="L529">                Optional&lt;String&gt; rest = original.map(nonblank, after(first.map(inBetween(openSubstring, closeSubstring)).orElse(null)));</span>
-<span class="fc" id="L530">                return first.append(this.$(rest.orElse(&quot;&quot;)));</span>
+<span class="fc" id="L528">                Optional&lt;String&gt; original = optional(s);</span>
+<span class="fc" id="L529">                Optional&lt;String&gt; first = original.map(firstSubstring);</span>
+<span class="fc bfc" id="L530" title="All 2 branches covered.">                if (!first.isSome()) return Collections.emptySet();</span>
+<span class="fc" id="L531">                Optional&lt;String&gt; rest = original.map(nonblank, after(first.map(inBetween(openSubstring, closeSubstring)).orElse(null)));</span>
+<span class="fc" id="L532">                return first.append(this.$(rest.orElse(&quot;&quot;)));</span>
             }});
     }
 
 
 
     /**
-     * Yields index position of first occurence of a &lt;code&gt;char&lt;/code&gt;, or &lt;code&gt;null&lt;/code&gt; if the
-     * &lt;code&gt;char&lt;/code&gt; cannot be found.
+     * Yields index position of first occurence of a &lt;code&gt;char&lt;/code&gt;, or &lt;code&gt;null&lt;/code&gt;
+     * if the &lt;code&gt;char&lt;/code&gt; cannot be found.
      *
      * @see String#indexOf(int)
      */
     public static Fn&lt;String, Integer&gt; indexOf(final char c) {
-<span class="fc" id="L543">        return when(notNull, new Fn&lt;String, Integer&gt;() {</span>
+<span class="fc" id="L545">        return when(notNull, new Fn&lt;String, Integer&gt;() {</span>
             @Override public Integer $(String s) {
-<span class="fc" id="L545">                int index = s.indexOf(c);</span>
-<span class="fc bfc" id="L546" title="All 2 branches covered.">                return index &gt;= 0 ? index : null;</span>
+<span class="fc" id="L547">                int index = s.indexOf(c);</span>
+<span class="fc bfc" id="L548" title="All 2 branches covered.">                return index &gt;= 0 ? index : null;</span>
             }});
     }
 
 
     /**
-     * Yields index position of last occurence of a &lt;code&gt;char&lt;/code&gt;, or &lt;code&gt;null&lt;/code&gt; if the
-     * &lt;code&gt;char&lt;/code&gt; cannot be found.
+     * Yields index position of last occurence of a &lt;code&gt;char&lt;/code&gt;, or &lt;code&gt;null&lt;/code&gt;
+     * if the &lt;code&gt;char&lt;/code&gt; cannot be found.
      *
      * @see String#indexOf(int)
      */
-<span class="fc" id="L557">    public static Fn&lt;String, Integer&gt; lastIndexOf(final char c) { return when(notNull, new Fn&lt;String, Integer&gt;() {</span>
+<span class="fc" id="L559">    public static Fn&lt;String, Integer&gt; lastIndexOf(final char c) { return when(notNull, new Fn&lt;String, Integer&gt;() {</span>
         @Override public Integer $(String s) {
-<span class="fc" id="L559">            int index = s.lastIndexOf(c);</span>
-<span class="fc bfc" id="L560" title="All 2 branches covered.">            return index &gt;= 0 ? index : null;</span>
+<span class="fc" id="L561">            int index = s.lastIndexOf(c);</span>
+<span class="fc bfc" id="L562" title="All 2 branches covered.">            return index &gt;= 0 ? index : null;</span>
         }});
     }
 
 
     /**
-     * Yields index position of first occurence of a substring, or &lt;code&gt;null&lt;/code&gt; if the substring cannot
-     * be found.
+     * Yields index position of first occurence of a substring, or &lt;code&gt;null&lt;/code&gt;
+     * if the substring cannot be found.
      *
      * @see String#indexOf(String)
      */
     public static Fn&lt;String, Integer&gt; indexOf(final String substring) {
-<span class="fc bfc" id="L572" title="All 2 branches covered.">        if (substring == null) return always(null);</span>
-<span class="fc" id="L573">        return when(notNull, new Fn&lt;String, Integer&gt;() {</span>
+<span class="fc bfc" id="L574" title="All 2 branches covered.">        if (substring == null) return always(null);</span>
+<span class="fc" id="L575">        return when(notNull, new Fn&lt;String, Integer&gt;() {</span>
             @Override public Integer $(String s) {
-<span class="fc" id="L575">                int index = s.indexOf(substring);</span>
-<span class="fc bfc" id="L576" title="All 2 branches covered.">                return index &gt;= 0 ? index : null;</span>
+<span class="fc" id="L577">                int index = s.indexOf(substring);</span>
+<span class="fc bfc" id="L578" title="All 2 branches covered.">                return index &gt;= 0 ? index : null;</span>
             }});
     }
 
 
 
     /**
-     * Yields index position of last occurence of a substring, or &lt;code&gt;null&lt;/code&gt; if the substring cannot
-     * be found.
+     * Yields index position of last occurence of a substring, or &lt;code&gt;null&lt;/code&gt;
+     * if the substring cannot be found.
      *
      * @see String#indexOf(String)
      */
     public static Fn&lt;String, Integer&gt; lastIndexOf(final String substring) {
-<span class="fc bfc" id="L589" title="All 2 branches covered.">        if (substring == null) return always(null);</span>
-<span class="fc" id="L590">        return when(notNull, new Fn&lt;String, Integer&gt;() {</span>
+<span class="fc bfc" id="L591" title="All 2 branches covered.">        if (substring == null) return always(null);</span>
+<span class="fc" id="L592">        return when(notNull, new Fn&lt;String, Integer&gt;() {</span>
             @Override public Integer $(String s) {
-<span class="fc" id="L592">                int index = s.lastIndexOf(substring);</span>
-<span class="fc bfc" id="L593" title="All 2 branches covered.">                return index &gt;= 0 ? index : null;</span>
+<span class="fc" id="L594">                int index = s.lastIndexOf(substring);</span>
+<span class="fc bfc" id="L595" title="All 2 branches covered.">                return index &gt;= 0 ? index : null;</span>
             }});
     }
 
 
-<span class="fc" id="L598">    private Strings() {}</span>
+    /**
+     * Split a string on each occurence of a substring.
+     * The substring is not included in the resulting strings, and any
+     * consecutive substring are treated as one delimiter instance.
+     *
+     * @param substring
+     */
+    public static Fn&lt;String, Iterable&lt;String&gt;&gt; splittingOn(final String substring) {
+<span class="fc" id="L608">        return new Fn&lt;String, Iterable&lt;String&gt;&gt;() {</span>
+            @Override public Iterable&lt;String&gt; $(String string) {
+<span class="fc" id="L610">                return new SplitOnSubstring(string, substring);</span>
+            }};
+    }
+
+
+    /**
+     * Split a string on each occurence of a &lt;code&gt;char&lt;/code&gt; delimiter.
+     * The splitting character is not included in the resulting strings, and any
+     * consecutive occurrences of the character are treated as one delimiter instance.
+     *
+     * @param character the delimiter character
+     */
+<span class="fc" id="L622">    public static Fn&lt;String, Iterable&lt;String&gt;&gt; splittingOn(char character) { return splittingOn(equalTo(character)); }</span>
+
+
+    /**
+     * Split a string into several on any character passing the given
+     * &lt;code&gt;Character&lt;/code&gt; predicate.
+     * The characters accepted by the predicate is not included in the
+     * resulting strings, and any consecutive accepted characters are
+     * treated as one delimiter instance.
+     *
+     * @param character the predicate which decides if a character is
+     *                  a delimiter.
+     */
+    public static Fn&lt;String, Iterable&lt;String&gt;&gt; splittingOn(final Predicate&lt;? super Character&gt; character) {
+<span class="fc" id="L636">        return new Fn&lt;String, Iterable&lt;String&gt;&gt;() {</span>
+            @Override public Iterable&lt;String&gt; $(String string) {
+<span class="fc" id="L638">                return new SplitOnCharacter(string, character);</span>
+            }};
+    }
+
+
+<span class="fc" id="L643">    private Strings() {}</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.0.201403182114</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.1.201405082137</span></div></body></html>

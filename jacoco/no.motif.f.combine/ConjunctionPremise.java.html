@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ConjunctionPremise.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Motif</a> &gt; <a href="index.source.html" class="el_package">no.motif.f.combine</a> &gt; <span class="el_source">ConjunctionPremise.java</span></div><h1>ConjunctionPremise.java</h1><pre class="source lang-java linenums">package no.motif.f.combine;
+
+import static java.util.Arrays.asList;
+import no.motif.Iterate;
+import no.motif.f.Fn0;
+
+/**
+ * A composition of several {@link Fn0 Fn0&amp;lt;Boolean&amp;gt;s} which must all evaluate
+ * to &lt;code&gt;true&lt;/code&gt; for the conjunction to yield &lt;code&gt;true&lt;/code&gt;,
+ * otherwise it yields &lt;code&gt;false&lt;/code&gt;.
+ */
+public class ConjunctionPremise implements Fn0&lt;Boolean&gt; {
+
+    private final no.motif.types.Appendable&lt;Fn0&lt;Boolean&gt;&gt; premises;
+
+    @SafeVarargs
+    @SuppressWarnings(&quot;varargs&quot;)
+    public ConjunctionPremise(Fn0&lt;Boolean&gt; ... premises) {
+<span class="fc" id="L19">        this(asList(premises));</span>
+<span class="fc" id="L20">    }</span>
+
+<span class="fc" id="L22">    public ConjunctionPremise(Iterable&lt;Fn0&lt;Boolean&gt;&gt; premises) {</span>
+<span class="fc" id="L23">        this.premises = Iterate.on(premises);</span>
+<span class="fc" id="L24">    }</span>
+
+    @Override
+    public Boolean $() {
+<span class="fc bfc" id="L28" title="All 4 branches covered.">        for (Fn0&lt;Boolean&gt; p : premises) if (p.$() != Boolean.TRUE) return false;</span>
+<span class="fc" id="L29">        return true;</span>
+    }
+
+    /**
+     *
+     * @param anotherPremise must yield &lt;code&gt;true&lt;/code&gt;
+     *                       for the entire premise to be true.
+     * @return the new {@link ConjunctionPremise}
+     */
+    public ConjunctionPremise and(Fn0&lt;Boolean&gt; anotherPremise) {
+<span class="fc" id="L39">        return new ConjunctionPremise(premises.append(anotherPremise));</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.1.201405082137</span></div></body></html>

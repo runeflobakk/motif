@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>DisjunctionPremise.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Motif</a> &gt; <a href="index.source.html" class="el_package">no.motif.f.combine</a> &gt; <span class="el_source">DisjunctionPremise.java</span></div><h1>DisjunctionPremise.java</h1><pre class="source lang-java linenums">package no.motif.f.combine;
+
+import static java.util.Arrays.asList;
+import no.motif.Iterate;
+import no.motif.f.Fn0;
+import no.motif.types.Appendable;
+
+/**
+ * A disjunction is a composition of several {@link Fn0 Fn0&amp;lt;Boolean&amp;gt;s}
+ * which evaluates to &lt;code&gt;true&lt;/code&gt; only when at least &lt;em&gt;one&lt;/em&gt; of the
+ * premises yields true.
+ * If none of the &lt;code&gt;Fn0&amp;lt;Boolean&amp;gt;s&lt;/code&gt; yields &lt;code&gt;true&lt;/code&gt;,
+ * the disjunction yields &lt;code&gt;false&lt;/code&gt;.
+ */
+public class DisjunctionPremise implements Fn0&lt;Boolean&gt; {
+
+    private final Appendable&lt;Fn0&lt;Boolean&gt;&gt; premises;
+
+    @SafeVarargs
+    @SuppressWarnings(&quot;varargs&quot;)
+    public DisjunctionPremise(Fn0&lt;Boolean&gt; ... premises) {
+<span class="fc" id="L22">        this(asList(premises));</span>
+<span class="fc" id="L23">    }</span>
+
+<span class="fc" id="L25">    public DisjunctionPremise(Iterable&lt;Fn0&lt;Boolean&gt;&gt; premises) {</span>
+<span class="fc" id="L26">        this.premises = Iterate.on(premises);</span>
+<span class="fc" id="L27">    }</span>
+
+    @Override
+    public Boolean $() {
+<span class="fc bfc" id="L31" title="All 4 branches covered.">        for (Fn0&lt;Boolean&gt; p : premises) if (p.$() == Boolean.TRUE) return true;</span>
+<span class="fc" id="L32">        return false;</span>
+    }
+
+    public DisjunctionPremise or(Fn0&lt;Boolean&gt; otherPremise) {
+<span class="fc" id="L36">        return new DisjunctionPremise(premises.append(otherPremise));</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.1.201405082137</span></div></body></html>

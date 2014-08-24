@@ -3,6 +3,7 @@
 import static no.motif.Singular.none;
 import static no.motif.Singular.optional;
 
+import java.io.Serializable;
 import java.util.Iterator;
 
 import no.motif.f.Fn;
@@ -14,27 +15,27 @@ import no.motif.single.Optional;
  * the elements.
  *
  */
-public class ExtractingIterable&lt;T, E&gt; implements Iterable&lt;E&gt; {
+public class ExtractingIterable&lt;T, E&gt; implements Iterable&lt;E&gt;, Serializable {
 
     private final T value;
     private final Iterable&lt;? extends Fn&lt;? super T, ? extends E&gt;&gt; extractors;
 
-<span class="fc" id="L22">    public ExtractingIterable(T value, Iterable&lt;? extends Fn&lt;? super T, ? extends E&gt;&gt; extractors) {</span>
-<span class="fc" id="L23">        this.value = value;</span>
-<span class="fc" id="L24">        this.extractors = extractors;</span>
-<span class="fc" id="L25">    }</span>
+<span class="fc" id="L23">    public ExtractingIterable(T value, Iterable&lt;? extends Fn&lt;? super T, ? extends E&gt;&gt; extractors) {</span>
+<span class="fc" id="L24">        this.value = value;</span>
+<span class="fc" id="L25">        this.extractors = extractors;</span>
+<span class="fc" id="L26">    }</span>
 
     @Override
     public Iterator&lt;E&gt; iterator() {
-<span class="fc" id="L29">        return new SimpleIterator&lt;E&gt;() {</span>
-<span class="fc" id="L30">            final Iterator&lt;? extends Fn&lt;? super T, ? extends E&gt;&gt; iterator = extractors.iterator();</span>
+<span class="fc" id="L30">        return new SimpleIterator&lt;E&gt;() {</span>
+<span class="fc" id="L31">            final Iterator&lt;? extends Fn&lt;? super T, ? extends E&gt;&gt; iterator = extractors.iterator();</span>
 
             @Override
             protected Optional&lt;? extends E&gt; nextIfAvailable() {
-<span class="fc bfc" id="L34" title="All 2 branches covered.">                if (!iterator.hasNext()) return none();</span>
-<span class="fc" id="L35">                else return optional(iterator.next().$(value));</span>
+<span class="fc bfc" id="L35" title="All 2 branches covered.">                if (!iterator.hasNext()) return none();</span>
+<span class="fc" id="L36">                else return optional(iterator.next().$(value));</span>
             }};
     }
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.0.201403182114</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.1.201405082137</span></div></body></html>

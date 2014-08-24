@@ -3,32 +3,33 @@
 import static no.motif.Iterate.hasNext;
 import static no.motif.Singular.optional;
 
+import java.io.Serializable;
 import java.util.Iterator;
 
 import no.motif.Iterate;
 import no.motif.single.Elem;
 import no.motif.single.Optional;
 
-class IndexedIterable&lt;T&gt; implements Iterable&lt;Elem&lt;T&gt;&gt; {
+class IndexedIterable&lt;T&gt; implements Iterable&lt;Elem&lt;T&gt;&gt;, Serializable {
 
     private final Iterable&lt;T&gt; elements;
     private final int startIndex;
 
-<span class="fc" id="L17">    public IndexedIterable(int startIndex, Iterable&lt;T&gt; elements) {</span>
-<span class="fc" id="L18">        this.startIndex = startIndex;</span>
-<span class="fc" id="L19">        this.elements = elements;</span>
-<span class="fc" id="L20">    }</span>
+<span class="fc" id="L18">    public IndexedIterable(int startIndex, Iterable&lt;T&gt; elements) {</span>
+<span class="fc" id="L19">        this.startIndex = startIndex;</span>
+<span class="fc" id="L20">        this.elements = elements;</span>
+<span class="fc" id="L21">    }</span>
 
     @Override
     public Iterator&lt;Elem&lt;T&gt;&gt; iterator() {
-<span class="fc" id="L24">        return new SimpleIterator&lt;Elem&lt;T&gt;&gt;() {</span>
-<span class="fc" id="L25">            Iterator&lt;T&gt; iterator = elements.iterator();</span>
-<span class="fc" id="L26">            int index = startIndex;</span>
+<span class="fc" id="L25">        return new SimpleIterator&lt;Elem&lt;T&gt;&gt;() {</span>
+<span class="fc" id="L26">            Iterator&lt;T&gt; iterator = elements.iterator();</span>
+<span class="fc" id="L27">            int index = startIndex;</span>
             @Override
             protected Optional&lt;Elem&lt;T&gt;&gt; nextIfAvailable() {
-<span class="fc" id="L29">                return optional(hasNext, iterator).map(Iterate.&lt;T&gt;next()).map(Elem.&lt;T&gt;withIndex(index++));</span>
+<span class="fc" id="L30">                return optional(hasNext, iterator).map(Iterate.&lt;T&gt;next()).map(Elem.&lt;T&gt;withIndex(index++));</span>
             }};
     }
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.0.201403182114</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.1.201405082137</span></div></body></html>

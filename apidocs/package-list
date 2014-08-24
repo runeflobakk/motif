@@ -7,5 +7,6 @@ no.motif.f.impl
 no.motif.iter
 no.motif.iter.boxing
 no.motif.iter.ordering
+no.motif.maps
 no.motif.single
 no.motif.types

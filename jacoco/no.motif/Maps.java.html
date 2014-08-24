@@ -4,6 +4,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import no.motif.f.Fn;
+import no.motif.f.Predicate;
+import no.motif.maps.CombinedMapsView;
 
 /**
  * Operations on {@link Map maps} and {@link Entry map entries}.
@@ -14,16 +16,57 @@ public final class Maps {
     /**
      * Gets the key of a {@link Entry map entry}.
      */
-<span class="fc" id="L17">    public static &lt;K&gt; Fn&lt;Entry&lt;K, ?&gt;, K&gt; key() { return new Fn&lt;Map.Entry&lt;K, ?&gt;, K&gt;() {</span>
-<span class="fc" id="L18">        @Override public K $(Entry&lt;K, ?&gt; entry) { return entry.getKey(); }}; }</span>
+<span class="fc" id="L19">    public static &lt;K&gt; Fn&lt;Entry&lt;K, ?&gt;, K&gt; key() { return new Fn&lt;Map.Entry&lt;K, ?&gt;, K&gt;() {</span>
+<span class="fc" id="L20">        @Override public K $(Entry&lt;K, ?&gt; entry) { return entry.getKey(); }}; }</span>
+
 
     /**
      * Gets the value of a {@link Entry map entry}.
      */
-<span class="fc" id="L23">    public static &lt;V&gt; Fn&lt;Entry&lt;?, V&gt;, V&gt; value() { return new Fn&lt;Map.Entry&lt;?, V&gt;, V&gt;() {</span>
-<span class="fc" id="L24">        @Override public V $(Entry&lt;?, V&gt; entry) { return entry.getValue(); }}; }</span>
+<span class="fc" id="L26">    public static &lt;V&gt; Fn&lt;Entry&lt;?, V&gt;, V&gt; value() { return new Fn&lt;Map.Entry&lt;?, V&gt;, V&gt;() {</span>
+<span class="fc" id="L27">        @Override public V $(Entry&lt;?, V&gt; entry) { return entry.getValue(); }}; }</span>
 
 
-<span class="fc" id="L27">    private Maps() {}</span>
+
+    /**
+     * Evaluate if objects are a key {@link Map#containsKey(Object) contained in}
+     * the given &lt;code&gt;Map&lt;/code&gt;.
+     */
+<span class="fc" id="L35">    public static &lt;K&gt; Predicate&lt;K&gt; keyIn(final Map&lt;K, ?&gt; map) { return new Predicate&lt;K&gt;() {</span>
+<span class="fc" id="L36">        @Override public boolean $(K key) { return map.containsKey(key); }}; }</span>
+
+
+    /**
+     * Evaluate if objects are a value {@link Map#containsValue(Object) contained in}
+     * the given &lt;code&gt;Map&lt;/code&gt;.
+     */
+<span class="fc" id="L43">    public static &lt;V&gt; Predicate&lt;V&gt; valueIn(final Map&lt;?, ? extends V&gt; map) { return new Predicate&lt;V&gt;() {</span>
+<span class="fc" id="L44">        @Override public boolean $(V value) { return map.containsValue(value); }}; }</span>
+
+
+    /**
+     * Creates a combined view of two maps, where the values of the first map corresponds
+     * to keys of the second map. This has the implication that any value in the first map not
+     * being a key in the second map will appear as not present in this view. The same applies
+     * to keys in the second map not being a value in the first map, they cannot be retrieved with
+     * this view.
+     * &lt;p&gt;
+     * Similarily, the semantics of the {@link Map#containsKey(Object) containsKey(key)} works transitively.
+     * It returns true &lt;em&gt;only&lt;/em&gt; if the given key is contained in the first map, and yields a value
+     * which is contained as a key in the second map. The usual behavior considering possible
+     * &lt;code&gt;null&lt;/code&gt;s as keys and values applies as specified in the {@link Map} interface, and is
+     * dependent of the two maps the view is based on.
+     * &lt;/p&gt;
+     *
+     * @param first The first map. All or a subset of the keys of this map will be keys in the returned view.
+     * @param second The second map. All or a subset of the values of this map will be values in the returned view.
+     * @return the {@link CombinedMapsView}.
+     */
+    public static &lt;K, I, V&gt; Map&lt;K, V&gt; combine(Map&lt;K, I&gt; first, Map&lt;I, V&gt; second) {
+<span class="fc" id="L66">        return new CombinedMapsView&lt;K, I, V&gt;(first, second);</span>
+    }
+
+
+<span class="fc" id="L70">    private Maps() {}</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.0.201403182114</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.1.201405082137</span></div></body></html>

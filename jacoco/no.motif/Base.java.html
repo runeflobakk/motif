@@ -2,14 +2,19 @@
 
 import static no.motif.Iterate.on;
 
+import java.util.Collection;
 import java.util.Objects;
 
 import no.motif.f.Do;
 import no.motif.f.Fn;
+import no.motif.f.Fn0;
 import no.motif.f.Fn2;
 import no.motif.f.Predicate;
+import no.motif.f.Predicate.Always;
 import no.motif.f.combine.Conjunction;
+import no.motif.f.combine.ConjunctionPremise;
 import no.motif.f.combine.Disjunction;
+import no.motif.f.combine.DisjunctionPremise;
 import no.motif.f.combine.DoChain;
 import no.motif.f.combine.Fn2Chain;
 import no.motif.f.combine.FnChain;
@@ -30,12 +35,21 @@ import no.motif.types.Elements;
 public final class Base {
 
     /**
+     * Shorthand for {@link #not(Predicate) not(}{@link #equalTo(Object) equalTo(o))}.
+     *
+     * @see #not(Predicate)
+     * @see #equalTo(Object)
+     */
+<span class="fc" id="L43">    public static &lt;T&gt; Predicate&lt;T&gt; not(T o) { return not(equalTo(o)); }</span>
+
+
+    /**
      * Negates a predicate.
      * @param p The predicate to negate.
      * @return The new predicate.
      */
     public static &lt;T&gt; Predicate&lt;T&gt; not(final Predicate&lt;T&gt; p) {
-<span class="fc bfc" id="L38" title="All 2 branches covered.">        return new Predicate&lt;T&gt;() { @Override public boolean $(T value) { return !p.$(value); }}; }</span>
+<span class="fc bfc" id="L52" title="All 2 branches covered.">        return new Predicate&lt;T&gt;() { @Override public boolean $(T value) { return !p.$(value); }}; }</span>
 
 
     /**
@@ -61,7 +75,7 @@ public final class Base {
      * @return          A predicate of &lt;code&gt;T&lt;/code&gt;
      */
     public static &lt;T, P&gt; Predicate&lt;T&gt; where(final Fn&lt;T, P&gt; fn, final Predicate&lt;? super P&gt; predicate) {
-<span class="fc" id="L64">        return new Where&lt;T, P&gt;(fn, predicate); }</span>
+<span class="fc" id="L78">        return new Where&lt;T, P&gt;(fn, predicate); }</span>
 
 
 
@@ -76,7 +90,21 @@ public final class Base {
      *         chaining the {@link Conjunction#and(Predicate) and(anotherPredicate)} method.
      */
     public static &lt;T&gt; Conjunction&lt;T&gt; both(Predicate&lt;T&gt; predicate) {
-<span class="fc" id="L79">        return new Conjunction&lt;T&gt;(predicate);</span>
+<span class="fc" id="L93">        return new Conjunction&lt;T&gt;(predicate);</span>
+    }
+
+
+    /**
+     * Create a AND-expression of several {@link Fn0 Fn0&amp;lt;Boolean&amp;gt;s}, starting with the one
+     * given to this method.
+     *
+     * @see ConjunctionPremise
+     * @param premise The first &lt;code&gt;Fn0&amp;lt;Boolean&amp;gt;&lt;/code&gt;.
+     * @return a new &lt;code&gt;Fn0&amp;lt;Boolean&amp;gt;&lt;/code&gt; which may be used to build up an AND-expression by
+     *         chaining the {@link ConjunctionPremise#and(Fn0) and(anotherPremise)} method.
+     */
+    public static ConjunctionPremise both(Fn0&lt;Boolean&gt; premise) {
+<span class="fc" id="L107">        return new ConjunctionPremise(premise);</span>
     }
 
 
@@ -91,10 +119,32 @@ public final class Base {
     @SafeVarargs
     @SuppressWarnings(&quot;varargs&quot;)
     public static &lt;T&gt; Conjunction&lt;T&gt; allOf(Predicate&lt;? super T&gt; ... predicates) {
-<span class="fc" id="L94">        return new Conjunction&lt;&gt;(predicates);</span>
+<span class="fc" id="L122">        return new Conjunction&lt;&gt;(predicates);</span>
+    }
+
+    /**
+     * Compose an AND-expression of several {@link Fn0 Fn0&amp;lt;Boolean&amp;gt;s}.
+     *
+     * @see ConjunctionPremise
+     * @param premises the &lt;code&gt;Fn0&amp;lt;Boolean&amp;gt;s&lt;/code&gt;.
+     * @return a new &lt;code&gt;Fn0&amp;lt;Boolean&amp;gt;&lt;/code&gt; which is the conjunction
+     *         (AND) of the given premises.
+     */
+    @SafeVarargs
+    @SuppressWarnings(&quot;varargs&quot;)
+    public static ConjunctionPremise allOf(Fn0&lt;Boolean&gt; ... premises) {
+<span class="fc" id="L136">        return new ConjunctionPremise(premises);</span>
     }
 
 
+
+    /**
+     * Shorthand for {@link #either(Predicate) either(}{@link #equalTo(Object) equalTo(o))}.
+     *
+     * @see #either(Predicate)
+     * @see Disjunction
+     */
+<span class="fc" id="L147">    public static &lt;T&gt; Disjunction&lt;T&gt; either(T o) { return either(equalTo(o)); }</span>
 
     /**
      * Create a OR-expression of several predicates, starting with the one
@@ -107,9 +157,40 @@ public final class Base {
      *         chaining the {@link Disjunction#or(Predicate) or(anotherPredicate)} method.
      */
     public static &lt;T&gt; Disjunction&lt;T&gt; either(Predicate&lt;T&gt; predicate) {
-<span class="fc" id="L110">        return new Disjunction&lt;T&gt;(predicate);</span>
+<span class="fc" id="L160">        return new Disjunction&lt;T&gt;(predicate);</span>
     }
 
+
+    /**
+     * Create a OR-expression of several {@link Fn0 Fn0&amp;lt;Boolean&amp;gt;s},
+     * starting with the one given to this method.
+     *
+     * @see DisjunctionPremise
+     * @param premise The first &lt;code&gt;Fn0&amp;lt;Boolean&amp;gt;&lt;/code&gt;.
+     * @return a new &lt;code&gt;Fn0&amp;lt;Boolean&amp;gt;&lt;/code&gt; which may be used to build up an OR-expression by
+     *         chaining the {@link DisjunctionPremise#or(Fn0) or(anotherPremise)} method.
+     */
+    public static DisjunctionPremise either(Fn0&lt;Boolean&gt; premise) {
+<span class="fc" id="L174">        return new DisjunctionPremise(premise);</span>
+    }
+
+
+    /**
+     * Shorthand for
+     * {@link #anyOf(Predicate...) anyOf(}{@link #equalTo(Object) equalTo(o1), equalTo(o2), ..., equalTo(on))}
+     *
+     * @param objects the candidate objects for equivalence check.
+     * @see Disjunction
+     */
+    @SafeVarargs
+    @SuppressWarnings(&quot;varargs&quot;)
+    public static &lt;T&gt; Disjunction&lt;T&gt; anyOf(T ... objects) {
+        @SuppressWarnings(&quot;unchecked&quot;)
+<span class="fc" id="L189">        Predicate&lt;T&gt;[] equalToPredicates = on(objects)</span>
+<span class="fc" id="L190">            .map(new Fn&lt;T, Predicate&lt;T&gt;&gt;() { @Override public Predicate&lt;T&gt; $(T o) { return equalTo(o); }})</span>
+            .collect().toArray(new Predicate[objects.length]);
+<span class="fc" id="L192">        return anyOf(equalToPredicates);</span>
+    }
 
 
     /**
@@ -122,7 +203,21 @@ public final class Base {
     @SafeVarargs
     @SuppressWarnings(&quot;varargs&quot;)
     public static &lt;T&gt; Disjunction&lt;T&gt; anyOf(Predicate&lt;? super T&gt; ... predicates) {
-<span class="fc" id="L125">        return new Disjunction&lt;&gt;(predicates);</span>
+<span class="fc" id="L206">        return new Disjunction&lt;&gt;(predicates);</span>
+    }
+
+
+    /**
+     * Compose an OR-expression of several {@link Fn0 Fn0&amp;lt;Boolean&amp;gt;s}.
+     *
+     * @see DisjunctionPremise
+     * @param premises the &lt;code&gt;Fn0&amp;lt;Boolean&amp;gt;s&lt;/code&gt;.
+     * @return a new &lt;code&gt;Fn0&amp;lt;Boolean&amp;gt;s&lt;/code&gt; which is the disjunction (OR) of the given premises.
+     */
+    @SafeVarargs
+    @SuppressWarnings(&quot;varargs&quot;)
+    public static DisjunctionPremise anyOf(Fn0&lt;Boolean&gt; ... premises) {
+<span class="fc" id="L220">        return new DisjunctionPremise(premises);</span>
     }
 
 
@@ -135,8 +230,18 @@ public final class Base {
      *         to true by the given predicate, false if any evaluates to &lt;code&gt;false&lt;/code&gt;.
      */
     public static &lt;E, I extends Iterable&lt;E&gt;&gt; Predicate&lt;I&gt; all(final Predicate&lt;? super E&gt; predicate) {
-<span class="fc" id="L138">        return new Predicate&lt;I&gt;() { @Override public boolean $(I iterable) {</span>
-<span class="fc" id="L139">            return on(iterable).filter(not(predicate)).isEmpty(); }};}</span>
+<span class="fc" id="L233">        return new Predicate&lt;I&gt;() { @Override public boolean $(I iterable) {</span>
+<span class="fc" id="L234">            return on(iterable).filter(not(predicate)).isEmpty(); }};}</span>
+
+
+    /**
+     * Shorthand for {@link #exists(Predicate) exists(}{@link #equalTo(Object) equalTo(element))}
+     *
+     * @param element The element to look for in an {@link Iterable}.
+     * @return a predicate which evaluates to &lt;code&gt;true&lt;/code&gt; if an element equal to the given
+     *         element is found, &lt;code&gt;false&lt;/code&gt; otherwise.
+     */
+<span class="fc" id="L244">    public static &lt;E, I extends Iterable&lt;E&gt;&gt; Predicate&lt;I&gt; exists(E element) { return exists(equalTo(element)); }</span>
 
 
     /**
@@ -147,24 +252,33 @@ public final class Base {
      *         to true by the given predicate, &lt;code&gt;false&lt;/code&gt; otherwise.
      */
     public static &lt;E, I extends Iterable&lt;E&gt;&gt; Predicate&lt;I&gt; exists(final Predicate&lt;? super E&gt; element) {
-<span class="fc" id="L150">        return new Predicate&lt;I&gt;() { @Override public boolean $(I iterable) {</span>
-<span class="fc" id="L151">            return on(iterable).exists(element); }};}</span>
+<span class="fc" id="L255">        return new Predicate&lt;I&gt;() { @Override public boolean $(I iterable) {</span>
+<span class="fc" id="L256">            return on(iterable).exists(element); }};}</span>
 
 
     /**
      * A synonym for {@link #equalTo(Object)}.
      */
-<span class="fc" id="L157">    public static &lt;T&gt; Predicate&lt;T&gt; is(T value) { return equalTo(value); }</span>
+<span class="fc" id="L262">    public static &lt;T&gt; Predicate&lt;T&gt; is(T value) { return equalTo(value); }</span>
 
 
     /**
      * Equality predicate, checks if values are equal to the given value.
      *
      * @param value the value the predicate should check for equality against.
-     * @return the equality predicate.
      */
-    public static &lt;T&gt; Predicate&lt;T&gt; equalTo(final T value) {
-<span class="fc" id="L167">        return new Predicate&lt;T&gt;() { @Override public boolean $(T input) { return Objects.equals(input, value); }}; }</span>
+<span class="fc" id="L270">    public static &lt;T&gt; Predicate&lt;T&gt; equalTo(final T value) { return equalTo(always(value)); }</span>
+
+
+    /**
+     * Equality predicate, checks if values are equal to the value computed from the given {@link Fn0}.
+     *
+     * @param value the {@link Fn0} which will compute the value to check for equality against on each
+     *              application of the predicate.
+     */
+    public static &lt;T&gt; Predicate&lt;T&gt; equalTo(final Fn0&lt;? super T&gt; value) {
+<span class="fc" id="L280">        return new Predicate&lt;T&gt;() { @Override public boolean $(T input) {</span>
+<span class="fc" id="L281">            return Objects.equals(input, value.$()); }}; }</span>
 
 
     /**
@@ -175,7 +289,7 @@ public final class Base {
      * @return the &quot;&lt;em&gt;&amp;lt; value&lt;/em&gt;&quot; predicate
      */
     public static &lt;T extends Comparable&lt;? super T&gt;&gt; Predicate&lt;T&gt; lessThan(final T value) {
-<span class="fc bfc" id="L178" title="All 2 branches covered.">        return new Predicate&lt;T&gt;() { @Override public boolean $(T candidate) { return candidate.compareTo(value) &lt; 0; }}; }</span>
+<span class="fc bfc" id="L292" title="All 2 branches covered.">        return new Predicate&lt;T&gt;() { @Override public boolean $(T candidate) { return candidate.compareTo(value) &lt; 0; }}; }</span>
 
 
     /**
@@ -186,7 +300,7 @@ public final class Base {
      * @return the &quot;&lt;em&gt;=&amp;lt; value&lt;/em&gt;&quot; predicate
      */
     public static &lt;T extends Comparable&lt;? super T&gt;&gt; Predicate&lt;T&gt; equalOrLessThan(T value) {
-<span class="fc" id="L189">        return either(equalTo(value)).or(lessThan(value)); }</span>
+<span class="fc" id="L303">        return either(equalTo(value)).or(lessThan(value)); }</span>
 
 
 
@@ -198,7 +312,7 @@ public final class Base {
      * @return the &quot;&lt;em&gt;&amp;gt; value&lt;/em&gt;&quot; predicate
      */
     public static &lt;T extends Comparable&lt;? super T&gt;&gt; Predicate&lt;T&gt; greaterThan(final T value) {
-<span class="fc bfc" id="L201" title="All 2 branches covered.">        return new Predicate&lt;T&gt;() { @Override public boolean $(T candidate) { return candidate.compareTo(value) &gt; 0; }}; }</span>
+<span class="fc bfc" id="L315" title="All 2 branches covered.">        return new Predicate&lt;T&gt;() { @Override public boolean $(T candidate) { return candidate.compareTo(value) &gt; 0; }}; }</span>
 
 
     /**
@@ -209,21 +323,21 @@ public final class Base {
      * @return the &quot;&lt;em&gt;&amp;gt;= value&lt;/em&gt;&quot; predicate
      */
     public static &lt;T extends Comparable&lt;? super T&gt;&gt; Predicate&lt;T&gt; equalOrGreaterThan(T value) {
-<span class="fc" id="L212">        return either(equalTo(value)).or(greaterThan(value)); }</span>
+<span class="fc" id="L326">        return either(equalTo(value)).or(greaterThan(value)); }</span>
 
 
 
     /**
      * Yields &lt;code&gt;true&lt;/code&gt; for &lt;code&gt;null&lt;/code&gt; values.
      */
-<span class="fc" id="L219">    public static final Predicate&lt;Object&gt; isNull = new Predicate&lt;Object&gt;() {</span>
-<span class="fc bfc" id="L220" title="All 2 branches covered.">        @Override public boolean $(Object value) { return value == null; }};</span>
+<span class="fc" id="L333">    public static final Predicate&lt;Object&gt; isNull = new Predicate&lt;Object&gt;() {</span>
+<span class="fc bfc" id="L334" title="All 2 branches covered.">        @Override public boolean $(Object value) { return value == null; }};</span>
 
 
     /**
      * Yields &lt;code&gt;true&lt;/code&gt; for all non-&lt;code&gt;null&lt;/code&gt; values.
      */
-<span class="fc" id="L226">    public static final Predicate&lt;Object&gt; notNull = not(isNull);</span>
+<span class="fc" id="L340">    public static final Predicate&lt;Object&gt; notNull = not(isNull);</span>
 
 
 
@@ -239,31 +353,23 @@ public final class Base {
      */
     @SafeVarargs
     public static &lt;T, E&gt; Fn&lt;T, Elements&lt;E&gt;&gt; extract(final Fn&lt;? super T, ? extends E&gt; ... extractors) {
-<span class="fc" id="L242">        return new Fn&lt;T, Elements&lt;E&gt;&gt;() { @Override public Elements&lt;E&gt; $(T value) {</span>
-<span class="fc" id="L243">                return on(new ExtractingIterable&lt;T, E&gt;(value, on(extractors))); }}; }</span>
+<span class="fc" id="L356">        return new Fn&lt;T, Elements&lt;E&gt;&gt;() { @Override public Elements&lt;E&gt; $(T value) {</span>
+<span class="fc" id="L357">                return on(new ExtractingIterable&lt;T, E&gt;(value, on(extractors))); }}; }</span>
 
 
     /**
      * Yields the {@link String#valueOf(Object) string representation} of
      * any object.
      */
-<span class="fc" id="L250">    public static final Fn&lt;Object, String&gt; toString = new Fn&lt;Object, String&gt;() {</span>
-<span class="fc" id="L251">        @Override public String $(Object value) { return String.valueOf(value); }};</span>
-
-
-
-    /**
-     * Get the {@link Throwable#getMessage() message} of a &lt;code&gt;Throwable&lt;/code&gt;.
-     */
-<span class="fc" id="L258">    public static final Fn&lt;Throwable, String&gt; message = new Fn&lt;Throwable, String&gt;() {</span>
-<span class="fc" id="L259">        @Override public String $(Throwable throwable) { return throwable.getMessage(); }};</span>
+<span class="fc" id="L364">    public static final Fn&lt;Object, String&gt; toString = new Fn&lt;Object, String&gt;() {</span>
+<span class="fc" id="L365">        @Override public String $(Object value) { return String.valueOf(value); }};</span>
 
 
     /**
-     * Get the {@link Throwable#getCause() cause} of a &lt;code&gt;Throwable&lt;/code&gt;.
+     * Yields the {@link Object#hashCode() hashCode} for objects, or 0 if &lt;code&gt;null&lt;/code&gt;.
      */
-<span class="fc" id="L265">    public static final Fn&lt;Throwable, Throwable&gt; cause = new Fn&lt;Throwable, Throwable&gt;() {</span>
-<span class="fc" id="L266">        @Override public Throwable $(Throwable throwable) { return throwable.getCause(); }};</span>
+<span class="fc" id="L371">    public static final Fn&lt;Object, Integer&gt; hashCode = new Fn&lt;Object, Integer&gt;() {</span>
+<span class="fc bfc" id="L372" title="All 2 branches covered.">        @Override public Integer $(Object o) { return o != null ? o.hashCode() : 0; }};</span>
 
 
     /**
@@ -278,8 +384,8 @@ public final class Base {
      *                  be applied to the given {@link Fn}.
      * @param fn        The {@link Fn} to apply if &lt;code&gt;condition&lt;/code&gt; evaluates to &lt;code&gt;true&lt;/code&gt;
      */
-    public static &lt;I, O&gt; When&lt;I, O&gt; when(Predicate&lt;? super I&gt; condition, Fn&lt;I, O&gt; fn) {
-<span class="fc" id="L282">        return new When&lt;&gt;(condition, fn);</span>
+    public static &lt;I, O&gt; When&lt;I, O&gt; when(Predicate&lt;? super I&gt; condition, Fn&lt;? super I, ? extends O&gt; fn) {
+<span class="fc" id="L388">        return new When&lt;&gt;(condition, fn);</span>
     }
 
 
@@ -297,8 +403,8 @@ public final class Base {
      * @param fn The first function in the chain.
      * @return the given function as the first function in a chain.
      */
-    public static final &lt;I, O&gt; FnChain&lt;I, O, O&gt; first(Fn&lt;I, O&gt; fn) {
-<span class="fc" id="L301">        return new FnChain&lt;&gt;(fn, NOP.&lt;O&gt;fn());</span>
+    public static final &lt;I, O&gt; FnChain&lt;I, O&gt; first(Fn&lt;I, O&gt; fn) {
+<span class="fc" id="L407">        return FnChain.chain(fn);</span>
     }
 
 
@@ -317,7 +423,7 @@ public final class Base {
      * @return the given function as the first function in a chain.
      */
     public static final &lt;I1, I2, O&gt; Fn2Chain&lt;I1, I2, O, O&gt; first(Fn2&lt;I1, I2, O&gt; fn2) {
-<span class="fc" id="L320">        return new Fn2Chain&lt;&gt;(fn2, NOP.&lt;O&gt;fn());</span>
+<span class="fc" id="L426">        return new Fn2Chain&lt;&gt;(fn2, NOP.&lt;O&gt;fn());</span>
     }
 
 
@@ -329,7 +435,7 @@ public final class Base {
      * @return the given Runnable as the first Runnable in a sequence.
      */
     public static final RunnableChain first(Runnable runnable) {
-<span class="fc" id="L332">        return new RunnableChain(runnable, NOP.runnable);</span>
+<span class="fc" id="L438">        return new RunnableChain(runnable, NOP.runnable);</span>
     }
 
 
@@ -340,7 +446,7 @@ public final class Base {
      * @return The given &lt;code&gt;Do&lt;/code&gt; as the first &lt;code&gt;Do&lt;/code&gt; in a sequence.
      */
     public static &lt;V&gt; DoChain&lt;V&gt; first(Do&lt;V&gt; action) {
-<span class="fc" id="L343">        return new DoChain&lt;&gt;(action, NOP.doNothing);</span>
+<span class="fc" id="L449">        return new DoChain&lt;&gt;(action, NOP.doNothing);</span>
     }
 
 
@@ -349,7 +455,18 @@ public final class Base {
      *
      * @param value The value to yield.
      */
-<span class="fc" id="L352">    public static &lt;I1, I2, V&gt; Constant&lt;I1, I2, V&gt; always(V value) { return new Constant&lt;&gt;(value); }</span>
+<span class="fc" id="L458">    public static &lt;I1, I2, V&gt; Constant&lt;I1, I2, V&gt; always(V value) { return new Constant&lt;&gt;(value); }</span>
+
+
+    /**
+     * Create a predicate which always yields the given &lt;code&gt;boolean&lt;/code&gt; value.
+     *
+     * @param bool The &lt;code&gt;boolean&lt;/code&gt; value to yield.
+     */
+    @SuppressWarnings(&quot;unchecked&quot;)
+    public static &lt;T&gt; Predicate&lt;T&gt; always(boolean bool) {
+<span class="fc bfc" id="L468" title="All 2 branches covered.">        return (Predicate&lt;T&gt;) (bool ? Predicate.Always.yes() : Predicate.Always.no());</span>
+    }
 
 
 
@@ -359,12 +476,20 @@ public final class Base {
      *
      * @param ex The exception to throw.
      */
-<span class="fc" id="L362">    public static &lt;I1, I2, O&gt; Throw&lt;I1, I2, O&gt; alwaysThrow(Exception ex) { return new Throw&lt;&gt;(ex); }</span>
+<span class="fc" id="L479">    public static &lt;I1, I2, O&gt; Throw&lt;I1, I2, O&gt; alwaysThrow(Exception ex) { return new Throw&lt;&gt;(ex); }</span>
 
 
 
+    /**
+     * Evaluates if objects are {@link Collection#contains(Object) contained in} a the given
+     * &lt;code&gt;Collection&lt;/code&gt;.
+     */
+    public static &lt;T&gt; Predicate&lt;T&gt; containedIn(final Collection&lt;? extends T&gt; collection) {
+<span class="fc bfc" id="L488" title="All 4 branches covered.">        return collection == null || collection.isEmpty() ? Always.&lt;T&gt;no() : new Predicate&lt;T&gt;() {</span>
+<span class="fc" id="L489">            @Override public boolean $(T value) { return collection.contains(value); }};</span>
+    }
 
-<span class="fc" id="L367">    private Base() {}</span>
+<span class="fc" id="L492">    private Base() {}</span>
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.0.201403182114</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.1.201405082137</span></div></body></html>

@@ -4,47 +4,48 @@ import static no.motif.Base.isNull;
 import static no.motif.Base.not;
 import static no.motif.Base.notNull;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 import no.motif.f.Predicate;
 
-public class EnhancedComparatorImpl&lt;T&gt; implements EnhancedComparator&lt;T&gt; {
+public class EnhancedComparatorImpl&lt;T&gt; implements EnhancedComparator&lt;T&gt;, Serializable {
 
     private final Comparator&lt;T&gt; comparator;
 
-<span class="fc" id="L15">    public EnhancedComparatorImpl(Comparator&lt;T&gt; comparator) {</span>
-<span class="fc" id="L16">        this.comparator = comparator;</span>
-<span class="fc" id="L17">    }</span>
+<span class="fc" id="L16">    public EnhancedComparatorImpl(Comparator&lt;T&gt; comparator) {</span>
+<span class="fc" id="L17">        this.comparator = comparator;</span>
+<span class="fc" id="L18">    }</span>
 
     @Override
     public int compare(T o1, T o2) {
-<span class="fc" id="L21">        return comparator.compare(o1, o2);</span>
+<span class="fc" id="L22">        return comparator.compare(o1, o2);</span>
     }
 
     @Override
     public EnhancedComparator&lt;T&gt; reversed() {
-<span class="fc" id="L26">        return new EnhancedComparatorImpl&lt;&gt;(new OppositeOrderComparator&lt;&gt;(comparator));</span>
+<span class="fc" id="L27">        return new EnhancedComparatorImpl&lt;&gt;(new OppositeOrderComparator&lt;&gt;(comparator));</span>
     }
 
     @Override
     public EnhancedComparator&lt;T&gt; first(Predicate&lt;? super T&gt; prioritized) {
-<span class="fc" id="L31">        return new EnhancedComparatorImpl&lt;&gt;(new PrioritizingComparator&lt;&gt;(comparator, prioritized));</span>
+<span class="fc" id="L32">        return new EnhancedComparatorImpl&lt;&gt;(new PrioritizingComparator&lt;&gt;(comparator, prioritized));</span>
     }
 
     @Override
     public EnhancedComparator&lt;T&gt; last(Predicate&lt;? super T&gt; last) {
-<span class="fc" id="L36">        return first(not(last));</span>
+<span class="fc" id="L37">        return first(not(last));</span>
     }
 
     @Override
     public EnhancedComparator&lt;T&gt; nullsFirst() {
-<span class="fc" id="L41">        return new EnhancedComparatorImpl&lt;&gt;(new PrioritizingComparator&lt;&gt;(new TwoNullsSafeComparator&lt;&gt;(comparator), isNull));</span>
+<span class="fc" id="L42">        return new EnhancedComparatorImpl&lt;&gt;(new PrioritizingComparator&lt;&gt;(new TwoNullsSafeComparator&lt;&gt;(comparator), isNull));</span>
     }
 
     @Override
     public EnhancedComparator&lt;T&gt; nullsLast() {
-<span class="fc" id="L46">        return new EnhancedComparatorImpl&lt;&gt;(new PrioritizingComparator&lt;&gt;(new TwoNullsSafeComparator&lt;&gt;(comparator), notNull));</span>
+<span class="fc" id="L47">        return new EnhancedComparatorImpl&lt;&gt;(new PrioritizingComparator&lt;&gt;(new TwoNullsSafeComparator&lt;&gt;(comparator), notNull));</span>
     }
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.0.201403182114</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.1.201405082137</span></div></body></html>
