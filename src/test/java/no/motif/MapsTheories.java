@@ -151,7 +151,7 @@ public class MapsTheories {
     }
 
     @Theory
-    public void emptyIfOneOfTheMapsAreEmpty(@ForAll(sampleSize=2) Map<Object, Object> map) {
+    public void emptyIfOneOfTheMapsAreEmpty(@ForAll(sampleSize=5) Map<Object, Object> map) {
         assumeFalse(map.isEmpty());
         assertTrue(combine(emptyMap(), map).isEmpty());
         assertTrue(combine(map, emptyMap()).isEmpty());
