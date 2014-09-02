@@ -1,11 +1,11 @@
 package no.motif.maps;
 
 import static no.motif.Base.containedIn;
+import static no.motif.Base.first;
 import static no.motif.Base.is;
 import static no.motif.Base.where;
 import static no.motif.Iterate.on;
 import static no.motif.Maps.keyIn;
-import static no.motif.Maps.valueIn;
 
 import java.util.Collection;
 import java.util.LinkedHashSet;
@@ -24,21 +24,25 @@ import no.motif.f.Fn;
  *
  * @see no.motif.Maps#combine(Map, Map)
  */
-public class CombinedMapsView<K, I, V> implements Map<K, V> {
+public class CombinedMapsView<K1, V1, K2, V2> implements Map<K1, V2> {
 
-    private final Map<K, I> m1;
-    private final Map<I, V> m2;
+    private final Map<K1, V1> m1;
+    private final Map<K2, V2> m2;
+    private final Fn<? super V1, ? extends K2> connector;
+    private final Fn<Entry<?, V1>, ? extends K2> m1MappedValue;
 
 
-    public CombinedMapsView(Map<K, I> m1, Map<I, V> m2) {
+    public CombinedMapsView(Map<K1, V1> m1, Fn<? super V1, ? extends K2> connector, Map<K2, V2> m2) {
         this.m1 = m1;
         this.m2 = m2;
+        this.connector = connector;
+        this.m1MappedValue = first(Maps.<V1>value()).then(connector);
     }
 
 
     @Override
     public int size() {
-        return on(m1.values()).filter(containedIn(m2.keySet())).collect().size();
+        return on(m1.values()).map(connector).filter(containedIn(m2.keySet())).collect().size();
     }
 
 
@@ -46,7 +50,7 @@ public class CombinedMapsView<K, I, V> implements Map<K, V> {
     public boolean isEmpty() {
         return m1.isEmpty()
             || m2.isEmpty()
-            || on(m1).filter(where(Maps.<I>value(), keyIn(m2))).isEmpty();
+            || on(m1).filter(where(m1MappedValue, keyIn(m2))).isEmpty();
     }
 
 
@@ -59,7 +63,7 @@ public class CombinedMapsView<K, I, V> implements Map<K, V> {
     @Override
     public boolean containsValue(Object value) {
         if (m2.containsValue(value)) {
-            Entry<? super I, V> entry = on(m2).filter(where(Maps.<V>value(), is(value))).head().get();
+            Entry<K2, V2> entry = on(m2).filter(where(Maps.<V2>value(), is(value))).head().get();
             return m1.containsValue(entry.getKey());
         }
         return false;
@@ -67,20 +71,20 @@ public class CombinedMapsView<K, I, V> implements Map<K, V> {
 
 
     @Override
-    public V get(Object key) {
+    public V2 get(Object key) {
         if (!m1.containsKey(key)) return null;
         else return m2.get(m1.get(key));
     }
 
 
     @Override
-    public V put(K key, V value) {
+    public V2 put(K1 key, V2 value) {
         throw new UnsupportedOperationException("put is not supported");
     }
 
 
     @Override
-    public V remove(Object key) {
+    public V2 remove(Object key) {
         if (this.containsKey(key)) {
             return m2.remove(m1.remove(key));
         }
@@ -89,14 +93,14 @@ public class CombinedMapsView<K, I, V> implements Map<K, V> {
 
 
     @Override
-    public void putAll(Map<? extends K, ? extends V> m) {
+    public void putAll(Map<? extends K1, ? extends V2> m) {
         throw new UnsupportedOperationException("putAll is not supported");
     }
 
 
     @Override
     public void clear() {
-        for (Entry<K, I> entry : on(m1).filter(where(Maps.<I>value(), keyIn(m2))).eval()) {
+        for (Entry<K1, V1> entry : on(m1).filter(where(m1MappedValue, keyIn(m2))).eval()) {
             m1.remove(entry.getKey());
             m2.remove(entry.getValue());
         }
@@ -104,60 +108,60 @@ public class CombinedMapsView<K, I, V> implements Map<K, V> {
 
 
     @Override
-    public Set<K> keySet() {
+    public Set<K1> keySet() {
         return on(m1)
-                .filter(where(Maps.<I>value(), keyIn(m2)))
-                .map(Maps.<K>key())
-                .collectIn(new LinkedHashSet<K>());
+                .filter(where(m1MappedValue, keyIn(m2)))
+                .map(Maps.<K1>key())
+                .collectIn(new LinkedHashSet<K1>());
     }
 
 
     @Override
-    public Collection<V> values() {
+    public Collection<V2> values() {
         return on(m2)
-                .filter(where(Maps.<I>key(), valueIn(m1)))
-                .map(Maps.<V>value())
+                .filter(where(Maps.<K2>key(), containedIn(on(m1).map(m1MappedValue))))
+                .map(Maps.<V2>value())
                 .collect();
     }
 
 
     @Override
-    public Set<Entry<K, V>> entrySet() {
+    public Set<Entry<K1, V2>> entrySet() {
         return on(m1)
-                .filter(where(Maps.<I>value(), keyIn(m2)))
+                .filter(where(m1MappedValue, keyIn(m2)))
                 .map(toEntry)
-                .collectIn(new LinkedHashSet<Entry<K, V>>());
+                .collectIn(new LinkedHashSet<Entry<K1, V2>>());
     }
 
-    private final Fn<Entry<K, I>, Entry<K, V>> toEntry = new Fn<Map.Entry<K,I>, Entry<K, V>>() {
+    private final Fn<Entry<K1, V1>, Entry<K1, V2>> toEntry = new Fn<Entry<K1, V1>, Entry<K1, V2>>() {
         @Override
-        public Entry<K, V> $(Entry<K, I> entry) {
-            return new MapsViewEntry(entry.getKey(), entry.getValue());
+        public Entry<K1, V2> $(Entry<K1, V1> entry) {
+            return new MapsViewEntry(entry.getKey(), connector.$(entry.getValue()));
         }};
 
 
-    private final class MapsViewEntry implements Map.Entry<K, V> {
+    private final class MapsViewEntry implements Map.Entry<K1, V2> {
 
-        private final K key;
-        private final I key2;
+        private final K1 key;
+        private final K2 key2;
 
-        public MapsViewEntry(K key, I key2) {
+        public MapsViewEntry(K1 key, K2 key2) {
             this.key = key;
             this.key2 = key2;
         }
 
         @Override
-        public K getKey() {
+        public K1 getKey() {
             return key;
         }
 
         @Override
-        public V getValue() {
+        public V2 getValue() {
             return m2.get(key2);
         }
 
         @Override
-        public V setValue(V value) {
+        public V2 setValue(V2 value) {
             return m2.put(key2, value);
         }
 

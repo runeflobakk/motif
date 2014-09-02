@@ -3,6 +3,7 @@ package no.motif;
 import static java.util.Collections.emptyMap;
 import static no.motif.Iterate.on;
 import static no.motif.Maps.combine;
+import static no.motif.Maps.valueIn;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasKey;
@@ -198,6 +199,15 @@ public class MapsTheories {
         assertThat(combined.size(), is(0));
         assertThat(first.size(), is(1));
         assertThat(second.size(), is(1));
+    }
+
+    @Theory
+    public void valueInPredicate(@ForAll Object notInMap) {
+        Object inMap = "value";
+        assumeThat(notInMap, not(inMap));
+        Map<?, Object> mapWithObject = combinedMap("x", "y", "y", inMap);
+        assertTrue(valueIn(mapWithObject).$(inMap));
+        assertFalse(valueIn(mapWithObject).$(notInMap));
     }
 
 

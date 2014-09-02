@@ -481,12 +481,20 @@ public final class Base {
 
 
     /**
-     * Evaluates if objects are {@link Collection#contains(Object) contained in} a the given
-     * <code>Collection</code>.
+     * Evaluates if objects are contained in the given <code>Iterable</code>.
      */
-    public static <T> Predicate<T> containedIn(final Collection<? extends T> collection) {
-        return collection == null || collection.isEmpty() ? Always.<T>no() : new Predicate<T>() {
-            @Override public boolean $(T value) { return collection.contains(value); }};
+    public static <T> Predicate<T> containedIn(final Iterable<? extends T> iterable) {
+        if (iterable == null) return Always.<T>no();
+        if (iterable instanceof Collection) {
+            final Collection<? extends T> collection = (Collection<? extends T>) iterable;
+            return collection.isEmpty() ? Always.<T>no() : new Predicate<T>() {
+                @Override public boolean $(T value) { return collection.contains(value); }};
+        } else {
+            final Elements<? extends T> elements = on(iterable);
+            return new Predicate<T>() {
+                @Override public boolean $(T value) { return elements.exists(is(value)); }};
+        }
+
     }
 
     private Base() {}

@@ -46,9 +46,20 @@ public final class Maps {
 
     /**
      * Creates a combined view of two maps, where the values of the first map corresponds
-     * to keys of the second map. This has the implication that any value in the first map not
-     * being a key in the second map will appear as not present in this view. The same applies
-     * to keys in the second map not being a value in the first map, they cannot be retrieved with
+     * to keys of the second map.
+     *
+     * @see #combine(Map, Fn, Map)
+     */
+    public static <K, I, V> Map<K, V> combine(Map<K, I> first, Map<I, V> second) {
+        return combine(first, NOP.<I>fn(), second);
+    }
+
+
+    /**
+     * Creates a combined view of two maps, where the values of the first map will be mapped (no pun
+     * intended) to keys of the second map. This has the implication that any value in the first map not
+     * being mapped to a key in the second map will appear as not present in this view. The same applies
+     * to keys in the second map not being a value (when mapped) in the first map, they cannot be retrieved with
      * this view.
      * <p>
      * Similarily, the semantics of the {@link Map#containsKey(Object) containsKey(key)} works transitively.
@@ -59,11 +70,16 @@ public final class Maps {
      * </p>
      *
      * @param first The first map. All or a subset of the keys of this map will be keys in the returned view.
+     * @param connector A connector {@link Fn} to map values of the first map to keys of the second map.
      * @param second The second map. All or a subset of the values of this map will be values in the returned view.
      * @return the {@link CombinedMapsView}.
      */
-    public static <K, I, V> Map<K, V> combine(Map<K, I> first, Map<I, V> second) {
-        return new CombinedMapsView<K, I, V>(first, second);
+    public static <K1, V1, K2, V2> Map<K1, V2> combine(
+            Map<K1, V1> first,
+            Fn<? super V1, ? extends K2> connector,
+            Map<K2, V2> second) {
+
+        return new CombinedMapsView<K1, V1, K2, V2>(first, connector, second);
     }
 
 
