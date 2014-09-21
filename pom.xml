@@ -228,6 +228,8 @@
                             <include>**/*Test.java</include>
                             <include>**/*Theories.java</include>
                         </includes>
+                        <parallel>all</parallel>
+                        <threadCount>8</threadCount>
                     </configuration>
                 </plugin>
                 <plugin>

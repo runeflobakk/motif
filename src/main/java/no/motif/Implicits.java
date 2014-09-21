@@ -17,41 +17,49 @@ import no.motif.f.Fn0;
  */
 public final class Implicits {
 
-    private static Fn0<Locale> locale;
-    private static Fn0<String> encoding;
-    private static Fn0<TimeZone> timeZone;
-    private static Fn0<Long> timeMillis;
+    static final Fn0<Long> systemClockMillis = new Fn0<Long>() {
+        @Override public Long $() { return System.currentTimeMillis(); }};
 
-    static { setDefaultEncoding(); setDefaultLocale(); setDefaultTimeZone(); useSystemClock(); }
 
-    public static void setDefaultEncoding() { encoding = always("UTF-8"); }
-    public static void setDefaultLocale() { locale = always(Locale.getDefault()); }
-    public static void setDefaultTimeZone() { timeZone = always(TimeZone.getDefault()); }
-    public static void useSystemClock() { timeMillis = systemClockMillis; }
+    private static final Fn0<String> defaultEncoding = always("UTF-8");
+    private static final Fn0<Locale> defaultLocale = always(Locale.getDefault());
+    private static final Fn0<TimeZone> defaultTimeZone = always(TimeZone.getDefault());
+    private static final Fn0<Long> defaultTimeMillis = systemClockMillis;
+
+    private static Fn0<String> encoding = defaultEncoding;
+    private static Fn0<Locale> locale = defaultLocale;
+    private static Fn0<TimeZone> timeZone = defaultTimeZone;
+    private static Fn0<Long> timeMillis = defaultTimeMillis;
+
+
+    public static void setDefaultEncoding() { setEncoding(defaultEncoding); }
+    public static void setDefaultLocale() { setLocale(defaultLocale); }
+    public static void setDefaultTimeZone() { setTimeZone(defaultTimeZone); }
+    public static void useSystemClock() { setTimeMillis(defaultTimeMillis); }
 
 
     public static String getEncoding() { return encoding.$(); }
+    public static final Fn0<String> getEncoding = new Fn0<String>() { @Override public String $() { return getEncoding(); }};
 
     public static Locale getLocale() { return locale.$(); }
+    public static final Fn0<Locale> getLocale = new Fn0<Locale>() { @Override public Locale $() { return getLocale(); }};
 
     public static TimeZone getTimeZone() { return timeZone.$(); }
+    public static final Fn0<TimeZone> getTimeZone = new Fn0<TimeZone>() { @Override public TimeZone $() { return getTimeZone(); }};
 
     public static Long getTimeMillis() { return timeMillis.$(); }
+    public static final Fn0<Long> getTimeMillis = new Fn0<Long>() { @Override public Long $() { return getTimeMillis(); }};
 
 
-    public static void setEncoding(Fn0<String> encoding) { Implicits.encoding = encoding; }
+    public static void setEncoding(Fn0<String> encoding) { synchronized (Implicits.encoding) {Implicits.encoding = encoding;} }
 
-    public static void setLocale(Fn0<Locale> locale) { Implicits.locale = locale; }
+    public static void setLocale(Fn0<Locale> locale) { synchronized (Implicits.locale) {Implicits.locale = locale;} }
 
-    public static void setTimeZone(Fn0<TimeZone> timeZone) { Implicits.timeZone = timeZone; }
+    public static void setTimeZone(Fn0<TimeZone> timeZone) { synchronized (Implicits.timeZone) {Implicits.timeZone = timeZone;} }
 
-    public static void setTimeMillis(Fn0<Long> timeMillis) { Implicits.timeMillis = timeMillis; }
+    public static void setTimeMillis(Fn0<Long> timeMillis) { synchronized (Implicits.timeMillis) {Implicits.timeMillis = timeMillis;} }
 
 
     private Implicits() {}
-
-
-    private static final Fn0<Long> systemClockMillis = new Fn0<Long>() {
-        @Override public Long $() { return System.currentTimeMillis(); }};
 
 }
