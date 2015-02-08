@@ -102,6 +102,11 @@ public abstract class Optional<V>
         }
 
         @Override
+        public Elements<V> or(Iterable<V> elements) {
+            return Iterate.on(this);
+        }
+
+        @Override
         public <O> Optional<O> map(Fn<? super V, O> mapper) {
             O mapped = mapper.$(this.value);
             return resolve(notNull, mapped);
@@ -199,6 +204,11 @@ public abstract class Optional<V>
         @Override
         public Optional<V> or(Optional<V> otherOptional) {
             return otherOptional;
+        }
+
+        @Override
+        public Elements<V> or(Iterable<V> elements) {
+            return Iterate.<V>on(elements);
         }
 
         @Override
@@ -320,11 +330,20 @@ public abstract class Optional<V>
      */
     public abstract V orNull();
 
+
     /**
      * @return If this <code>Optional</code> is not defined, the given <code>otherOptional</code>
      *         is returned, otherwise the original <code>Optional</code> is returned as-is.
      */
     public abstract Optional<V> or(Optional<V> otherOptional);
+
+
+    /**
+     * @return If this <code>Optional</code> is not defined, the given <code>elements</code>
+     *         is returned, otherwise the value in this <code>Optional</code> is returned as
+     *         the only contained element.
+     */
+    public abstract Elements<V> or(Iterable<V> elements);
 
 
     /**

@@ -1,5 +1,6 @@
 package no.motif.single;
 
+import static java.util.Arrays.asList;
 import static no.motif.Base.always;
 import static no.motif.Base.not;
 import static no.motif.Base.notNull;
@@ -37,6 +38,7 @@ import no.motif.f.Fn;
 import no.motif.f.Predicate;
 import no.motif.single.Optional.None;
 import no.motif.single.Optional.Some;
+import no.motif.types.Elements;
 
 import org.junit.Test;
 import org.objenesis.ObjenesisStd;
@@ -272,6 +274,13 @@ public class OptionalTest {
         Fn<Object, Optional<String>> toY = always(optional("y"));
         assertThat(optional("x").flatMap(toY), contains("y"));
         assertThat(optional("x").flatMap(always(none())), is(none()));
+    }
+
+    @Test
+    public void fallbackToElements() {
+        Elements<String> elems = optional("a").or(asList("b", "c"));
+        assertThat(elems, contains("a"));
+        assertThat(Singular.<String>none().or(asList("b", "c")), contains("b", "c"));
     }
 
 }
