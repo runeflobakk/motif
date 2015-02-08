@@ -18,9 +18,10 @@ import no.motif.f.Fn;
 /**
  * Documentation in {@link no.motif.Maps#combine(Map, Map) Maps.combine(..)}
  *
- * @param <K> The key type.
- * @param <I> The "connecting" type of the two maps.
- * @param <V> The value type.
+ * @param <K1> The key type of the first map, and the effective key type of the map.
+ * @param <V1> The value type of the first map
+ * @param <K2> The key type of the second map.
+ * @param <V2> The value type of the second map, and the effective value type of the map.
  *
  * @see no.motif.Maps#combine(Map, Map)
  */
