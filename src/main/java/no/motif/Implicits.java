@@ -26,10 +26,10 @@ public final class Implicits {
     private static final Fn0<TimeZone> defaultTimeZone = always(TimeZone.getDefault());
     private static final Fn0<Long> defaultTimeMillis = systemClockMillis;
 
-    private static Fn0<String> encoding = defaultEncoding;
-    private static Fn0<Locale> locale = defaultLocale;
-    private static Fn0<TimeZone> timeZone = defaultTimeZone;
-    private static Fn0<Long> timeMillis = defaultTimeMillis;
+    static Fn0<String> encoding = defaultEncoding;
+    static Fn0<Locale> locale = defaultLocale;
+    static Fn0<TimeZone> timeZone = defaultTimeZone;
+    static Fn0<Long> timeMillis = defaultTimeMillis;
 
 
     public static void setDefaultEncoding() { setEncoding(defaultEncoding); }
@@ -51,13 +51,13 @@ public final class Implicits {
     public static final Fn0<Long> getTimeMillis = new Fn0<Long>() { @Override public Long $() { return getTimeMillis(); }};
 
 
-    public static void setEncoding(Fn0<String> encoding) { synchronized (Implicits.encoding) {Implicits.encoding = encoding;} }
+    public static void setEncoding(Fn0<String> encoding) { Implicits.encoding = encoding; }
 
-    public static void setLocale(Fn0<Locale> locale) { synchronized (Implicits.locale) {Implicits.locale = locale;} }
+    public static void setLocale(Fn0<Locale> locale) { Implicits.locale = locale; }
 
-    public static void setTimeZone(Fn0<TimeZone> timeZone) { synchronized (Implicits.timeZone) {Implicits.timeZone = timeZone;} }
+    public static void setTimeZone(Fn0<TimeZone> timeZone) { Implicits.timeZone = timeZone; }
 
-    public static void setTimeMillis(Fn0<Long> timeMillis) { synchronized (Implicits.timeMillis) {Implicits.timeMillis = timeMillis;} }
+    public static void setTimeMillis(Fn0<Long> timeMillis) { Implicits.timeMillis = timeMillis; }
 
 
     private Implicits() {}

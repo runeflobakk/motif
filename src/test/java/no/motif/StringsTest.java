@@ -1,6 +1,5 @@
 package no.motif;
 
-import static no.motif.Base.always;
 import static no.motif.Iterate.none;
 import static no.motif.Iterate.on;
 import static no.motif.Strings.after;
@@ -69,9 +68,9 @@ public class StringsTest {
 
     @Test
     public void toLowerCaseWithLocale() {
-        Implicits.setLocale(always(new Locale("tr", "TR")));
+        ImplicitsTestHarness.setLocale(new Locale("tr", "TR"));
         assertThat("unicode lowercase dotless 'i'", lowerCased.$("I"), is("\u0131"));
-        Implicits.setDefaultLocale();
+        ImplicitsTestHarness.setLocale(null);
         assertThat(lowerCased.$("I"), is("i"));
     }
 
@@ -307,15 +306,15 @@ public class StringsTest {
 
     @Test
     public void bytesOfAStringWithInvalidCharsetThrowsException() {
-        Implicits.setEncoding(always("way off"));
+        ImplicitsTestHarness.setEncoding("way off");
         try {
             bytes.$("x");
         } catch (RuntimeException e) {
             assertThat(e.getCause(), instanceOf(UnsupportedEncodingException.class));
-            Implicits.setDefaultEncoding();
             return;
+        } finally {
+            ImplicitsTestHarness.setEncoding(null);
         }
-        Implicits.setDefaultEncoding();
         fail("Should throw exception");
     }
 
