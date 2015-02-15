@@ -6,6 +6,8 @@ import java.util.Map.Entry;
 import no.motif.f.Fn;
 import no.motif.f.Predicate;
 import no.motif.maps.CombinedMapsView;
+import no.motif.maps.MapViewOfFn;
+import no.motif.maps.NotPossibleOnMapViewOfFn;
 
 /**
  * Operations on {@link Map maps} and {@link Entry map entries}.
@@ -42,6 +44,60 @@ public final class Maps {
      */
     public static <V> Predicate<V> valueIn(final Map<?, ? extends V> map) { return new Predicate<V>() {
         @Override public boolean $(V value) { return map.containsValue(value); }}; }
+
+
+    /**
+     * Use a given {@link Fn} as a {@link java.util.Map}.
+     * Any key which resolves to <code>null</code> using the given </code>Fn</code> are not
+     * considered to be {@link Map#containsKey(Object) contained} in the map, all other keys
+     * are contained in the map.
+     *
+     * <p>
+     * This imposes some very limiting
+     * constraints on the returned <code>Map</code>. Especially, any method which
+     * queries {@link Map#containsValue(Object) values without a key}, its {@link Map#size() size},
+     * whether it {@link Map#isEmpty() is empty}, and retrieving all
+     * {@link Map#keySet() keys}, {@link Map#values() values} and {@link Map#entrySet() entries}
+     * is not possible, and will throw {@link NotPossibleOnMapViewOfFn}.
+     *
+     * <p>
+     * The returned <code>Map</code> is mostly useable for retrieval of values based on
+     * keys which must be known beforehand. If the map is {@link Map#clear() cleared}, it
+     * "becomes" a {@link java.util.HashMap}, and thus will fully adhere to the <code>Map</code>
+     * contract as its entries are no longer being dependent of the <code>Fn</code>.
+     *
+     * <p>
+     * Fully supported <code>Map</code>-operations:
+     * <ul>
+     *   <li> {@link Map#containsKey(Object)}</li>
+     *   <li> {@link Map#get(Object)}</li>
+     *   <li> {@link Map#put(Object, Object)}</li>
+     *   <li> {@link Map#putAll(Map)}</li>
+     *   <li> {@link Map#remove(Object)}</li>
+     *   <li> {@link Map#clear()}</li>
+     * </ul>
+     *
+     * In conclusion, the behavior of the returned map seriously violates the contract of
+     * the <code>Map</code> interface, but it may still be appropriate for certain cases.
+     * Careful considerations should be taken before using a <code>Map</code> returned by this method.
+     */
+    public static <K, V> Map<K, V> asMap(Fn<K, V> fn) {
+        return new MapViewOfFn<>(fn);
+    }
+
+
+    /**
+     * Uses a {@link java.util.Map} as the basis for a {@link Fn}.
+     * The value of the <code>Fn</code> is resolved simply my calling
+     * {@link Map#get(Object) .get(I)} on the map with the given argument for
+     * {@link Fn#$(Object) Fn.$(I)}. The semantics for <code>null</code> are the
+     * same as for {@link Map#get(Object)}; the <code>Fn</code> yields <code>null</code>
+     * both for keys not present in the map, and for mapped <code>null</code> values if
+     * the map permits it.
+     */
+    public static <I, O> Fn<I, O> asFn(final Map<I, O> map) { return new Fn<I, O>() { @Override public O $(I key) {
+        return map.get(key);
+    }}; }
 
 
     /**
