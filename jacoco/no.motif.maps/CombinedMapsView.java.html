@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>CombinedMapsView.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Motif</a> &gt; <a href="index.source.html" class="el_package">no.motif.maps</a> &gt; <span class="el_source">CombinedMapsView.java</span></div><h1>CombinedMapsView.java</h1><pre class="source lang-java linenums">package no.motif.maps;
 
 import static no.motif.Base.containedIn;
+import static no.motif.Base.first;
 import static no.motif.Base.is;
 import static no.motif.Base.where;
 import static no.motif.Iterate.on;
 import static no.motif.Maps.keyIn;
-import static no.motif.Maps.valueIn;
 
 import java.util.Collection;
 import java.util.LinkedHashSet;
@@ -18,150 +18,155 @@ import no.motif.f.Fn;
 /**
  * Documentation in {@link no.motif.Maps#combine(Map, Map) Maps.combine(..)}
  *
- * @param &lt;K&gt; The key type.
- * @param &lt;I&gt; The &quot;connecting&quot; type of the two maps.
- * @param &lt;V&gt; The value type.
+ * @param &lt;K1&gt; The key type of the first map, and the effective key type of the map.
+ * @param &lt;V1&gt; The value type of the first map
+ * @param &lt;K2&gt; The key type of the second map.
+ * @param &lt;V2&gt; The value type of the second map, and the effective value type of the map.
  *
  * @see no.motif.Maps#combine(Map, Map)
  */
-public class CombinedMapsView&lt;K, I, V&gt; implements Map&lt;K, V&gt; {
+public class CombinedMapsView&lt;K1, V1, K2, V2&gt; implements Map&lt;K1, V2&gt; {
 
-    private final Map&lt;K, I&gt; m1;
-    private final Map&lt;I, V&gt; m2;
+    private final Map&lt;K1, V1&gt; m1;
+    private final Map&lt;K2, V2&gt; m2;
+    private final Fn&lt;? super V1, ? extends K2&gt; connector;
+    private final Fn&lt;Entry&lt;?, V1&gt;, ? extends K2&gt; m1MappedValue;
 
 
-<span class="fc" id="L33">    public CombinedMapsView(Map&lt;K, I&gt; m1, Map&lt;I, V&gt; m2) {</span>
-<span class="fc" id="L34">        this.m1 = m1;</span>
-<span class="fc" id="L35">        this.m2 = m2;</span>
-<span class="fc" id="L36">    }</span>
+<span class="fc" id="L36">    public CombinedMapsView(Map&lt;K1, V1&gt; m1, Fn&lt;? super V1, ? extends K2&gt; connector, Map&lt;K2, V2&gt; m2) {</span>
+<span class="fc" id="L37">        this.m1 = m1;</span>
+<span class="fc" id="L38">        this.m2 = m2;</span>
+<span class="fc" id="L39">        this.connector = connector;</span>
+<span class="fc" id="L40">        this.m1MappedValue = first(Maps.&lt;V1&gt;value()).then(connector);</span>
+<span class="fc" id="L41">    }</span>
 
 
     @Override
     public int size() {
-<span class="fc" id="L41">        return on(m1.values()).filter(containedIn(m2.keySet())).collect().size();</span>
+<span class="fc" id="L46">        return on(m1.values()).map(connector).filter(containedIn(m2.keySet())).collect().size();</span>
     }
 
 
     @Override
     public boolean isEmpty() {
-<span class="fc bfc" id="L47" title="All 6 branches covered.">        return m1.isEmpty()</span>
-            || m2.isEmpty()
-            || on(m1).filter(where(Maps.&lt;I&gt;value(), keyIn(m2))).isEmpty();
+<span class="fc bfc" id="L52" title="All 2 branches covered.">        return m1.isEmpty()</span>
+<span class="fc bfc" id="L53" title="All 2 branches covered.">            || m2.isEmpty()</span>
+<span class="fc bfc" id="L54" title="All 2 branches covered.">            || on(m1).filter(where(m1MappedValue, keyIn(m2))).isEmpty();</span>
     }
 
 
     @Override
     public boolean containsKey(Object key) {
-<span class="fc bfc" id="L55" title="All 4 branches covered.">        return m1.containsKey(key) &amp;&amp; m2.containsKey(m1.get(key));</span>
+<span class="fc bfc" id="L60" title="All 4 branches covered.">        return m1.containsKey(key) &amp;&amp; m2.containsKey(m1.get(key));</span>
     }
 
 
     @Override
     public boolean containsValue(Object value) {
-<span class="fc bfc" id="L61" title="All 2 branches covered.">        if (m2.containsValue(value)) {</span>
-<span class="fc" id="L62">            Entry&lt;? super I, V&gt; entry = on(m2).filter(where(Maps.&lt;V&gt;value(), is(value))).head().get();</span>
-<span class="fc" id="L63">            return m1.containsValue(entry.getKey());</span>
+<span class="fc bfc" id="L66" title="All 2 branches covered.">        if (m2.containsValue(value)) {</span>
+<span class="fc" id="L67">            Entry&lt;K2, V2&gt; entry = on(m2).filter(where(Maps.&lt;V2&gt;value(), is(value))).head().get();</span>
+<span class="fc" id="L68">            return m1.containsValue(entry.getKey());</span>
         }
-<span class="fc" id="L65">        return false;</span>
+<span class="fc" id="L70">        return false;</span>
     }
 
 
     @Override
-    public V get(Object key) {
-<span class="fc bfc" id="L71" title="All 2 branches covered.">        if (!m1.containsKey(key)) return null;</span>
-<span class="fc" id="L72">        else return m2.get(m1.get(key));</span>
+    public V2 get(Object key) {
+<span class="fc bfc" id="L76" title="All 2 branches covered.">        if (!m1.containsKey(key)) return null;</span>
+<span class="fc" id="L77">        else return m2.get(m1.get(key));</span>
     }
 
 
     @Override
-    public V put(K key, V value) {
-<span class="fc" id="L78">        throw new UnsupportedOperationException(&quot;put is not supported&quot;);</span>
+    public V2 put(K1 key, V2 value) {
+<span class="fc" id="L83">        throw new UnsupportedOperationException(&quot;put is not supported&quot;);</span>
     }
 
 
     @Override
-    public V remove(Object key) {
-<span class="fc bfc" id="L84" title="All 2 branches covered.">        if (this.containsKey(key)) {</span>
-<span class="fc" id="L85">            return m2.remove(m1.remove(key));</span>
+    public V2 remove(Object key) {
+<span class="fc bfc" id="L89" title="All 2 branches covered.">        if (this.containsKey(key)) {</span>
+<span class="fc" id="L90">            return m2.remove(m1.remove(key));</span>
         }
-<span class="fc" id="L87">        return null;</span>
+<span class="fc" id="L92">        return null;</span>
     }
 
 
     @Override
-    public void putAll(Map&lt;? extends K, ? extends V&gt; m) {
-<span class="fc" id="L93">        throw new UnsupportedOperationException(&quot;putAll is not supported&quot;);</span>
+    public void putAll(Map&lt;? extends K1, ? extends V2&gt; m) {
+<span class="fc" id="L98">        throw new UnsupportedOperationException(&quot;putAll is not supported&quot;);</span>
     }
 
 
     @Override
     public void clear() {
-<span class="fc bfc" id="L99" title="All 2 branches covered.">        for (Entry&lt;K, I&gt; entry : on(m1).filter(where(Maps.&lt;I&gt;value(), keyIn(m2))).eval()) {</span>
-<span class="fc" id="L100">            m1.remove(entry.getKey());</span>
-<span class="fc" id="L101">            m2.remove(entry.getValue());</span>
-<span class="fc" id="L102">        }</span>
-<span class="fc" id="L103">    }</span>
+<span class="fc bfc" id="L104" title="All 2 branches covered.">        for (Entry&lt;K1, V1&gt; entry : on(m1).filter(where(m1MappedValue, keyIn(m2))).eval()) {</span>
+<span class="fc" id="L105">            m1.remove(entry.getKey());</span>
+<span class="fc" id="L106">            m2.remove(entry.getValue());</span>
+<span class="fc" id="L107">        }</span>
+<span class="fc" id="L108">    }</span>
 
 
     @Override
-    public Set&lt;K&gt; keySet() {
-<span class="fc" id="L108">        return on(m1)</span>
-                .filter(where(Maps.&lt;I&gt;value(), keyIn(m2)))
-                .map(Maps.&lt;K&gt;key())
-                .collectIn(new LinkedHashSet&lt;K&gt;());
+    public Set&lt;K1&gt; keySet() {
+<span class="fc" id="L113">        return on(m1)</span>
+<span class="fc" id="L114">                .filter(where(m1MappedValue, keyIn(m2)))</span>
+<span class="fc" id="L115">                .map(Maps.&lt;K1&gt;key())</span>
+<span class="fc" id="L116">                .collectIn(new LinkedHashSet&lt;K1&gt;());</span>
     }
 
 
     @Override
-    public Collection&lt;V&gt; values() {
-<span class="fc" id="L117">        return on(m2)</span>
-                .filter(where(Maps.&lt;I&gt;key(), valueIn(m1)))
-                .map(Maps.&lt;V&gt;value())
-                .collect();
+    public Collection&lt;V2&gt; values() {
+<span class="fc" id="L122">        return on(m2)</span>
+<span class="fc" id="L123">                .filter(where(Maps.&lt;K2&gt;key(), containedIn(on(m1).map(m1MappedValue))))</span>
+<span class="fc" id="L124">                .map(Maps.&lt;V2&gt;value())</span>
+<span class="fc" id="L125">                .collect();</span>
     }
 
 
     @Override
-    public Set&lt;Entry&lt;K, V&gt;&gt; entrySet() {
-<span class="fc" id="L126">        return on(m1)</span>
-                .filter(where(Maps.&lt;I&gt;value(), keyIn(m2)))
-                .map(toEntry)
-                .collectIn(new LinkedHashSet&lt;Entry&lt;K, V&gt;&gt;());
+    public Set&lt;Entry&lt;K1, V2&gt;&gt; entrySet() {
+<span class="fc" id="L131">        return on(m1)</span>
+<span class="fc" id="L132">                .filter(where(m1MappedValue, keyIn(m2)))</span>
+<span class="fc" id="L133">                .map(toEntry)</span>
+<span class="fc" id="L134">                .collectIn(new LinkedHashSet&lt;Entry&lt;K1, V2&gt;&gt;());</span>
     }
 
-<span class="fc" id="L132">    private final Fn&lt;Entry&lt;K, I&gt;, Entry&lt;K, V&gt;&gt; toEntry = new Fn&lt;Map.Entry&lt;K,I&gt;, Entry&lt;K, V&gt;&gt;() {</span>
+<span class="fc" id="L137">    private final Fn&lt;Entry&lt;K1, V1&gt;, Entry&lt;K1, V2&gt;&gt; toEntry = new Fn&lt;Entry&lt;K1, V1&gt;, Entry&lt;K1, V2&gt;&gt;() {</span>
         @Override
-        public Entry&lt;K, V&gt; $(Entry&lt;K, I&gt; entry) {
-<span class="fc" id="L135">            return new MapsViewEntry(entry.getKey(), entry.getValue());</span>
+        public Entry&lt;K1, V2&gt; $(Entry&lt;K1, V1&gt; entry) {
+<span class="fc" id="L140">            return new MapsViewEntry(entry.getKey(), connector.$(entry.getValue()));</span>
         }};
 
 
-    private final class MapsViewEntry implements Map.Entry&lt;K, V&gt; {
+    private final class MapsViewEntry implements Map.Entry&lt;K1, V2&gt; {
 
-        private final K key;
-        private final I key2;
+        private final K1 key;
+        private final K2 key2;
 
-<span class="fc" id="L144">        public MapsViewEntry(K key, I key2) {</span>
-<span class="fc" id="L145">            this.key = key;</span>
-<span class="fc" id="L146">            this.key2 = key2;</span>
-<span class="fc" id="L147">        }</span>
+<span class="fc" id="L149">        public MapsViewEntry(K1 key, K2 key2) {</span>
+<span class="fc" id="L150">            this.key = key;</span>
+<span class="fc" id="L151">            this.key2 = key2;</span>
+<span class="fc" id="L152">        }</span>
 
         @Override
-        public K getKey() {
-<span class="fc" id="L151">            return key;</span>
+        public K1 getKey() {
+<span class="fc" id="L156">            return key;</span>
         }
 
         @Override
-        public V getValue() {
-<span class="fc" id="L156">            return m2.get(key2);</span>
+        public V2 getValue() {
+<span class="fc" id="L161">            return m2.get(key2);</span>
         }
 
         @Override
-        public V setValue(V value) {
-<span class="fc" id="L161">            return m2.put(key2, value);</span>
+        public V2 setValue(V2 value) {
+<span class="fc" id="L166">            return m2.put(key2, value);</span>
         }
 
     }
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.1.201405082137</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

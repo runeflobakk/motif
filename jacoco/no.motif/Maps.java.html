@@ -6,6 +6,8 @@ import java.util.Map.Entry;
 import no.motif.f.Fn;
 import no.motif.f.Predicate;
 import no.motif.maps.CombinedMapsView;
+import no.motif.maps.MapViewOfFn;
+import no.motif.maps.NotPossibleOnMapViewOfFn;
 
 /**
  * Operations on {@link Map maps} and {@link Entry map entries}.
@@ -16,15 +18,15 @@ public final class Maps {
     /**
      * Gets the key of a {@link Entry map entry}.
      */
-<span class="fc" id="L19">    public static &lt;K&gt; Fn&lt;Entry&lt;K, ?&gt;, K&gt; key() { return new Fn&lt;Map.Entry&lt;K, ?&gt;, K&gt;() {</span>
-<span class="fc" id="L20">        @Override public K $(Entry&lt;K, ?&gt; entry) { return entry.getKey(); }}; }</span>
+<span class="fc" id="L21">    public static &lt;K&gt; Fn&lt;Entry&lt;K, ?&gt;, K&gt; key() { return new Fn&lt;Map.Entry&lt;K, ?&gt;, K&gt;() {</span>
+<span class="fc" id="L22">        @Override public K $(Entry&lt;K, ?&gt; entry) { return entry.getKey(); }}; }</span>
 
 
     /**
      * Gets the value of a {@link Entry map entry}.
      */
-<span class="fc" id="L26">    public static &lt;V&gt; Fn&lt;Entry&lt;?, V&gt;, V&gt; value() { return new Fn&lt;Map.Entry&lt;?, V&gt;, V&gt;() {</span>
-<span class="fc" id="L27">        @Override public V $(Entry&lt;?, V&gt; entry) { return entry.getValue(); }}; }</span>
+<span class="fc" id="L28">    public static &lt;V&gt; Fn&lt;Entry&lt;?, V&gt;, V&gt; value() { return new Fn&lt;Map.Entry&lt;?, V&gt;, V&gt;() {</span>
+<span class="fc" id="L29">        @Override public V $(Entry&lt;?, V&gt; entry) { return entry.getValue(); }}; }</span>
 
 
 
@@ -32,23 +34,88 @@ public final class Maps {
      * Evaluate if objects are a key {@link Map#containsKey(Object) contained in}
      * the given &lt;code&gt;Map&lt;/code&gt;.
      */
-<span class="fc" id="L35">    public static &lt;K&gt; Predicate&lt;K&gt; keyIn(final Map&lt;K, ?&gt; map) { return new Predicate&lt;K&gt;() {</span>
-<span class="fc" id="L36">        @Override public boolean $(K key) { return map.containsKey(key); }}; }</span>
+<span class="fc" id="L37">    public static &lt;K&gt; Predicate&lt;K&gt; keyIn(final Map&lt;K, ?&gt; map) { return new Predicate&lt;K&gt;() {</span>
+<span class="fc" id="L38">        @Override public boolean $(K key) { return map.containsKey(key); }}; }</span>
 
 
     /**
      * Evaluate if objects are a value {@link Map#containsValue(Object) contained in}
      * the given &lt;code&gt;Map&lt;/code&gt;.
      */
-<span class="fc" id="L43">    public static &lt;V&gt; Predicate&lt;V&gt; valueIn(final Map&lt;?, ? extends V&gt; map) { return new Predicate&lt;V&gt;() {</span>
-<span class="fc" id="L44">        @Override public boolean $(V value) { return map.containsValue(value); }}; }</span>
+<span class="fc" id="L45">    public static &lt;V&gt; Predicate&lt;V&gt; valueIn(final Map&lt;?, ? extends V&gt; map) { return new Predicate&lt;V&gt;() {</span>
+<span class="fc" id="L46">        @Override public boolean $(V value) { return map.containsValue(value); }}; }</span>
+
+
+    /**
+     * Use a given {@link Fn} as a {@link java.util.Map}.
+     * Any key which resolves to &lt;code&gt;null&lt;/code&gt; using the given &lt;/code&gt;Fn&lt;/code&gt; are not
+     * considered to be {@link Map#containsKey(Object) contained} in the map, all other keys
+     * are contained in the map.
+     *
+     * &lt;p&gt;
+     * This imposes some very limiting
+     * constraints on the returned &lt;code&gt;Map&lt;/code&gt;. Especially, any method which
+     * queries {@link Map#containsValue(Object) values without a key}, its {@link Map#size() size},
+     * whether it {@link Map#isEmpty() is empty}, and retrieving all
+     * {@link Map#keySet() keys}, {@link Map#values() values} and {@link Map#entrySet() entries}
+     * is not possible, and will throw {@link NotPossibleOnMapViewOfFn}.
+     *
+     * &lt;p&gt;
+     * The returned &lt;code&gt;Map&lt;/code&gt; is mostly useable for retrieval of values based on
+     * keys which must be known beforehand. If the map is {@link Map#clear() cleared}, it
+     * &quot;becomes&quot; a {@link java.util.HashMap}, and thus will fully adhere to the &lt;code&gt;Map&lt;/code&gt;
+     * contract as its entries are no longer being dependent of the &lt;code&gt;Fn&lt;/code&gt;.
+     *
+     * &lt;p&gt;
+     * Fully supported &lt;code&gt;Map&lt;/code&gt;-operations:
+     * &lt;ul&gt;
+     *   &lt;li&gt; {@link Map#containsKey(Object)}&lt;/li&gt;
+     *   &lt;li&gt; {@link Map#get(Object)}&lt;/li&gt;
+     *   &lt;li&gt; {@link Map#put(Object, Object)}&lt;/li&gt;
+     *   &lt;li&gt; {@link Map#putAll(Map)}&lt;/li&gt;
+     *   &lt;li&gt; {@link Map#remove(Object)}&lt;/li&gt;
+     *   &lt;li&gt; {@link Map#clear()}&lt;/li&gt;
+     * &lt;/ul&gt;
+     *
+     * In conclusion, the behavior of the returned map seriously violates the contract of
+     * the &lt;code&gt;Map&lt;/code&gt; interface, but it may still be appropriate for certain cases.
+     * Careful considerations should be taken before using a &lt;code&gt;Map&lt;/code&gt; returned by this method.
+     */
+    public static &lt;K, V&gt; Map&lt;K, V&gt; asMap(Fn&lt;K, V&gt; fn) {
+<span class="fc" id="L85">        return new MapViewOfFn&lt;&gt;(fn);</span>
+    }
+
+
+    /**
+     * Uses a {@link java.util.Map} as the basis for a {@link Fn}.
+     * The value of the &lt;code&gt;Fn&lt;/code&gt; is resolved simply my calling
+     * {@link Map#get(Object) .get(I)} on the map with the given argument for
+     * {@link Fn#$(Object) Fn.$(I)}. The semantics for &lt;code&gt;null&lt;/code&gt; are the
+     * same as for {@link Map#get(Object)}; the &lt;code&gt;Fn&lt;/code&gt; yields &lt;code&gt;null&lt;/code&gt;
+     * both for keys not present in the map, and for mapped &lt;code&gt;null&lt;/code&gt; values if
+     * the map permits it.
+     */
+<span class="fc" id="L98">    public static &lt;I, O&gt; Fn&lt;I, O&gt; asFn(final Map&lt;I, O&gt; map) { return new Fn&lt;I, O&gt;() { @Override public O $(I key) {</span>
+<span class="fc" id="L99">        return map.get(key);</span>
+    }}; }
 
 
     /**
      * Creates a combined view of two maps, where the values of the first map corresponds
-     * to keys of the second map. This has the implication that any value in the first map not
-     * being a key in the second map will appear as not present in this view. The same applies
-     * to keys in the second map not being a value in the first map, they cannot be retrieved with
+     * to keys of the second map.
+     *
+     * @see #combine(Map, Fn, Map)
+     */
+    public static &lt;K, I, V&gt; Map&lt;K, V&gt; combine(Map&lt;K, I&gt; first, Map&lt;I, V&gt; second) {
+<span class="fc" id="L110">        return combine(first, NOP.&lt;I&gt;fn(), second);</span>
+    }
+
+
+    /**
+     * Creates a combined view of two maps, where the values of the first map will be mapped (no pun
+     * intended) to keys of the second map. This has the implication that any value in the first map not
+     * being mapped to a key in the second map will appear as not present in this view. The same applies
+     * to keys in the second map not being a value (when mapped) in the first map, they cannot be retrieved with
      * this view.
      * &lt;p&gt;
      * Similarily, the semantics of the {@link Map#containsKey(Object) containsKey(key)} works transitively.
@@ -59,14 +126,19 @@ public final class Maps {
      * &lt;/p&gt;
      *
      * @param first The first map. All or a subset of the keys of this map will be keys in the returned view.
+     * @param connector A connector {@link Fn} to map values of the first map to keys of the second map.
      * @param second The second map. All or a subset of the values of this map will be values in the returned view.
      * @return the {@link CombinedMapsView}.
      */
-    public static &lt;K, I, V&gt; Map&lt;K, V&gt; combine(Map&lt;K, I&gt; first, Map&lt;I, V&gt; second) {
-<span class="fc" id="L66">        return new CombinedMapsView&lt;K, I, V&gt;(first, second);</span>
+    public static &lt;K1, V1, K2, V2&gt; Map&lt;K1, V2&gt; combine(
+            Map&lt;K1, V1&gt; first,
+            Fn&lt;? super V1, ? extends K2&gt; connector,
+            Map&lt;K2, V2&gt; second) {
+
+<span class="fc" id="L138">        return new CombinedMapsView&lt;K1, V1, K2, V2&gt;(first, connector, second);</span>
     }
 
 
-<span class="fc" id="L70">    private Maps() {}</span>
+<span class="fc" id="L142">    private Maps() {}</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.1.201405082137</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

@@ -188,7 +188,7 @@ public final class Base {
         @SuppressWarnings(&quot;unchecked&quot;)
 <span class="fc" id="L189">        Predicate&lt;T&gt;[] equalToPredicates = on(objects)</span>
 <span class="fc" id="L190">            .map(new Fn&lt;T, Predicate&lt;T&gt;&gt;() { @Override public Predicate&lt;T&gt; $(T o) { return equalTo(o); }})</span>
-            .collect().toArray(new Predicate[objects.length]);
+<span class="fc" id="L191">            .collect().toArray(new Predicate[objects.length]);</span>
 <span class="fc" id="L192">        return anyOf(equalToPredicates);</span>
     }
 
@@ -481,15 +481,23 @@ public final class Base {
 
 
     /**
-     * Evaluates if objects are {@link Collection#contains(Object) contained in} a the given
-     * &lt;code&gt;Collection&lt;/code&gt;.
+     * Evaluates if objects are contained in the given &lt;code&gt;Iterable&lt;/code&gt;.
      */
-    public static &lt;T&gt; Predicate&lt;T&gt; containedIn(final Collection&lt;? extends T&gt; collection) {
-<span class="fc bfc" id="L488" title="All 4 branches covered.">        return collection == null || collection.isEmpty() ? Always.&lt;T&gt;no() : new Predicate&lt;T&gt;() {</span>
-<span class="fc" id="L489">            @Override public boolean $(T value) { return collection.contains(value); }};</span>
+    public static &lt;T&gt; Predicate&lt;T&gt; containedIn(final Iterable&lt;? extends T&gt; iterable) {
+<span class="fc bfc" id="L487" title="All 2 branches covered.">        if (iterable == null) return Always.&lt;T&gt;no();</span>
+<span class="fc bfc" id="L488" title="All 2 branches covered.">        if (iterable instanceof Collection) {</span>
+<span class="fc" id="L489">            final Collection&lt;? extends T&gt; collection = (Collection&lt;? extends T&gt;) iterable;</span>
+<span class="fc bfc" id="L490" title="All 2 branches covered.">            return collection.isEmpty() ? Always.&lt;T&gt;no() : new Predicate&lt;T&gt;() {</span>
+<span class="fc" id="L491">                @Override public boolean $(T value) { return collection.contains(value); }};</span>
+        } else {
+<span class="fc" id="L493">            final Elements&lt;? extends T&gt; elements = on(iterable);</span>
+<span class="fc" id="L494">            return new Predicate&lt;T&gt;() {</span>
+<span class="fc" id="L495">                @Override public boolean $(T value) { return elements.exists(is(value)); }};</span>
+        }
+
     }
 
-<span class="fc" id="L492">    private Base() {}</span>
+<span class="fc" id="L500">    private Base() {}</span>
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.1.201405082137</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

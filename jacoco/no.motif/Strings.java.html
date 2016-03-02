@@ -81,7 +81,7 @@ public final class Strings {
 <span class="fc" id="L81">                throw asRuntimeException(e);</span>
             }
         }
-    }).orElse(Iterate.&lt;Byte&gt;none());
+<span class="fc" id="L84">    }).orElse(Iterate.&lt;Byte&gt;none());</span>
 
 
 
@@ -293,7 +293,7 @@ public final class Strings {
     public static Fn&lt;String, String&gt; first(final int charAmount) {
 <span class="fc" id="L294">        return when(notNull, new Fn&lt;String, String&gt;() { @Override public String $(String s) {</span>
 <span class="fc bfc" id="L295" title="All 2 branches covered.">                    return (charAmount &gt; s.length()) ? s : s.substring(0, charAmount);</span>
-                }}).orElse(&quot;&quot;);
+<span class="fc" id="L296">                }}).orElse(&quot;&quot;);</span>
     }
 
 
@@ -304,7 +304,7 @@ public final class Strings {
     public static Fn&lt;String, String&gt; last(final int charAmount) {
 <span class="fc" id="L305">        return when(notNull, new Fn&lt;String, String&gt;() { @Override public String $(String s) {</span>
 <span class="fc bfc" id="L306" title="All 2 branches covered.">                    return (charAmount &gt; s.length()) ? s : s.substring(s.length() - charAmount, s.length());</span>
-                }}).orElse(&quot;&quot;);
+<span class="fc" id="L307">                }}).orElse(&quot;&quot;);</span>
     }
 
 
@@ -642,4 +642,4 @@ public final class Strings {
 
 <span class="fc" id="L643">    private Strings() {}</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.1.201405082137</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

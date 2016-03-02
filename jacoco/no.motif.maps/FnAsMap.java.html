@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>FnAsMap.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Motif</a> &gt; <a href="index.source.html" class="el_package">no.motif.maps</a> &gt; <span class="el_source">FnAsMap.java</span></div><h1>FnAsMap.java</h1><pre class="source lang-java linenums">package no.motif.maps;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
+import no.motif.f.Fn;
+
+
+class FnAsMap&lt;K, V&gt; implements Map&lt;K, V&gt; {
+
+    private final Fn&lt;K, V&gt; fn;
+
+    private final Map&lt;Object, V&gt; overrides;
+    private final Map&lt;Object, V&gt; removed;
+
+<span class="fc" id="L18">    FnAsMap(Fn&lt;K, V&gt; fn) {</span>
+<span class="fc" id="L19">        this.fn = fn;</span>
+<span class="fc" id="L20">        this.overrides = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L21">        this.removed = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L22">    }</span>
+
+
+    @Override
+    public boolean containsKey(Object key) {
+        @SuppressWarnings(&quot;unchecked&quot;)
+<span class="fc" id="L28">        K castedKey = (K) key;</span>
+<span class="fc bfc" id="L29" title="All 6 branches covered.">        return !removed.containsKey(key) &amp;&amp; (overrides.containsKey(key) || fn.$(castedKey) != null);</span>
+    }
+
+
+    @Override
+    public V get(Object key) {
+<span class="fc bfc" id="L35" title="All 2 branches covered.">        if (overrides.containsKey(key)) return overrides.get(key);</span>
+<span class="fc bfc" id="L36" title="All 2 branches covered.">        if (removed.containsKey(key)) return null;</span>
+        @SuppressWarnings(&quot;unchecked&quot;)
+<span class="fc" id="L38">        K castedKey = (K) key;</span>
+<span class="fc" id="L39">        return fn.$(castedKey);</span>
+    }
+
+    @Override
+    public V put(K key, V value) {
+<span class="fc" id="L44">        V previous = get(key);</span>
+<span class="fc" id="L45">        removed.remove(key);</span>
+<span class="fc" id="L46">        overrides.put(key, value);</span>
+<span class="fc" id="L47">        return previous;</span>
+    }
+
+    @Override
+    public V remove(Object key) {
+<span class="fc" id="L52">        V previous = get(key);</span>
+<span class="fc" id="L53">        removed.put(key, previous);</span>
+<span class="fc" id="L54">        overrides.remove(key);</span>
+<span class="fc" id="L55">        return previous;</span>
+    }
+
+    @Override
+    public void putAll(Map&lt;? extends K, ? extends V&gt; m) {
+<span class="fc bfc" id="L60" title="All 2 branches covered.">        for (Map.Entry&lt;? extends K, ? extends V&gt; entry : m.entrySet()) {</span>
+<span class="fc" id="L61">            put(entry.getKey(), entry.getValue());</span>
+<span class="fc" id="L62">        }</span>
+<span class="fc" id="L63">    }</span>
+
+    @Override
+    public void clear() {
+<span class="fc" id="L67">        overrides.clear();</span>
+<span class="fc" id="L68">        removed.clear();</span>
+<span class="fc" id="L69">    }</span>
+
+    @Override
+    public int size() {
+<span class="fc" id="L73">        throw new NotPossibleOnMapViewOfFn(fn, &quot;the size cannot be determined&quot;); }</span>
+
+    @Override
+    public boolean isEmpty() {
+<span class="fc" id="L77">        throw new NotPossibleOnMapViewOfFn(fn, &quot;it cannot be determined if it is empty&quot;); }</span>
+
+    @Override
+    public boolean containsValue(Object v) {
+<span class="fc" id="L81">        throw new NotPossibleOnMapViewOfFn(fn, &quot;it cannot be determined if it contains the value '&quot; + v + &quot;'&quot;); }</span>
+
+    @Override
+    public Set&lt;K&gt; keySet() {
+<span class="fc" id="L85">        throw new NotPossibleOnMapViewOfFn(fn, &quot;it is not possible derive a set of keys.&quot;); }</span>
+
+    @Override
+    public Collection&lt;V&gt; values() {
+<span class="fc" id="L89">        throw new NotPossibleOnMapViewOfFn(fn, &quot;it is not possible resolve the values.&quot;); }</span>
+
+    @Override
+    public Set&lt;Map.Entry&lt;K, V&gt;&gt; entrySet() {
+<span class="fc" id="L93">        throw new NotPossibleOnMapViewOfFn(fn, &quot;it is not possible derive the entries.&quot;); }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

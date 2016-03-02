@@ -17,42 +17,50 @@ import no.motif.f.Fn0;
  */
 public final class Implicits {
 
-    private static Fn0&lt;Locale&gt; locale;
-    private static Fn0&lt;String&gt; encoding;
-    private static Fn0&lt;TimeZone&gt; timeZone;
-    private static Fn0&lt;Long&gt; timeMillis;
-
-<span class="fc" id="L25">    static { setDefaultEncoding(); setDefaultLocale(); setDefaultTimeZone(); useSystemClock(); }</span>
-
-<span class="fc" id="L27">    public static void setDefaultEncoding() { encoding = always(&quot;UTF-8&quot;); }</span>
-<span class="fc" id="L28">    public static void setDefaultLocale() { locale = always(Locale.getDefault()); }</span>
-<span class="fc" id="L29">    public static void setDefaultTimeZone() { timeZone = always(TimeZone.getDefault()); }</span>
-<span class="fc" id="L30">    public static void useSystemClock() { timeMillis = systemClockMillis; }</span>
+<span class="fc" id="L20">    static final Fn0&lt;Long&gt; systemClockMillis = new Fn0&lt;Long&gt;() {</span>
+<span class="fc" id="L21">        @Override public Long $() { return System.currentTimeMillis(); }};</span>
 
 
-<span class="fc" id="L33">    public static String getEncoding() { return encoding.$(); }</span>
+<span class="fc" id="L24">    private static final Fn0&lt;String&gt; defaultEncoding = always(&quot;UTF-8&quot;);</span>
+<span class="fc" id="L25">    private static final Fn0&lt;Locale&gt; defaultLocale = always(Locale.getDefault());</span>
+<span class="fc" id="L26">    private static final Fn0&lt;TimeZone&gt; defaultTimeZone = always(TimeZone.getDefault());</span>
+<span class="fc" id="L27">    private static final Fn0&lt;Long&gt; defaultTimeMillis = systemClockMillis;</span>
 
-<span class="fc" id="L35">    public static Locale getLocale() { return locale.$(); }</span>
-
-<span class="fc" id="L37">    public static TimeZone getTimeZone() { return timeZone.$(); }</span>
-
-<span class="fc" id="L39">    public static Long getTimeMillis() { return timeMillis.$(); }</span>
-
-
-<span class="fc" id="L42">    public static void setEncoding(Fn0&lt;String&gt; encoding) { Implicits.encoding = encoding; }</span>
-
-<span class="fc" id="L44">    public static void setLocale(Fn0&lt;Locale&gt; locale) { Implicits.locale = locale; }</span>
-
-<span class="fc" id="L46">    public static void setTimeZone(Fn0&lt;TimeZone&gt; timeZone) { Implicits.timeZone = timeZone; }</span>
-
-<span class="fc" id="L48">    public static void setTimeMillis(Fn0&lt;Long&gt; timeMillis) { Implicits.timeMillis = timeMillis; }</span>
+<span class="fc" id="L29">    static Fn0&lt;String&gt; encoding = defaultEncoding;</span>
+<span class="fc" id="L30">    static Fn0&lt;Locale&gt; locale = defaultLocale;</span>
+<span class="fc" id="L31">    static Fn0&lt;TimeZone&gt; timeZone = defaultTimeZone;</span>
+<span class="fc" id="L32">    static Fn0&lt;Long&gt; timeMillis = defaultTimeMillis;</span>
 
 
-<span class="fc" id="L51">    private Implicits() {}</span>
+<span class="fc" id="L35">    public static void setDefaultEncoding() { setEncoding(defaultEncoding); }</span>
+<span class="fc" id="L36">    public static void setDefaultLocale() { setLocale(defaultLocale); }</span>
+<span class="fc" id="L37">    public static void setDefaultTimeZone() { setTimeZone(defaultTimeZone); }</span>
+<span class="fc" id="L38">    public static void useSystemClock() { setTimeMillis(defaultTimeMillis); }</span>
 
 
-<span class="fc" id="L54">    private static final Fn0&lt;Long&gt; systemClockMillis = new Fn0&lt;Long&gt;() {</span>
-<span class="fc" id="L55">        @Override public Long $() { return System.currentTimeMillis(); }};</span>
+<span class="fc" id="L41">    public static String getEncoding() { return encoding.$(); }</span>
+<span class="pc" id="L42">    public static final Fn0&lt;String&gt; getEncoding = new Fn0&lt;String&gt;() { @Override public String $() { return getEncoding(); }};</span>
+
+<span class="fc" id="L44">    public static Locale getLocale() { return locale.$(); }</span>
+<span class="pc" id="L45">    public static final Fn0&lt;Locale&gt; getLocale = new Fn0&lt;Locale&gt;() { @Override public Locale $() { return getLocale(); }};</span>
+
+<span class="fc" id="L47">    public static TimeZone getTimeZone() { return timeZone.$(); }</span>
+<span class="pc" id="L48">    public static final Fn0&lt;TimeZone&gt; getTimeZone = new Fn0&lt;TimeZone&gt;() { @Override public TimeZone $() { return getTimeZone(); }};</span>
+
+<span class="fc" id="L50">    public static Long getTimeMillis() { return timeMillis.$(); }</span>
+<span class="pc" id="L51">    public static final Fn0&lt;Long&gt; getTimeMillis = new Fn0&lt;Long&gt;() { @Override public Long $() { return getTimeMillis(); }};</span>
+
+
+<span class="fc" id="L54">    public static void setEncoding(Fn0&lt;String&gt; encoding) { Implicits.encoding = encoding; }</span>
+
+<span class="fc" id="L56">    public static void setLocale(Fn0&lt;Locale&gt; locale) { Implicits.locale = locale; }</span>
+
+<span class="fc" id="L58">    public static void setTimeZone(Fn0&lt;TimeZone&gt; timeZone) { Implicits.timeZone = timeZone; }</span>
+
+<span class="fc" id="L60">    public static void setTimeMillis(Fn0&lt;Long&gt; timeMillis) { Implicits.timeMillis = timeMillis; }</span>
+
+
+<span class="fc" id="L63">    private Implicits() {}</span>
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.1.201405082137</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

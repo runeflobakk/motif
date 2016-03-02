@@ -10,6 +10,7 @@ import java.util.Objects;
 import no.motif.Iterate;
 import no.motif.Singular;
 import no.motif.f.Fn;
+import no.motif.f.Fn0;
 import no.motif.f.Predicate;
 import no.motif.iter.EmptyIterator;
 import no.motif.iter.SingularIterator;
@@ -40,10 +41,10 @@ public abstract class Optional&lt;V&gt;
      * @see Singular#none()
      */
     public static &lt;V&gt; Optional&lt;V&gt; resolve(Predicate&lt;? super V&gt; isPresent, V value) {
-<span class="fc bfc" id="L43" title="All 2 branches covered.">        if (isPresent.$(value)) {</span>
-<span class="fc" id="L44">            return some(value);</span>
+<span class="fc bfc" id="L44" title="All 2 branches covered.">        if (isPresent.$(value)) {</span>
+<span class="fc" id="L45">            return some(value);</span>
         } else {
-<span class="fc" id="L46">            return None.getInstance();</span>
+<span class="fc" id="L47">            return None.getInstance();</span>
         }
     }
 
@@ -53,7 +54,7 @@ public abstract class Optional&lt;V&gt;
      * @see Singular#the(Object)
      */
     public static &lt;V&gt; Some&lt;V&gt; some(V value) {
-<span class="fc" id="L56">        return new Some&lt;&gt;(value);</span>
+<span class="fc" id="L57">        return new Some&lt;&gt;(value);</span>
     }
 
 
@@ -67,89 +68,99 @@ public abstract class Optional&lt;V&gt;
 
         private final V value;
 
-<span class="fc" id="L70">        private Some(V value) {</span>
-<span class="fc" id="L71">            this.value = value;</span>
-<span class="fc" id="L72">        }</span>
+<span class="fc" id="L71">        private Some(V value) {</span>
+<span class="fc" id="L72">            this.value = value;</span>
+<span class="fc" id="L73">        }</span>
 
         @Override
         public V get() {
-<span class="fc" id="L76">            return value;</span>
+<span class="fc" id="L77">            return value;</span>
         }
 
         @Override
         public final Iterator&lt;V&gt; iterator() {
-<span class="fc" id="L81">            return new SingularIterator&lt;V&gt;(value);</span>
+<span class="fc" id="L82">            return new SingularIterator&lt;V&gt;(value);</span>
         }
 
         @Override
         public final boolean isSome() {
-<span class="fc" id="L86">            return true;</span>
+<span class="fc" id="L87">            return true;</span>
         }
 
         @Override
         public final V orElse(V fallback) {
-<span class="fc" id="L91">            return get();</span>
+<span class="fc" id="L92">            return get();</span>
         }
 
         @Override
         public V orNull() {
-<span class="fc" id="L96">            return value;</span>
+<span class="fc" id="L97">            return value;</span>
+        }
+
+        @Override
+        public &lt;X extends Throwable&gt; V orElseThrow(Fn0&lt;? extends X&gt; exceptionProvider) throws X {
+<span class="fc" id="L102">            return value;</span>
         }
 
         @Override
         public Optional&lt;V&gt; or(Optional&lt;V&gt; otherOptional) {
-<span class="fc" id="L101">            return this;</span>
+<span class="fc" id="L107">            return this;</span>
+        }
+
+        @Override
+        public Elements&lt;V&gt; or(Iterable&lt;V&gt; elements) {
+<span class="fc" id="L112">            return Iterate.on(this);</span>
         }
 
         @Override
         public &lt;O&gt; Optional&lt;O&gt; map(Fn&lt;? super V, O&gt; mapper) {
-<span class="fc" id="L106">            O mapped = mapper.$(this.value);</span>
-<span class="fc" id="L107">            return resolve(notNull, mapped);</span>
+<span class="fc" id="L117">            O mapped = mapper.$(this.value);</span>
+<span class="fc" id="L118">            return resolve(notNull, mapped);</span>
         }
 
         @Override
         public &lt;O&gt; Optional&lt;O&gt; map(Predicate&lt;? super O&gt; isPresent, Fn&lt;? super V, O&gt; mapper) {
-<span class="fc" id="L112">            O mapped = mapper.$(this.value);</span>
-<span class="fc" id="L113">            return resolve(isPresent, mapped);</span>
+<span class="fc" id="L123">            O mapped = mapper.$(this.value);</span>
+<span class="fc" id="L124">            return resolve(isPresent, mapped);</span>
         }
 
         @Override
         public &lt;O&gt; Optional&lt;O&gt; flatMap(Fn&lt;? super V, Optional&lt;O&gt;&gt; mapper) {
-<span class="fc" id="L118">            return mapper.$(value);</span>
+<span class="fc" id="L129">            return mapper.$(value);</span>
         }
 
         @Override
         public Optional&lt;V&gt; filter(Predicate&lt;? super V&gt; accepted) {
-<span class="fc" id="L123">            return resolve(accepted, value);</span>
+<span class="fc" id="L134">            return resolve(accepted, value);</span>
         }
 
         @Override
         public &lt;O&gt; Elements&lt;O&gt; split(Fn&lt;? super V, ? extends Iterable&lt;O&gt;&gt; splitter) {
-<span class="fc" id="L128">            return Iterate.on(splitter.$(value));</span>
+<span class="fc" id="L139">            return Iterate.on(splitter.$(value));</span>
         }
 
         @Override
         public boolean equals(Object o) {
-<span class="fc bfc" id="L133" title="All 2 branches covered.">            if (o instanceof Some) {</span>
-<span class="fc" id="L134">                Some&lt;?&gt; other = (Some&lt;?&gt;) o;</span>
-<span class="fc" id="L135">                return Objects.equals(this.value, other.value);</span>
+<span class="fc bfc" id="L144" title="All 2 branches covered.">            if (o instanceof Some) {</span>
+<span class="fc" id="L145">                Some&lt;?&gt; other = (Some&lt;?&gt;) o;</span>
+<span class="fc" id="L146">                return Objects.equals(this.value, other.value);</span>
             }
-<span class="fc" id="L137">            return false;</span>
+<span class="fc" id="L148">            return false;</span>
         }
 
         @Override
         public int hashCode() {
-<span class="fc" id="L142">            return Objects.hashCode(value);</span>
+<span class="fc" id="L153">            return Objects.hashCode(value);</span>
         }
 
         @Override
         public String toString() {
-<span class="fc" id="L147">            return &quot;Some(&quot; + value + &quot;)&quot;;</span>
+<span class="fc" id="L158">            return &quot;Some(&quot; + value + &quot;)&quot;;</span>
         }
 
         @Override
         public Optional&lt;V&gt; asOptional() {
-<span class="fc" id="L152">            return this;</span>
+<span class="fc" id="L163">            return this;</span>
         }
 
     }
@@ -162,87 +173,97 @@ public abstract class Optional&lt;V&gt;
      */
     public static final class None&lt;V&gt; extends Optional&lt;V&gt; {
 
-<span class="fc" id="L165">        private static final None&lt;?&gt; INSTANCE = new None&lt;Object&gt;();</span>
+<span class="fc" id="L176">        private static final None&lt;?&gt; INSTANCE = new None&lt;Object&gt;();</span>
 
         @SuppressWarnings(&quot;unchecked&quot;)
         public static &lt;V&gt; None&lt;V&gt; getInstance() {
-<span class="fc" id="L169">            return (None&lt;V&gt;) INSTANCE;</span>
+<span class="fc" id="L180">            return (None&lt;V&gt;) INSTANCE;</span>
         }
 
-<span class="fc" id="L172">        private None() {}</span>
+<span class="fc" id="L183">        private None() {}</span>
 
         @Override
         public V get() {
-<span class="fc" id="L176">            throw new NoSuchElementException(&quot;Called get() on &quot; + this);</span>
+<span class="fc" id="L187">            throw new NoSuchElementException(&quot;Called get() on &quot; + this);</span>
         }
 
         @Override
         public final Iterator&lt;V&gt; iterator() {
-<span class="fc" id="L181">            return EmptyIterator.instance();</span>
+<span class="fc" id="L192">            return EmptyIterator.instance();</span>
         }
 
         @Override
         public final boolean isSome() {
-<span class="fc" id="L186">            return false;</span>
+<span class="fc" id="L197">            return false;</span>
         }
 
         @Override
         public final V orElse(V fallback) {
-<span class="fc" id="L191">            return fallback;</span>
+<span class="fc" id="L202">            return fallback;</span>
         }
 
         @Override
         public V orNull() {
-<span class="fc" id="L196">            return null;</span>
+<span class="fc" id="L207">            return null;</span>
+        }
+
+        @Override
+        public &lt;X extends Throwable&gt; V orElseThrow(Fn0&lt;? extends X&gt; exceptionProvider) throws X {
+<span class="fc" id="L212">            throw exceptionProvider.$();</span>
         }
 
         @Override
         public Optional&lt;V&gt; or(Optional&lt;V&gt; otherOptional) {
-<span class="fc" id="L201">            return otherOptional;</span>
+<span class="fc" id="L217">            return otherOptional;</span>
+        }
+
+        @Override
+        public Elements&lt;V&gt; or(Iterable&lt;V&gt; elements) {
+<span class="fc" id="L222">            return Iterate.&lt;V&gt;on(elements);</span>
         }
 
         @Override
         public &lt;O&gt; Optional&lt;O&gt; map(Fn&lt;? super V, O&gt; mapper) {
-<span class="fc" id="L206">            return None.getInstance();</span>
+<span class="fc" id="L227">            return None.getInstance();</span>
         }
 
         @Override
         public &lt;O&gt; Optional&lt;O&gt; map(Predicate&lt;? super O&gt; isPresent, Fn&lt;? super V, O&gt; mapper) {
-<span class="fc" id="L211">            return None.getInstance();</span>
+<span class="fc" id="L232">            return None.getInstance();</span>
         }
 
         @Override
         public &lt;O&gt; Optional&lt;O&gt; flatMap(Fn&lt;? super V, Optional&lt;O&gt;&gt; mapper) {
-<span class="fc" id="L216">            return None.getInstance();</span>
+<span class="fc" id="L237">            return None.getInstance();</span>
         }
 
         @Override
         public Optional&lt;V&gt; filter(Predicate&lt;? super V&gt; filter) {
-<span class="fc" id="L221">            return None.getInstance();</span>
+<span class="fc" id="L242">            return None.getInstance();</span>
         }
 
         @Override
         public &lt;O&gt; Elements&lt;O&gt; split(Fn&lt;? super V, ? extends Iterable&lt;O&gt;&gt; splitter) {
-<span class="fc" id="L226">            return Iterate.none();</span>
+<span class="fc" id="L247">            return Iterate.none();</span>
         }
 
         @Override
         public String toString() {
-<span class="fc" id="L231">            return &quot;None&quot;;</span>
+<span class="fc" id="L252">            return &quot;None&quot;;</span>
         }
 
         private Object readResolve() {
-<span class="fc" id="L235">            return None.getInstance();</span>
+<span class="fc" id="L256">            return None.getInstance();</span>
         }
 
         @Override
         public boolean equals(Object other) {
-<span class="fc bfc" id="L240" title="All 4 branches covered.">            return this == other || other instanceof None;</span>
+<span class="fc bfc" id="L261" title="All 4 branches covered.">            return this == other || other instanceof None;</span>
         }
 
         @Override
         public int hashCode() {
-<span class="fc" id="L245">            return 43;</span>
+<span class="fc" id="L266">            return 43;</span>
         }
 
     }
@@ -320,11 +341,29 @@ public abstract class Optional&lt;V&gt;
      */
     public abstract V orNull();
 
+
+    /**
+     * @param exceptionProvider The function which will provide the exception to be thrown.
+     * @param &lt;X&gt; Type of the exception to be thrown.
+     * @return The wrapped value.
+     * @throws X if this method is called on an &lt;code&gt;Optional&lt;/code&gt; without a defined value.
+     */
+    public abstract &lt;X extends Throwable&gt; V orElseThrow(Fn0&lt;? extends X&gt; exceptionProvider) throws X;
+
+
     /**
      * @return If this &lt;code&gt;Optional&lt;/code&gt; is not defined, the given &lt;code&gt;otherOptional&lt;/code&gt;
      *         is returned, otherwise the original &lt;code&gt;Optional&lt;/code&gt; is returned as-is.
      */
     public abstract Optional&lt;V&gt; or(Optional&lt;V&gt; otherOptional);
+
+
+    /**
+     * @return If this &lt;code&gt;Optional&lt;/code&gt; is not defined, the given &lt;code&gt;elements&lt;/code&gt;
+     *         is returned, otherwise the value in this &lt;code&gt;Optional&lt;/code&gt; is returned as
+     *         the only contained element.
+     */
+    public abstract Elements&lt;V&gt; or(Iterable&lt;V&gt; elements);
 
 
     /**
@@ -347,25 +386,25 @@ public abstract class Optional&lt;V&gt;
 
     @Override
     public Elements&lt;V&gt; append(Iterable&lt;? extends V&gt; trailingElements) {
-<span class="fc" id="L350">        return Iterate.on(this).append(trailingElements);</span>
+<span class="fc" id="L389">        return Iterate.on(this).append(trailingElements);</span>
     }
 
     @Override
     public Elements&lt;V&gt; append(V value) {
-<span class="fc" id="L355">        return Iterate.on(this).append(value);</span>
+<span class="fc" id="L394">        return Iterate.on(this).append(value);</span>
     }
 
     @Override
     public Elements&lt;V&gt; prepend(Iterable&lt;? extends V&gt; leadingElements) {
-<span class="fc" id="L360">        return Iterate.on(this).prepend(leadingElements);</span>
+<span class="fc" id="L399">        return Iterate.on(this).prepend(leadingElements);</span>
     }
 
     @Override
     public Elements&lt;V&gt; prepend(V value) {
-<span class="fc" id="L365">        return Iterate.on(this).prepend(value);</span>
+<span class="fc" id="L404">        return Iterate.on(this).prepend(value);</span>
     }
 
 
-<span class="fc" id="L369">    private Optional() {}</span>
+<span class="fc" id="L408">    private Optional() {}</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.1.201405082137</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

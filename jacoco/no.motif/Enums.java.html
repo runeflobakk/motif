@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Enums.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Motif</a> &gt; <a href="index.source.html" class="el_package">no.motif</a> &gt; <span class="el_source">Enums.java</span></div><h1>Enums.java</h1><pre class="source lang-java linenums">package no.motif;
+
+import static java.util.EnumSet.allOf;
+import static no.motif.Base.first;
+import static no.motif.Base.is;
+import static no.motif.Iterate.on;
+import no.motif.f.Fn;
+
+public final class Enums {
+
+    /**
+     * Gets the {@link Enum#name() name} of enum constants.
+     */
+<span class="fc" id="L14">    public static final Fn&lt;Enum&lt;?&gt;, String&gt; name = new Fn&lt;Enum&lt;?&gt;, String&gt;() {</span>
+<span class="fc" id="L15">        @Override public String $(Enum&lt;?&gt; e) { return e.name(); }};</span>
+
+
+    /**
+     * Resolve enums from constant names.
+     *
+     * @param enumType The enum type to resolve constants from.
+     */
+<span class="fc" id="L23">    public static &lt;E extends Enum&lt;E&gt;&gt; FromName&lt;E&gt; to(Class&lt;E&gt; enumType) { return new FromName&lt;&gt;(enumType); }</span>
+
+
+    /**
+     * Convert from one enum to another by name.
+     *
+     * @param enumType The target enum type
+     */
+    public static &lt;E extends Enum&lt;E&gt;&gt; Fn&lt;Enum&lt;?&gt;, E&gt; toSameName(Class&lt;E&gt; enumType) {
+<span class="fc" id="L32">        return first(name).then(to(enumType));</span>
+    }
+
+
+    /**
+     * {@link Fn} which resolves enum constants from names (&lt;code&gt;String&lt;/code&gt;).
+     * Use {@link #or(Enum)} to yield a fallback value for non-existing constants,
+     * instead of throwing an exception.
+     */
+    public static final class FromName&lt;E extends Enum&lt;E&gt;&gt; implements Fn&lt;String, E&gt; {
+
+        private final Class&lt;E&gt; enumType;
+
+<span class="fc" id="L45">        private FromName(Class&lt;E&gt; enumType) {</span>
+<span class="fc" id="L46">            this.enumType = enumType;</span>
+<span class="fc" id="L47">        }</span>
+
+        @Override
+        public E $(String name) {
+<span class="fc" id="L51">            return Enum.valueOf(enumType, name);</span>
+        }
+
+        public final Fn&lt;String, E&gt; or(final E fallback) {
+<span class="fc" id="L55">            return new Fn&lt;String, E&gt;() { @Override public E $(String e) {</span>
+<span class="fc" id="L56">                return on(allOf(enumType)).map(name).filter(is(e)).map(to(enumType)).head().orElse(fallback);</span>
+            }};
+        }
+    }
+
+
+
+<span class="fc" id="L63">    private Enums() {}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

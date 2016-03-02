@@ -489,19 +489,27 @@
 <a class="jxr_linenumber" name="L481" href="#L481">481</a> 
 <a class="jxr_linenumber" name="L482" href="#L482">482</a> 
 <a class="jxr_linenumber" name="L483" href="#L483">483</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L484" href="#L484">484</a> <em class="jxr_javadoccomment">     * Evaluates if objects are {@link Collection#contains(Object) contained in} a the given</em>
-<a class="jxr_linenumber" name="L485" href="#L485">485</a> <em class="jxr_javadoccomment">     * &lt;code&gt;Collection&lt;/code&gt;.</em>
-<a class="jxr_linenumber" name="L486" href="#L486">486</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L487" href="#L487">487</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> &lt;T&gt; Predicate&lt;T&gt; containedIn(<strong class="jxr_keyword">final</strong> Collection&lt;? <strong class="jxr_keyword">extends</strong> T&gt; collection) {
-<a class="jxr_linenumber" name="L488" href="#L488">488</a>         <strong class="jxr_keyword">return</strong> collection == <strong class="jxr_keyword">null</strong> || collection.isEmpty() ? Always.&lt;T&gt;no() : <strong class="jxr_keyword">new</strong> Predicate&lt;T&gt;() {
-<a class="jxr_linenumber" name="L489" href="#L489">489</a>             @Override <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">boolean</strong> $(T value) { <strong class="jxr_keyword">return</strong> collection.contains(value); }};
-<a class="jxr_linenumber" name="L490" href="#L490">490</a>     }
-<a class="jxr_linenumber" name="L491" href="#L491">491</a> 
-<a class="jxr_linenumber" name="L492" href="#L492">492</a>     <strong class="jxr_keyword">private</strong> <a href="../../no/motif/Base.html">Base</a>() {}
-<a class="jxr_linenumber" name="L493" href="#L493">493</a> 
-<a class="jxr_linenumber" name="L494" href="#L494">494</a> }
+<a class="jxr_linenumber" name="L484" href="#L484">484</a> <em class="jxr_javadoccomment">     * Evaluates if objects are contained in the given &lt;code&gt;Iterable&lt;/code&gt;.</em>
+<a class="jxr_linenumber" name="L485" href="#L485">485</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L486" href="#L486">486</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> &lt;T&gt; Predicate&lt;T&gt; containedIn(<strong class="jxr_keyword">final</strong> Iterable&lt;? <strong class="jxr_keyword">extends</strong> T&gt; iterable) {
+<a class="jxr_linenumber" name="L487" href="#L487">487</a>         <strong class="jxr_keyword">if</strong> (iterable == <strong class="jxr_keyword">null</strong>) <strong class="jxr_keyword">return</strong> Always.&lt;T&gt;no();
+<a class="jxr_linenumber" name="L488" href="#L488">488</a>         <strong class="jxr_keyword">if</strong> (iterable instanceof Collection) {
+<a class="jxr_linenumber" name="L489" href="#L489">489</a>             <strong class="jxr_keyword">final</strong> Collection&lt;? <strong class="jxr_keyword">extends</strong> T&gt; collection = (Collection&lt;? <strong class="jxr_keyword">extends</strong> T&gt;) iterable;
+<a class="jxr_linenumber" name="L490" href="#L490">490</a>             <strong class="jxr_keyword">return</strong> collection.isEmpty() ? Always.&lt;T&gt;no() : <strong class="jxr_keyword">new</strong> Predicate&lt;T&gt;() {
+<a class="jxr_linenumber" name="L491" href="#L491">491</a>                 @Override <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">boolean</strong> $(T value) { <strong class="jxr_keyword">return</strong> collection.contains(value); }};
+<a class="jxr_linenumber" name="L492" href="#L492">492</a>         } <strong class="jxr_keyword">else</strong> {
+<a class="jxr_linenumber" name="L493" href="#L493">493</a>             <strong class="jxr_keyword">final</strong> Elements&lt;? <strong class="jxr_keyword">extends</strong> T&gt; elements = on(iterable);
+<a class="jxr_linenumber" name="L494" href="#L494">494</a>             <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> Predicate&lt;T&gt;() {
+<a class="jxr_linenumber" name="L495" href="#L495">495</a>                 @Override <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">boolean</strong> $(T value) { <strong class="jxr_keyword">return</strong> elements.exists(is(value)); }};
+<a class="jxr_linenumber" name="L496" href="#L496">496</a>         }
+<a class="jxr_linenumber" name="L497" href="#L497">497</a> 
+<a class="jxr_linenumber" name="L498" href="#L498">498</a>     }
+<a class="jxr_linenumber" name="L499" href="#L499">499</a> 
+<a class="jxr_linenumber" name="L500" href="#L500">500</a>     <strong class="jxr_keyword">private</strong> <a href="../../no/motif/Base.html">Base</a>() {}
+<a class="jxr_linenumber" name="L501" href="#L501">501</a> 
+<a class="jxr_linenumber" name="L502" href="#L502">502</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2014. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2016. All rights reserved.</div>
 </body>
 </html>

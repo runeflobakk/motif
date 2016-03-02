@@ -104,7 +104,7 @@ import no.motif.types.Elements;
 <span class="fc" id="L104">            P key = uniqueProperty.$(elem);</span>
 <span class="fc bfc" id="L105" title="All 2 branches covered.">            if (!map.containsKey(key)) map.put(key, elem);</span>
 <span class="fc" id="L106">            else throw new IllegalStateException(</span>
-                    &quot;Cannot create the map since both '&quot; + map.get(key) + &quot;' and '&quot; + elem + &quot;' yields &quot; +
+<span class="fc" id="L107">                    &quot;Cannot create the map since both '&quot; + map.get(key) + &quot;' and '&quot; + elem + &quot;' yields &quot; +</span>
                     &quot;the same key: '&quot; + key + &quot;'. This is either due to an inconsistency in &quot; +
                     &quot;your data, or you should use .groupBy(Fn) instead to allow multiple elements &quot; +
                     &quot;being mapped by the same key.&quot;);
@@ -164,4 +164,4 @@ import no.motif.types.Elements;
     }
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.1.201405082137</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>
