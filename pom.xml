@@ -427,7 +427,7 @@
         <site>
             <id>gh-pages</id>
             <name>GitHub gh-pages</name>
-            <url>scm:git:https://github.com/runeflobakk/motif.git</url>
+            <url>scm:git:git@github.com:runeflobakk/motif.git</url>
         </site>
     </distributionManagement>
 
