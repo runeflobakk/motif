@@ -35,12 +35,15 @@ import java.util.NoSuchElementException;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import no.motif.Singular;
 import no.motif.f.Fn;
+import no.motif.f.Fn0;
 import no.motif.f.Predicate;
 import no.motif.single.Optional.None;
 import no.motif.single.Optional.Some;
 import no.motif.types.Elements;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.objenesis.ObjenesisStd;
 
 
@@ -150,6 +153,32 @@ public class OptionalTest {
     @Test
     public void orNullOnSomeIsTheWrappedValue() {
         assertThat(optional("x").orNull(), is("x"));
+    }
+
+    @Rule
+    public final ExpectedException expectedException = ExpectedException.none();
+
+    @Test
+    public void orElseThrowOnNoneThrows() {
+        expectedException.expect(RuntimeException.class);
+        expectedException.expectMessage("Value not defined");
+        Singular.none().orElseThrow(new Fn0<RuntimeException>() {
+            @Override
+            public RuntimeException $() {
+                return new RuntimeException("Value not defined");
+            }
+        });
+    }
+
+    @Test
+    public void orElseThrowOnSomeReturnsTheOptionalValue() {
+        String value = optional("some").orElseThrow(new Fn0<RuntimeException>() {
+            @Override
+            public RuntimeException $() {
+                return new RuntimeException();
+            }
+        });
+        assertThat(value, is("some"));
     }
 
     @Test

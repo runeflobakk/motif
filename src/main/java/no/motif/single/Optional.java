@@ -10,6 +10,7 @@ import java.util.Objects;
 import no.motif.Iterate;
 import no.motif.Singular;
 import no.motif.f.Fn;
+import no.motif.f.Fn0;
 import no.motif.f.Predicate;
 import no.motif.iter.EmptyIterator;
 import no.motif.iter.SingularIterator;
@@ -93,6 +94,11 @@ public abstract class Optional<V>
 
         @Override
         public V orNull() {
+            return value;
+        }
+
+        @Override
+        public <X extends Throwable> V orElseThrow(Fn0<? extends X> exceptionProvider) throws X {
             return value;
         }
 
@@ -199,6 +205,11 @@ public abstract class Optional<V>
         @Override
         public V orNull() {
             return null;
+        }
+
+        @Override
+        public <X extends Throwable> V orElseThrow(Fn0<? extends X> exceptionProvider) throws X {
+            throw exceptionProvider.$();
         }
 
         @Override
@@ -329,6 +340,15 @@ public abstract class Optional<V>
      * @return The wrapped value, or <code>null</code> if it is undefined.
      */
     public abstract V orNull();
+
+
+    /**
+     * @param exceptionProvider The function which will provide the exception to be thrown.
+     * @param <X> Type of the exception to be thrown.
+     * @return The wrapped value.
+     * @throws X if this method is called on an <code>Optional</code> without a defined value.
+     */
+    public abstract <X extends Throwable> V orElseThrow(Fn0<? extends X> exceptionProvider) throws X;
 
 
     /**
